@@ -4,8 +4,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Ugugushka.Common\Ugugushka.Common.csproj" />
-  </ItemGroup>
-
 </Project>

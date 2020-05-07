@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="Ninject.MVC5" Version="3.3.0" />
+    <PackageReference Include="Ninject.Web.Common" Version="3.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ugugushka.Domain\Ugugushka.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
