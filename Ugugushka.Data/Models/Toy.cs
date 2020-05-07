@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ugugushka.Data.Models
 {
-    internal class Toy
+    public class Toy
     {
         public uint Id { get; set; }
         public string Name { get; set; }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ugugushka.Data.Models
 {
-    internal class Partition
+    public class Partition
     {
         public uint Id { get; set; }
         public string Name { get; set; }
