@@ -5,7 +5,8 @@
         string SearchString { get; }
         uint? CategoryId { get; }
         uint? PartitionId { get; }
-        uint? MinPrice { get; }
-        uint? MaxPrice { get; }
+        decimal? MinPrice { get; }
+        decimal? MaxPrice { get; }
+        bool IsOnStock { get; }
     }
 }
