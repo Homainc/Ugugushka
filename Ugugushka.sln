@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ugugushka.WebUI", "Ugugushk
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ugugushka.Domain", "Ugugushka.Domain\Ugugushka.Domain.csproj", "{69D96335-AEF3-4EAD-9FB0-72358FE8CEEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ugugushka.Data", "Ugugushka.Data\Ugugushka.Data.csproj", "{210805B6-7FBA-4663-806D-78ABB05A537C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ugugushka.Data", "Ugugushka.Data\Ugugushka.Data.csproj", "{210805B6-7FBA-4663-806D-78ABB05A537C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ugugushka.Common", "Ugugushka.Common\Ugugushka.Common.csproj", "{782A409E-34E7-4A94-9AB2-F5B68AF6C994}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{210805B6-7FBA-4663-806D-78ABB05A537C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{210805B6-7FBA-4663-806D-78ABB05A537C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{210805B6-7FBA-4663-806D-78ABB05A537C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{782A409E-34E7-4A94-9AB2-F5B68AF6C994}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{782A409E-34E7-4A94-9AB2-F5B68AF6C994}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{782A409E-34E7-4A94-9AB2-F5B68AF6C994}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{782A409E-34E7-4A94-9AB2-F5B68AF6C994}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
