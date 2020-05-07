@@ -23,5 +23,10 @@ namespace Ugugushka.Domain.Managers
         {
             throw new System.NotImplementedException();
         }
+
+        public Task<ToyDto> UpdateAsync(ToyUpdateDto item)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

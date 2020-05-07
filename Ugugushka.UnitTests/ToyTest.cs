@@ -32,32 +32,32 @@ namespace Ugugushka.UnitTests
                     new Toy
                     {
                         Name = "Bear", Category = categories[0], CategoryId = categories[0].Id,
-                        Description = "plush bear", IsOnStock = true, Price = 25.8m
+                        Description = "plush bear", IsOnStock = true, Price = 25.8m, Id = 1
                     },
                     new Toy
                     {
                         Name = "Rabbit", Category = categories[0], CategoryId = categories[0].Id,
-                        Description = "plush rabbit", IsOnStock = true, Price = 26.4m
+                        Description = "plush rabbit", IsOnStock = true, Price = 26.4m, Id = 2
                     },
                     new Toy
                     {
                         Name = "Dog", Category = categories[0], CategoryId = categories[0].Id,
-                        Description = "plush dog", IsOnStock = false, Price = 50.6m
+                        Description = "plush dog", IsOnStock = false, Price = 50.6m, Id = 3
                     },
                     new Toy
                     {
                         Name = "Mafia", Category = categories[1], CategoryId = categories[1].Id,
-                        Description = "table mafia", IsOnStock = false, Price = 70.6m
+                        Description = "table mafia", IsOnStock = false, Price = 70.6m, Id = 4
                     },
                     new Toy
                     {
                         Name = "Car", Category = categories[2], CategoryId = categories[2].Id,
-                        Description = "plastic car", IsOnStock = true, Price = 10.6m
+                        Description = "plastic car", IsOnStock = true, Price = 10.6m, Id = 5
                     },
                     new Toy
                     {
                         Name = "Pencil", Category = categories[3], CategoryId = categories[3].Id,
-                        Description = "wooden pencil", IsOnStock = false, Price = 5.6m
+                        Description = "wooden pencil", IsOnStock = false, Price = 5.6m, Id = 6
                     }
                 };
                 return toys;
@@ -176,13 +176,47 @@ namespace Ugugushka.UnitTests
             Assert.Equal(newPlushToy.Price, createdPlushToy.Price);
 
             Assert.Equal(newPlasticToy.Name, createdPlasticToy.Name);
-            Assert.Equal("Plastic", createdPlushToy.CategoryName);
-            Assert.Equal("For adults", createdPlushToy.PartitionName);
+            Assert.Equal("Plastic", createdPlasticToy.CategoryName);
+            Assert.Equal("For adults", createdPlasticToy.PartitionName);
             Assert.Equal(newPlasticToy.IsOnStock, createdPlasticToy.IsOnStock);
             Assert.Equal(newPlasticToy.Description, createdPlasticToy.Description);
             Assert.Equal(newPlasticToy.Price, createdPlasticToy.Price);
 
             Assert.Equal((uint)8, toys.TotalItems);
+        }
+
+        [Fact]
+        public async void Can_Update()
+        {
+            //Assign
+            DbName = "Can_Create";
+            await using var context = CreateContext();
+            Context = context;
+            var toyManager = await CreateToyManagerAsync(TestToys);
+            var newWoodenToy = new ToyUpdateDto{Id = 1, CategoryId = 4, Description = "Updated wooden toy", IsOnStock = true, Name = "updated first toy", Price = 10m};
+            var newSecondWoodenToy = new ToyUpdateDto{Id = 2, CategoryId = 4, Description = "Updated second wooden toy", Name = "updated second toy", Price = 50.54m};
+
+            //Action
+            var updatedWoodenToy = await toyManager.UpdateAsync(newWoodenToy);
+            var updatedSecondWoodenToy = await toyManager.UpdateAsync(newSecondWoodenToy);
+            var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo{CategoryId = 4}, new PageInfo { PageNumber = 1, PageSize = 1 });
+
+            //Assert
+            Assert.Equal(newWoodenToy.Name, updatedWoodenToy.Name);
+            Assert.Equal("Wood", updatedWoodenToy.CategoryName);
+            Assert.Equal("For adults", updatedWoodenToy.PartitionName);
+            Assert.Equal(newWoodenToy.IsOnStock, updatedWoodenToy.IsOnStock);
+            Assert.Equal(newWoodenToy.Description, updatedWoodenToy.Description);
+            Assert.Equal(newWoodenToy.Price, updatedWoodenToy.Price);
+
+            Assert.Equal(newSecondWoodenToy.Name, updatedSecondWoodenToy.Name);
+            Assert.Equal("Wood", updatedSecondWoodenToy.CategoryName);
+            Assert.Equal("For adults", updatedSecondWoodenToy.PartitionName);
+            Assert.Equal(newSecondWoodenToy.IsOnStock, updatedSecondWoodenToy.IsOnStock);
+            Assert.Equal(newSecondWoodenToy.Description, updatedSecondWoodenToy.Description);
+            Assert.Equal(newSecondWoodenToy.Price, updatedSecondWoodenToy.Price);
+
+            Assert.Equal((uint)3, toys.TotalItems);
         }
     }
 }
