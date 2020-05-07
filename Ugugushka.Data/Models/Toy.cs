@@ -10,8 +10,6 @@ namespace Ugugushka.Data.Models
         public string Description { get; set; }
         public decimal Price { get; set; }
         public bool IsOnStock { get; set; }
-        public uint? PartitionId { get; set; }
-        public Partition Partition { get; set; }
         public uint? CategoryId { get; set; }
         public Category Category { get; set; }
     }
@@ -27,10 +25,6 @@ namespace Ugugushka.Data.Models
                 .HasMaxLength(500);
             builder.Property(x => x.Price)
                 .HasColumnType("decimal(18,2)");
-            builder.HasOne(x => x.Partition)
-                .WithMany()
-                .HasForeignKey(x => x.PartitionId)
-                .OnDelete(DeleteBehavior.SetNull);
             builder.HasOne(x => x.Category)
                 .WithMany()
                 .HasForeignKey(x => x.CategoryId)

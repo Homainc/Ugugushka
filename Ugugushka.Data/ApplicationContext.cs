@@ -3,7 +3,7 @@ using Ugugushka.Data.Models;
 
 namespace Ugugushka.Data
 {
-    internal class ApplicationContext : DbContext
+    public class ApplicationContext : DbContext
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Partition> Partitions { get; set; }

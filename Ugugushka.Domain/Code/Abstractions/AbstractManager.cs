@@ -3,7 +3,7 @@ using Ugugushka.Data.Code.Interfaces;
 
 namespace Ugugushka.Domain.Code.Abstractions
 {
-    internal class AbstractManager
+    public class AbstractManager
     {
         private readonly ISaveProvider _saveProvider;
         public AbstractManager(ISaveProvider saveProvider) => _saveProvider = saveProvider;

@@ -2,7 +2,10 @@
 {
     public interface IToyFilterInfo
     {
+        string SearchString { get; }
         uint? CategoryId { get; }
         uint? PartitionId { get; }
+        uint? MinPrice { get; }
+        uint? MaxPrice { get; }
     }
 }

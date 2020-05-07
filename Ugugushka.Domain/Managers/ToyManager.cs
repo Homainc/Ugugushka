@@ -7,7 +7,7 @@ using Ugugushka.Domain.DtoModels;
 
 namespace Ugugushka.Domain.Managers
 {
-    internal class ToyManager : AbstractManager, IToyManager
+    public class ToyManager : AbstractManager, IToyManager
     {
         private readonly IToyRepository _toyRepository;
 

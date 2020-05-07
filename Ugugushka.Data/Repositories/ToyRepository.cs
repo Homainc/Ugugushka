@@ -7,7 +7,7 @@ using Ugugushka.Data.Models;
 
 namespace Ugugushka.Data.Repositories
 {
-    internal class ToyRepository : AbstractRepository<Toy>, IToyRepository
+    public class ToyRepository : AbstractRepository<Toy>, IToyRepository
     {
         public ToyRepository(ApplicationContext db, IHttpContextAccessor httpContextAccessor) : base(db,
             httpContextAccessor)

@@ -5,7 +5,7 @@ using Ugugushka.Data.Code.Interfaces;
 
 namespace Ugugushka.Data
 {
-    internal class SaveProvider : ISaveProvider
+    public class SaveProvider : ISaveProvider
     {
         private readonly ApplicationContext _db;
         private readonly CancellationToken _cancellationToken;

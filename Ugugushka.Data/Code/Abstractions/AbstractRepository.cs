@@ -5,7 +5,7 @@ using Ugugushka.Data.Code.Interfaces;
 
 namespace Ugugushka.Data.Code.Abstractions
 {
-    internal abstract class AbstractRepository<TItem> : IRepository<TItem> where TItem : class
+    public abstract class AbstractRepository<TItem> : IRepository<TItem> where TItem : class
     {
         protected readonly ApplicationContext Db;
         protected readonly CancellationToken CancellationToken;
