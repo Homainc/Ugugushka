@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Ugugushka.Common.Interfaces;
 using Ugugushka.Data.Code.Abstractions;
 using Ugugushka.Data.Code.Interfaces;
 using Ugugushka.Data.Models;
@@ -12,6 +14,9 @@ namespace Ugugushka.Data.Repositories
         {
         }
 
-
+        public Task<IPagedResult<Toy>> GetFilteredPagedAsync(IToyFilterInfo filter, IPageInfo pageInfo)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
