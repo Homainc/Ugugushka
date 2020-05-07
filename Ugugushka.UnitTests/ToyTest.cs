@@ -189,7 +189,7 @@ namespace Ugugushka.UnitTests
         public async void Can_Update()
         {
             //Assign
-            DbName = "Can_Create";
+            DbName = "Can_Update";
             await using var context = CreateContext();
             Context = context;
             var toyManager = await CreateToyManagerAsync(TestToys);
@@ -217,6 +217,25 @@ namespace Ugugushka.UnitTests
             Assert.Equal(newSecondWoodenToy.Price, updatedSecondWoodenToy.Price);
 
             Assert.Equal((uint)3, toys.TotalItems);
+        }
+
+        [Fact]
+        public async void Can_Delete()
+        {
+            //Assign
+            DbName = "Can_Delete";
+            await using var context = CreateContext();
+            Context = context;
+            var toyManager = await CreateToyManagerAsync(TestToys);
+
+            //Action
+            await toyManager.DeleteAsync(1);
+            await toyManager.DeleteAsync(2);
+            var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo{CategoryId = 1},
+                new PageInfo {PageNumber = 1, PageSize = 1});
+
+            //Assert
+            Assert.Equal((uint)1, toys.TotalItems);
         }
     }
 }

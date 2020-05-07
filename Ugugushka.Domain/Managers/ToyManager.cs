@@ -28,5 +28,10 @@ namespace Ugugushka.Domain.Managers
         {
             throw new System.NotImplementedException();
         }
+
+        public Task<ToyDto> DeleteAsync(uint id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
