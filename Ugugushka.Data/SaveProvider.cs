@@ -9,6 +9,7 @@ namespace Ugugushka.Data
     {
         private readonly ApplicationContext _db;
         private readonly CancellationToken _cancellationToken;
+
         public SaveProvider(ApplicationContext db, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
