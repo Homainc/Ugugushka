@@ -19,7 +19,7 @@ namespace Ugugushka.Domain.Managers
             throw new System.NotImplementedException();
         }
 
-        public Task<ToyDto> CreateAsync(ToyDto item)
+        public Task<ToyDto> CreateAsync(ToyCreateDto item)
         {
             throw new System.NotImplementedException();
         }

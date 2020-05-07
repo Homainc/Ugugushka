@@ -7,6 +7,6 @@ namespace Ugugushka.Domain.Code.Interfaces
     public interface IToyManager
     {
         Task<IPagedResult<ToyDto>> GetPagedFilteredAsync(IToyFilterInfo filter, IPageInfo pageInfo);
-        Task<ToyDto> CreateAsync(ToyDto item);
+        Task<ToyDto> CreateAsync(ToyCreateDto item);
     }
 }

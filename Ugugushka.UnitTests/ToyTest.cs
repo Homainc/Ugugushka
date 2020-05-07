@@ -2,6 +2,7 @@
 using System.Linq;
 using Ugugushka.Common.Concretes;
 using Ugugushka.Data.Models;
+using Ugugushka.Domain.DtoModels;
 using Ugugushka.UnitTests.Abstractions;
 using Xunit;
 
@@ -148,6 +149,40 @@ namespace Ugugushka.UnitTests
 
             Assert.Collection(searchCarToys.Items, x => Assert.Contains("Car", x.Name));
             Assert.Equal((uint) 1, searchCarToys.TotalItems);
+        }
+
+        [Fact]
+        public async void Can_Create()
+        {
+            //Assign
+            DbName = "Can_Create";
+            await using var context = CreateContext();
+            Context = context;
+            var toyManager = await CreateToyManagerAsync(TestToys);
+            var newPlushToy = new ToyCreateDto{CategoryId = 1, Description = "New plush toy", IsOnStock = true, Name = "New plush toy", Price = 10m};
+            var newPlasticToy = new ToyCreateDto{CategoryId = 3, Description = "New plastic toy", Name = "New plastic toy", Price = 50.54m};
+
+            //Action
+            var createdPlushToy = await toyManager.CreateAsync(newPlushToy);
+            var createdPlasticToy = await toyManager.CreateAsync(newPlasticToy);
+            var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo(), new PageInfo{PageNumber = 1, PageSize = 1});
+
+            //Assert
+            Assert.Equal(newPlushToy.Name, createdPlushToy.Name);
+            Assert.Equal("Plush", createdPlushToy.CategoryName);
+            Assert.Equal("For children", createdPlushToy.PartitionName);
+            Assert.Equal(newPlushToy.IsOnStock, createdPlushToy.IsOnStock);
+            Assert.Equal(newPlushToy.Description, createdPlushToy.Description);
+            Assert.Equal(newPlushToy.Price, createdPlushToy.Price);
+
+            Assert.Equal(newPlasticToy.Name, createdPlasticToy.Name);
+            Assert.Equal("Plastic", createdPlushToy.CategoryName);
+            Assert.Equal("For adults", createdPlushToy.PartitionName);
+            Assert.Equal(newPlasticToy.IsOnStock, createdPlasticToy.IsOnStock);
+            Assert.Equal(newPlasticToy.Description, createdPlasticToy.Description);
+            Assert.Equal(newPlasticToy.Price, createdPlasticToy.Price);
+
+            Assert.Equal((uint)8, toys.TotalItems);
         }
     }
 }
