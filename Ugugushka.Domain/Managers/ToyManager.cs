@@ -1,7 +1,10 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Ugugushka.Common.Interfaces;
 using Ugugushka.Data.Code.Interfaces;
+using Ugugushka.Data.Models;
 using Ugugushka.Domain.Code.Abstractions;
+using Ugugushka.Domain.Code.Extensions;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.DtoModels;
 
@@ -11,13 +14,11 @@ namespace Ugugushka.Domain.Managers
     {
         private readonly IToyRepository _toyRepository;
 
-        public ToyManager(IToyRepository toyRepository, ISaveProvider saveProvider) : base(saveProvider) =>
+        public ToyManager(IToyRepository toyRepository, ISaveProvider saveProvider, IMapper mapper) : base(saveProvider, mapper) =>
             _toyRepository = toyRepository;
 
-        public Task<IPagedResult<ToyDto>> GetPagedFilteredAsync(IToyFilterInfo filter, IPageInfo pageInfo)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<IPagedResult<ToyDto>> GetPagedFilteredAsync(IToyFilterInfo filter, IPageInfo pageInfo) =>
+            (await _toyRepository.GetFilteredPagedAsync(filter, pageInfo)).Map<Toy, ToyDto>(Mapper);
 
         public Task<ToyDto> CreateAsync(ToyCreateDto item)
         {

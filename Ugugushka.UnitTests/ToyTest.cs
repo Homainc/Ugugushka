@@ -86,19 +86,19 @@ namespace Ugugushka.UnitTests
             var toysSecondPageWithFourItems = await toyManager.GetPagedFilteredAsync(filter, secondPageWithFourItems);
 
             //Assert
-            Assert.Equal((uint) 2, toysFirstPageWithTwoItems.PageSize);
-            Assert.Equal((uint) 1, toysFirstPageWithTwoItems.PageNumber);
-            Assert.Equal((uint) 6, toysFirstPageWithTwoItems.TotalItems);
-            Assert.Equal((uint) 3, toysFirstPageWithTwoItems.TotalPages);
+            Assert.Equal(2, toysFirstPageWithTwoItems.PageSize);
+            Assert.Equal(1, toysFirstPageWithTwoItems.PageNumber);
+            Assert.Equal(6, toysFirstPageWithTwoItems.TotalItems);
+            Assert.Equal(3, toysFirstPageWithTwoItems.TotalPages);
             Assert.Equal(2, toysFirstPageWithTwoItems.Items.Count());
 
             Assert.Equal(2, toysSecondPageWithTwoItems.Items.Count());
 
             Assert.Equal(4, toysFirstPageWithFourItems.Items.Count());
-            Assert.Equal((uint) 2, toysFirstPageWithFourItems.TotalPages);
+            Assert.Equal(2, toysFirstPageWithFourItems.TotalPages);
 
             Assert.Equal(2, toysSecondPageWithFourItems.Items.Count());
-            Assert.Equal((uint) 6, toysSecondPageWithFourItems.TotalItems);
+            Assert.Equal(6, toysSecondPageWithFourItems.TotalItems);
         }
 
         [Fact]
@@ -129,26 +129,26 @@ namespace Ugugushka.UnitTests
             var searchCarToys = await toyManager.GetPagedFilteredAsync(searchCar, pageInfo);
 
             //Assert
-            Assert.Collection(plushToys.Items, x => Assert.Equal("Plush", x.CategoryName));
-            Assert.Equal((uint) 5, plushToys.TotalItems);
+            Assert.Collection(plushToys.Items, x => Assert.Equal("Plush", x.Category.Name));
+            Assert.Equal(5, plushToys.TotalItems);
 
             Assert.Collection(plushCategoryWithMinTwentySixAndMaxThirtyToys.Items,
-                x => Assert.Equal("Plush", x.CategoryName));
+                x => Assert.Equal("Plush", x.Category.Name));
             Assert.Collection(plushCategoryWithMinTwentySixAndMaxThirtyToys.Items,
                 x => Assert.InRange(x.Price, 26m, 30m));
-            Assert.Equal((uint) 1, plushCategoryWithMinTwentySixAndMaxThirtyToys.TotalItems);
+            Assert.Equal(1, plushCategoryWithMinTwentySixAndMaxThirtyToys.TotalItems);
 
             Assert.Collection(isOnStockToys.Items, x => Assert.True(x.IsOnStock));
-            Assert.Equal((uint) 3, isOnStockToys.TotalItems);
+            Assert.Equal(3, isOnStockToys.TotalItems);
 
             Assert.Collection(maxThirtyToys.Items, x => Assert.True(x.Price <= 30m));
-            Assert.Equal((uint) 4, maxThirtyToys.TotalItems);
+            Assert.Equal(4, maxThirtyToys.TotalItems);
 
             Assert.Collection(minThirtyToys.Items, x => Assert.True(x.Price >= 30m));
-            Assert.Equal((uint) 2, minThirtyToys.TotalItems);
+            Assert.Equal(2, minThirtyToys.TotalItems);
 
             Assert.Collection(searchCarToys.Items, x => Assert.Contains("Car", x.Name));
-            Assert.Equal((uint) 1, searchCarToys.TotalItems);
+            Assert.Equal(1, searchCarToys.TotalItems);
         }
 
         [Fact]
@@ -172,20 +172,20 @@ namespace Ugugushka.UnitTests
 
             //Assert
             Assert.Equal(newPlushToy.Name, createdPlushToy.Name);
-            Assert.Equal("Plush", createdPlushToy.CategoryName);
-            Assert.Equal("For children", createdPlushToy.PartitionName);
+            Assert.Equal("Plush", createdPlushToy.Category.Name);
+            Assert.Equal("For children", createdPlushToy.Category.Partition.Name);
             Assert.Equal(newPlushToy.IsOnStock, createdPlushToy.IsOnStock);
             Assert.Equal(newPlushToy.Description, createdPlushToy.Description);
             Assert.Equal(newPlushToy.Price, createdPlushToy.Price);
 
             Assert.Equal(newPlasticToy.Name, createdPlasticToy.Name);
-            Assert.Equal("Plastic", createdPlasticToy.CategoryName);
-            Assert.Equal("For adults", createdPlasticToy.PartitionName);
+            Assert.Equal("Plastic", createdPlasticToy.Category.Name);
+            Assert.Equal("For adults", createdPlasticToy.Category.Partition.Name);
             Assert.Equal(newPlasticToy.IsOnStock, createdPlasticToy.IsOnStock);
             Assert.Equal(newPlasticToy.Description, createdPlasticToy.Description);
             Assert.Equal(newPlasticToy.Price, createdPlasticToy.Price);
 
-            Assert.Equal((uint) 8, toys.TotalItems);
+            Assert.Equal(8, toys.TotalItems);
         }
 
         [Fact]
@@ -215,20 +215,20 @@ namespace Ugugushka.UnitTests
 
             //Assert
             Assert.Equal(newWoodenToy.Name, updatedWoodenToy.Name);
-            Assert.Equal("Wood", updatedWoodenToy.CategoryName);
-            Assert.Equal("For adults", updatedWoodenToy.PartitionName);
+            Assert.Equal("Wood", updatedWoodenToy.Category.Name);
+            Assert.Equal("For adults", updatedWoodenToy.Category.Partition.Name);
             Assert.Equal(newWoodenToy.IsOnStock, updatedWoodenToy.IsOnStock);
             Assert.Equal(newWoodenToy.Description, updatedWoodenToy.Description);
             Assert.Equal(newWoodenToy.Price, updatedWoodenToy.Price);
 
             Assert.Equal(newSecondWoodenToy.Name, updatedSecondWoodenToy.Name);
-            Assert.Equal("Wood", updatedSecondWoodenToy.CategoryName);
-            Assert.Equal("For adults", updatedSecondWoodenToy.PartitionName);
+            Assert.Equal("Wood", updatedSecondWoodenToy.Category.Name);
+            Assert.Equal("For adults", updatedSecondWoodenToy.Category.Partition.Name);
             Assert.Equal(newSecondWoodenToy.IsOnStock, updatedSecondWoodenToy.IsOnStock);
             Assert.Equal(newSecondWoodenToy.Description, updatedSecondWoodenToy.Description);
             Assert.Equal(newSecondWoodenToy.Price, updatedSecondWoodenToy.Price);
 
-            Assert.Equal((uint) 3, toys.TotalItems);
+            Assert.Equal(3, toys.TotalItems);
         }
 
         [Fact]
@@ -247,7 +247,7 @@ namespace Ugugushka.UnitTests
                 new PageInfo {PageNumber = 1, PageSize = 1});
 
             //Assert
-            Assert.Equal((uint)1, toys.TotalItems);
+            Assert.Equal(1, toys.TotalItems);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Moq;
 using Ugugushka.Data;
 using Ugugushka.Data.Code.Interfaces;
@@ -17,6 +17,16 @@ namespace Ugugushka.UnitTests.Abstractions
     public class AbstractTestWithDb
     {
         private ApplicationContext _context;
+        private readonly Mapper _mapper;
+
+        protected AbstractTestWithDb()
+        {
+            var mapperCfg = new MapperConfiguration(cfg =>
+            {
+            });
+            _mapper = new Mapper(mapperCfg);
+        }
+
         protected string DbName { get; set; }
 
         protected ApplicationContext Context
@@ -52,6 +62,6 @@ namespace Ugugushka.UnitTests.Abstractions
         }
 
         protected async Task<IToyManager> CreateToyManagerAsync(IEnumerable<Toy> initialValues = null) =>
-            new ToyManager(await CreateToyRepositoryAsync(initialValues), SaveProvider);
+            new ToyManager(await CreateToyRepositoryAsync(initialValues), SaveProvider, _mapper);
     }
 }
