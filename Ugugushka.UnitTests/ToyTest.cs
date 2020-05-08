@@ -51,7 +51,7 @@ namespace Ugugushka.UnitTests
                     },
                     new Toy
                     {
-                        Name = "Car", Category = categories[2], CategoryId = categories[2].Id,
+                        Name = "Car 1", Category = categories[2], CategoryId = categories[2].Id,
                         Description = "plastic car", IsOnStock = true, Price = 10.6m, Id = 5
                     },
                     new Toy
@@ -111,9 +111,9 @@ namespace Ugugushka.UnitTests
             var toyManager = await CreateToyManagerAsync(TestToys);
 
             var pageInfo = new PageInfo {PageSize = 6, PageNumber = 1};
-            var plushCategory = new ToyFilterInfo {CategoryId = 0};
+            var plushCategory = new ToyFilterInfo {CategoryId = 1};
             var plushCategoryWithMinTwentySixAndMaxThirty =
-                new ToyFilterInfo {CategoryId = 0, MinPrice = 26m, MaxPrice = 30m};
+                new ToyFilterInfo {CategoryId = 1, MinPrice = 26m, MaxPrice = 30m};
             var isOnStock = new ToyFilterInfo {IsOnStock = true};
             var maxThirty = new ToyFilterInfo {MaxPrice = 30m};
             var minThirty = new ToyFilterInfo {MinPrice = 30m};
@@ -129,25 +129,25 @@ namespace Ugugushka.UnitTests
             var searchCarToys = await toyManager.GetPagedFilteredAsync(searchCar, pageInfo);
 
             //Assert
-            Assert.Collection(plushToys.Items, x => Assert.Equal("Plush", x.Category.Name));
-            Assert.Equal(5, plushToys.TotalItems);
+            Assert.All(plushToys.Items, x => Assert.Equal("Plush", x.Category.Name));
+            Assert.Equal(3, plushToys.TotalItems);
 
-            Assert.Collection(plushCategoryWithMinTwentySixAndMaxThirtyToys.Items,
+            Assert.All(plushCategoryWithMinTwentySixAndMaxThirtyToys.Items,
                 x => Assert.Equal("Plush", x.Category.Name));
-            Assert.Collection(plushCategoryWithMinTwentySixAndMaxThirtyToys.Items,
+            Assert.All(plushCategoryWithMinTwentySixAndMaxThirtyToys.Items,
                 x => Assert.InRange(x.Price, 26m, 30m));
             Assert.Equal(1, plushCategoryWithMinTwentySixAndMaxThirtyToys.TotalItems);
 
-            Assert.Collection(isOnStockToys.Items, x => Assert.True(x.IsOnStock));
+            Assert.All(isOnStockToys.Items, x => Assert.True(x.IsOnStock));
             Assert.Equal(3, isOnStockToys.TotalItems);
 
-            Assert.Collection(maxThirtyToys.Items, x => Assert.True(x.Price <= 30m));
+            Assert.All(maxThirtyToys.Items, x => Assert.True(x.Price <= 30m));
             Assert.Equal(4, maxThirtyToys.TotalItems);
 
-            Assert.Collection(minThirtyToys.Items, x => Assert.True(x.Price >= 30m));
+            Assert.All(minThirtyToys.Items, x => Assert.True(x.Price >= 30m));
             Assert.Equal(2, minThirtyToys.TotalItems);
 
-            Assert.Collection(searchCarToys.Items, x => Assert.Contains("Car", x.Name));
+            Assert.All(searchCarToys.Items, x => Assert.Contains("Car", x.Name));
             Assert.Equal(1, searchCarToys.TotalItems);
         }
 

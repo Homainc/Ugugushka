@@ -10,6 +10,7 @@ using Ugugushka.Data.Code.Interfaces;
 using Ugugushka.Data.Models;
 using Ugugushka.Data.Repositories;
 using Ugugushka.Domain.Code.Interfaces;
+using Ugugushka.Domain.Code.MapperProfiles;
 using Ugugushka.Domain.Managers;
 
 namespace Ugugushka.UnitTests.Abstractions
@@ -23,6 +24,7 @@ namespace Ugugushka.UnitTests.Abstractions
         {
             var mapperCfg = new MapperConfiguration(cfg =>
             {
+                cfg.AddProfile<ToyMapperProfile>();
             });
             _mapper = new Mapper(mapperCfg);
         }
