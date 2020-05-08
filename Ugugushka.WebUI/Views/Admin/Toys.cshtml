@@ -1,0 +1,24 @@
+﻿@model IPagedResult<ToyItemViewModel>
+@{
+    ViewBag.Title = "Администрирование - Игрушки";
+}
+
+    <h1>Toys (@Model.TotalItems, page @Model.PageNumber)</h1>
+
+<table>
+    <thead></thead>
+    <tbody>
+        @foreach (var toy in Model.Items)
+        {
+        <tr>
+            <td>@toy.Id</td>
+            <td>@toy.Name</td>
+            <td>@toy.Description</td>
+            <td>@toy.CategoryName</td>
+            <td>@toy.PartitionName</td>
+            <td>@toy.Price</td>
+            <td>@toy.IsOnStock</td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -5,7 +5,7 @@ using Ugugushka.Common.Interfaces;
 
 namespace Ugugushka.Domain.Code.Extensions
 {
-    internal static class PagedResultExtensions
+    public static class PagedResultExtensions
     {
         public static IPagedResult<TDestination> Map<TSource, TDestination>(this IPagedResult<TSource> paged,
             IMapper mapper)
