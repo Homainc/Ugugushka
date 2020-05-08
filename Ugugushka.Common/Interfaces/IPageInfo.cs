@@ -2,7 +2,7 @@
 {
     public interface IPageInfo
     { 
-        uint PageNumber { get; }
-        uint PageSize { get; }
+        int PageNumber { get; }
+        int PageSize { get; }
     }
 }
