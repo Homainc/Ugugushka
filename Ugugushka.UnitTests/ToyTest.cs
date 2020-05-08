@@ -159,13 +159,16 @@ namespace Ugugushka.UnitTests
             await using var context = CreateContext();
             Context = context;
             var toyManager = await CreateToyManagerAsync(TestToys);
-            var newPlushToy = new ToyCreateDto{CategoryId = 1, Description = "New plush toy", IsOnStock = true, Name = "New plush toy", Price = 10m};
-            var newPlasticToy = new ToyCreateDto{CategoryId = 3, Description = "New plastic toy", Name = "New plastic toy", Price = 50.54m};
+            var newPlushToy = new ToyCreateDto
+                {CategoryId = 1, Description = "New plush toy", IsOnStock = true, Name = "New plush toy", Price = 10m};
+            var newPlasticToy = new ToyCreateDto
+                {CategoryId = 3, Description = "New plastic toy", Name = "New plastic toy", Price = 50.54m};
 
             //Action
             var createdPlushToy = await toyManager.CreateAsync(newPlushToy);
             var createdPlasticToy = await toyManager.CreateAsync(newPlasticToy);
-            var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo(), new PageInfo{PageNumber = 1, PageSize = 1});
+            var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo(),
+                new PageInfo {PageNumber = 1, PageSize = 1});
 
             //Assert
             Assert.Equal(newPlushToy.Name, createdPlushToy.Name);
@@ -182,7 +185,7 @@ namespace Ugugushka.UnitTests
             Assert.Equal(newPlasticToy.Description, createdPlasticToy.Description);
             Assert.Equal(newPlasticToy.Price, createdPlasticToy.Price);
 
-            Assert.Equal((uint)8, toys.TotalItems);
+            Assert.Equal((uint) 8, toys.TotalItems);
         }
 
         [Fact]
@@ -193,13 +196,22 @@ namespace Ugugushka.UnitTests
             await using var context = CreateContext();
             Context = context;
             var toyManager = await CreateToyManagerAsync(TestToys);
-            var newWoodenToy = new ToyUpdateDto{Id = 1, CategoryId = 4, Description = "Updated wooden toy", IsOnStock = true, Name = "updated first toy", Price = 10m};
-            var newSecondWoodenToy = new ToyUpdateDto{Id = 2, CategoryId = 4, Description = "Updated second wooden toy", Name = "updated second toy", Price = 50.54m};
+            var newWoodenToy = new ToyUpdateDto
+            {
+                Id = 1, CategoryId = 4, Description = "Updated wooden toy", IsOnStock = true,
+                Name = "updated first toy", Price = 10m
+            };
+            var newSecondWoodenToy = new ToyUpdateDto
+            {
+                Id = 2, CategoryId = 4, Description = "Updated second wooden toy", Name = "updated second toy",
+                Price = 50.54m
+            };
 
             //Action
             var updatedWoodenToy = await toyManager.UpdateAsync(newWoodenToy);
             var updatedSecondWoodenToy = await toyManager.UpdateAsync(newSecondWoodenToy);
-            var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo{CategoryId = 4}, new PageInfo { PageNumber = 1, PageSize = 1 });
+            var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo {CategoryId = 4},
+                new PageInfo {PageNumber = 1, PageSize = 1});
 
             //Assert
             Assert.Equal(newWoodenToy.Name, updatedWoodenToy.Name);
@@ -216,7 +228,7 @@ namespace Ugugushka.UnitTests
             Assert.Equal(newSecondWoodenToy.Description, updatedSecondWoodenToy.Description);
             Assert.Equal(newSecondWoodenToy.Price, updatedSecondWoodenToy.Price);
 
-            Assert.Equal((uint)3, toys.TotalItems);
+            Assert.Equal((uint) 3, toys.TotalItems);
         }
 
         [Fact]
