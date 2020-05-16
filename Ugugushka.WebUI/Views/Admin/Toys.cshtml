@@ -1,24 +1,42 @@
-﻿@model IPagedResult<ToyItemViewModel>
+﻿@using Ugugushka.WebUI.HtmlHelpers
+@model IPagedResult<ToyItemViewModel>
 @{
     ViewBag.Title = "Администрирование - Игрушки";
 }
 
-    <h1>Toys (@Model.TotalItems, page @Model.PageNumber)</h1>
+    <div class="card mt-5">
+        <h2>Игрушки (@Model.TotalItems)</h2>
+        <button class="btn btn-primary">Добавить</button>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Ид</th>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Категория</th>
+                    <th>Раздел</th>
+                    <th>Цена</th>
+                    <th>На складе</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var toy in Model.Items)
+                {
+                    <tr>
+                        <td>@toy.Id</td>
+                        <td>@toy.Name</td>
+                        <td>@toy.Description</td>
+                        <td>@Html.DefaultString(toy.CategoryName, "Нет")</td>
+                        <td>@Html.DefaultString(toy.PartitionName, "Нет")</td>
+                        <td>@toy.Price</td>
+                        <td>@Html.IsOnStock(toy.IsOnStock)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-<table>
-    <thead></thead>
-    <tbody>
-        @foreach (var toy in Model.Items)
-        {
-        <tr>
-            <td>@toy.Id</td>
-            <td>@toy.Name</td>
-            <td>@toy.Description</td>
-            <td>@toy.CategoryName</td>
-            <td>@toy.PartitionName</td>
-            <td>@toy.Price</td>
-            <td>@toy.IsOnStock</td>
-        </tr>
-        }
-    </tbody>
-</table>
+        <div class="d-flex align-self-center mt-3">
+            @Html.PageLinks(@Model.PageNumber, @Model.TotalPages, x => Url.Action("Toys", new { page = x }))
+        </div>
+    </div>
+
