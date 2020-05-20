@@ -13,7 +13,7 @@ namespace Ugugushka.WebUI.HtmlHelpers
             var tag = new TagBuilder("a");
 
             tag.MergeAttribute("href", link);
-            tag.AddCssClass("btn");
+            tag.AddCssClass("d-flex btn btn-primary");
             tag.InnerHtml.Append(text);
 
             if (selected)

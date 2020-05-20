@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Binbin.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Ugugushka.Common.Interfaces;
 using Ugugushka.Data.Code.Abstractions;
 using Ugugushka.Data.Code.Extensions;
@@ -36,7 +37,7 @@ namespace Ugugushka.Data.Repositories
                 partitionFilter = partitionFilter.And(x => x.Id == filter.PartitionId.Value);
 
             return await (
-                from t in Db.Toys.Where(toyFilter)
+                from t in Db.Toys.Where(toyFilter).Include(x => x.Images)
                 join c in Db.Categories on t.CategoryId equals c.Id into cGroup
                 from c in cGroup.DefaultIfEmpty()
                 join p in Db.Partitions.Where(partitionFilter) on c.PartitionId equals p.Id into pGroup
@@ -55,9 +56,35 @@ namespace Ugugushka.Data.Repositories
                     } : null,
                     Description = t.Description,
                     IsOnStock = t.IsOnStock,
-                    Price = t.Price
+                    Price = t.Price,
+                    Images = t.Images
                 })
                 .ToPagedAsync(pageInfo, CancellationToken);
         }
+
+        public async Task<Toy> SingleOrDefaultByIdEagerAsync(int id) =>
+            await (from t in Db.Toys.Where(x => x.Id == id)
+                join c in Db.Categories on t.CategoryId equals c.Id into cGroup
+                from c in cGroup.DefaultIfEmpty()
+                join p in Db.Partitions on c.PartitionId equals p.Id into pGroup
+                from p in pGroup.DefaultIfEmpty()
+                select new Toy
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    CategoryId = c.Id,
+                    Category = c != null
+                        ? new Category
+                        {
+                            Id = c.Id,
+                            PartitionId = p.Id,
+                            Partition = p,
+                            Name = c.Name
+                        }
+                        : null,
+                    Description = t.Description,
+                    IsOnStock = t.IsOnStock,
+                    Price = t.Price
+                }).SingleOrDefaultAsync(CancellationToken);
     }
 }

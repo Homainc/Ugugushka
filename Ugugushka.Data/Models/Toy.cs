@@ -1,16 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ugugushka.Data.Models
 {
     public class Toy
     {
-        public uint Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public bool IsOnStock { get; set; }
-        public uint? CategoryId { get; set; }
+        public ISet<Image> Images { get; set; }
+        public int? CategoryId { get; set; }
         public Category Category { get; set; }
     }
 
@@ -29,6 +31,11 @@ namespace Ugugushka.Data.Models
                 .WithMany()
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasMany(x => x.Images)
+                .WithOne()
+                .HasForeignKey(x => x.ToyId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

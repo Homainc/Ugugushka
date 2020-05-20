@@ -9,5 +9,7 @@
         public string PartitionName { get; set; }
         public decimal Price { get; set; }
         public bool IsOnStock { get; set; }
+
+        public string MainImageUrl { get; set; }
     }
 }

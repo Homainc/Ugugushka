@@ -5,8 +5,8 @@ namespace Ugugushka.Common.Concretes
     public class ToyFilterInfo : IToyFilterInfo
     {
         public string SearchString { get; set; }
-        public uint? CategoryId { get; set; }
-        public uint? PartitionId { get; set; }
+        public int? CategoryId { get; set; }
+        public int? PartitionId { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
         public bool IsOnStock { get; set; }

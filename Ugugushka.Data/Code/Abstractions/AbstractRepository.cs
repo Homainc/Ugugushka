@@ -16,7 +16,7 @@ namespace Ugugushka.Data.Code.Abstractions
             CancellationToken = httpContextAccessor.HttpContext.RequestAborted;
         }
 
-        public void Create(TItem item) => Db.Entry(item).State = EntityState.Added;
+        public void Create(TItem item) => Db.Add(item);
 
         public void Update(TItem item) => Db.Entry(item).State = EntityState.Modified;
 

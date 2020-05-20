@@ -2,7 +2,7 @@
 
 namespace Ugugushka.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,7 +10,8 @@ namespace Ugugushka.Data.Migrations
                 name: "Partitions",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -22,9 +23,10 @@ namespace Ugugushka.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
-                    PartitionId = table.Column<long>(nullable: false)
+                    PartitionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,12 +43,13 @@ namespace Ugugushka.Data.Migrations
                 name: "Toys",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 40, nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsOnStock = table.Column<bool>(nullable: false),
-                    CategoryId = table.Column<long>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,10 +62,36 @@ namespace Ugugushka.Data.Migrations
                         onDelete: ReferentialAction.SetNull);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ToyId = table.Column<int>(nullable: false),
+                    Url = table.Column<string>(nullable: true),
+                    IsMain = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Image_Toys_ToyId",
+                        column: x => x.ToyId,
+                        principalTable: "Toys",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_PartitionId",
                 table: "Categories",
                 column: "PartitionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Image_ToyId",
+                table: "Image",
+                column: "ToyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Toys_CategoryId",
@@ -72,6 +101,9 @@ namespace Ugugushka.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Image");
+
             migrationBuilder.DropTable(
                 name: "Toys");
 

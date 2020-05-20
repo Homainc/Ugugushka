@@ -1,14 +1,19 @@
 ﻿:root {
     --text-primary: #535353;
+    --color-secondary: #A3D5FF;
     --bg-primary: rgba(255, 255, 255, 1);
     --bg-secondary: rgba(195, 255, 235, 1);
 }
 
-html, body {
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100%;
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
     background: linear-gradient(0deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     height: 100%;
     font-weight: 400;
@@ -62,7 +67,7 @@ table.table th, td {
     text-transform: uppercase;
     text-align: center;
     letter-spacing: 1px;
-    font-weight: 600;
+    font-weight: 500;
     color: #524f4e;
     background: white;
     -webkit-transition: .3s;
@@ -75,7 +80,7 @@ table.table th, td {
 }
 
 
-.text-input {
+.text-input-bl {
     border: none;
     font-size: 1.1rem;
     border-radius: 45px 0 0 45px;
@@ -94,7 +99,6 @@ table.table th, td {
 .menu a {
     display: block;
     padding: 20px 20px;
-    font-weight: 600;
     color: var(--text-primary);
 }
 
@@ -110,4 +114,68 @@ table.table th, td {
     margin: 0px;
     font-family: 'Alegreya Sans', sans-serif;
     font-size: 1rem;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+}
+
+.text-input {
+    border: none;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background: #fff;
+    box-shadow: 0 8px 15px rgba(0,0,0,.1);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    color: var(--text-primary);
+    border: 1px solid var(--color-secondary);
+}
+
+    .text-input:focus {
+        border: 1px solid #19a4a8;
+    }
+
+.toy-item {
+    display: inline-flex;
+    overflow: hidden;
+    margin: 40px 2.5rem 0 0;
+    color: var(--text-primary);
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px #e6e5e5;
+    margin: 5px;
+    width: 200px;
+}
+
+.toy-header {
+    display: flex;
+    transition-duration: 0.2s;
+    font-size: 1.2rem;
+}
+
+.toy-header:hover {
+    text-decoration: underline;
+}
+
+.toy-price {
+    display: flex;
+    color: #19a4a8;
+    font-weight: bold;
+    align-self: end;
+    margin-top: 1rem;
+}
+
+.toy-text {
+    display: flex;
+    padding: 1.2rem;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
 }

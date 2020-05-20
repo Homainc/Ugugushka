@@ -1,4 +1,5 @@
-﻿using Ugugushka.Data.Models;
+﻿using System.Collections.Generic;
+using Ugugushka.Data.Models;
 
 namespace Ugugushka.Domain.DtoModels
 {
@@ -12,16 +13,20 @@ namespace Ugugushka.Domain.DtoModels
 
     public class ToyCreateDto : BaseToyDto
     {
-        public uint? CategoryId { get; set; }
+        public int? CategoryId { get; set; }
+        public IList<string> ImageUrls { get; set; }
     }
 
     public class ToyUpdateDto : ToyCreateDto
     {
-        public uint Id { get; set; }
+        public int Id { get; set; }
     }
 
-    public class ToyDto : ToyUpdateDto
+    public class ToyDto : BaseToyDto
     {
+        public int Id { get; set; }
+        public int? CategoryId { get; set; }
+        public ISet<Image> Images { get; set; }
         public Category Category { get; set; }
     }
 }

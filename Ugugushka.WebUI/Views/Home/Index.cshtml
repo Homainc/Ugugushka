@@ -1,0 +1,26 @@
+﻿@using Ugugushka.WebUI.HtmlHelpers
+@model IPagedResult<ToyItemViewModel>
+@{
+    ViewBag.Title = "Угугушка - Магазин игрушек";
+}
+
+<div class="mt-5">
+    <div class="d-flex justify-content-center align-content-stretch flex-wrap">
+        @foreach (var toy in Model.Items)
+        {
+            <a class="toy-item" href="@Url.Action("ToyInfo", "Toy", new { id = toy.Id })">
+                <div class="d-flex flex-column align-items-stretch">
+                    <img class="d-flex" src="@toy.MainImageUrl" height="200" width="200" />
+                    <div class="toy-text">
+                        <span class="toy-header">@toy.Name</span>
+                        <span class="toy-price">@toy.Price р.</span>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+        @Html.PageLinks(@Model.PageNumber, @Model.TotalPages, x => Url.Action("Index", new {page = x}))
+    </div>
+</div>

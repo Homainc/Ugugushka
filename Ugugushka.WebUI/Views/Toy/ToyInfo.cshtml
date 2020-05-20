@@ -1,0 +1,15 @@
+﻿@model ToyItemViewModel
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<div>
+    <h5>@Model.Name</h5>
+    <p>@Model.Price</p>
+    @using (Html.BeginForm("AddToCart", "Cart"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.Hidden("returnUrl", Context.Request.Path)
+        <input type="submit" value="В корзину"/>
+    }
+</div>

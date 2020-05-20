@@ -5,9 +5,9 @@ namespace Ugugushka.Data.Models
 {
     public class Category
     {
-        public uint Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public uint PartitionId { get; set; }
+        public int PartitionId { get; set; }
         public Partition Partition { get; set; }
     }
 
