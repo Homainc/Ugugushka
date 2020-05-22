@@ -22,9 +22,9 @@ namespace Ugugushka.WebUI.Controllers
             if (image == null)
                 return BadRequest();
 
-            var uploadedUrl = await _pictureManager.UploadPictureAsync(image);
-            if(uploadedUrl != null)
-                return Ok(new { SecureUrl = uploadedUrl });
+            var uploadedImage = await _pictureManager.UploadPictureAsync(image);
+            if(uploadedImage != null)
+                return Ok(uploadedImage);
 
             return BadRequest();
         }

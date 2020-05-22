@@ -5,7 +5,9 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Ugugushka.Domain.Code.Constants;
 using Ugugushka.Domain.Code.Interfaces;
+using Ugugushka.Domain.DtoModels;
 
 namespace Ugugushka.Domain.Managers
 {
@@ -18,10 +20,12 @@ namespace Ugugushka.Domain.Managers
 
     public class PictureManager : IPictureManager
     {
-        private readonly Cloudinary _cloudinary;
         private readonly CancellationToken _cancellationToken;
+
+        public Cloudinary Cloudinary { get; }
+
         public PictureManager(IOptions<CloudinaryCredentials> options, IHttpContextAccessor httpContextAccessor)
-        { 
+        {
             var credentials = options.Value;
             var account = new Account
             {
@@ -29,33 +33,53 @@ namespace Ugugushka.Domain.Managers
                 ApiSecret = credentials.ApiSecret,
                 Cloud = credentials.CloudName
             };
-            _cloudinary = new Cloudinary(account);
+            Cloudinary = new Cloudinary(account);
             _cancellationToken = httpContextAccessor.HttpContext.RequestAborted;
         }
-        public async Task<string> UploadPictureAsync(IFormFile fImage)
+
+        public async Task<ToyImageDto> UploadPictureAsync(IFormFile fImage)
         {
             await using (var fStream = fImage.OpenReadStream())
             {
-                var result = await _cloudinary.UploadAsync(new ImageUploadParams
+                var result = await Cloudinary.UploadAsync(new ImageUploadParams
                 {
-                    File = new FileDescription("temp", fStream)
+                    File = new FileDescription(CloudinaryTagDefaults.Temp, fStream),
+                    Tags = CloudinaryTagDefaults.Temp
                 }, _cancellationToken);
 
                 if (result.Error == null)
-                    return result.SecureUri.ToString();
+                {
+                    return new ToyImageDto
+                    {
+                        PublicId = result.PublicId,
+                        Format = result.Format
+                    };
+                }
             }
 
             return null;
         }
 
-        public Task DeletePictureAsync(string url)
+        public async Task DeleteTemporaryPicturesAsync() =>
+            await Cloudinary.DeleteResourcesByTagAsync(CloudinaryTagDefaults.Temp, _cancellationToken);
+
+        public async Task DeletePictureAsync(List<string> publicIds)
         {
-            throw new System.NotImplementedException();
+            await Cloudinary.DeleteResourcesAsync(new DelResParams
+            {
+                PublicIds = publicIds
+            });
         }
 
-        public Task DeletePictureAsync(IEnumerable<string> urls)
+        public async Task ChangePictureTagAsync(List<string> publicIds, string newTag)
         {
-            throw new System.NotImplementedException();
+            await Cloudinary.TagAsync(new TagParams
+            {
+                Command = TagCommand.Replace,
+                PublicIds = publicIds,
+                ResourceType = ResourceType.Image,
+                Tag = newTag
+            });
         }
     }
 }

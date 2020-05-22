@@ -9,8 +9,7 @@ namespace Ugugushka.WebUI.Code.MapperProfiles
     {
         public ToyDtoMapperProfile()
         {
-            CreateMap<ToyDto, ToyItemViewModel>()
-                .ForMember(x => x.MainImageUrl, opt => opt.MapFrom(x => x.Images.SingleOrDefault(x => x.IsMain).Url));
+            CreateMap<ToyDto, ToyItemViewModel>();
             CreateMap<AddToyViewModel, ToyCreateDto>();
         }
     }

@@ -10,6 +10,7 @@ namespace Ugugushka.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Partition> Partitions { get; set; }
         public DbSet<Toy> Toys { get; set; }
+        public DbSet<ToyImage> ToyImages { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {

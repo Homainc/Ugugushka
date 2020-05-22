@@ -39,6 +39,16 @@
       "provider": "cdnjs",
       "library": "cloudinary-jquery-file-upload@2.8.2",
       "destination": "wwwroot/libs/cloudinary-jquery-file-upload/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/libs/jquery-validation-unobtrusive/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validate@1.19.1",
+      "destination": "wwwroot/libs/jquery-validate/"
     }
   ]
 }

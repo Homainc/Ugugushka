@@ -195,7 +195,7 @@ namespace Ugugushka.Data.Migrations
                     Name = table.Column<string>(maxLength: 40, nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsOnStock = table.Column<bool>(nullable: false),
+                    Count = table.Column<int>(nullable: false),
                     CategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -210,20 +210,19 @@ namespace Ugugushka.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ToyImage",
+                name: "ToyImages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PublicId = table.Column<string>(maxLength: 50, nullable: false),
                     ToyId = table.Column<int>(nullable: false),
-                    Url = table.Column<string>(maxLength: 100, nullable: true),
-                    IsMain = table.Column<bool>(nullable: false)
+                    IsMain = table.Column<bool>(nullable: false),
+                    Format = table.Column<string>(maxLength: 10, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ToyImage", x => x.Id);
+                    table.PrimaryKey("PK_ToyImages", x => x.PublicId);
                     table.ForeignKey(
-                        name: "FK_ToyImage_Toys_ToyId",
+                        name: "FK_ToyImages_Toys_ToyId",
                         column: x => x.ToyId,
                         principalTable: "Toys",
                         principalColumn: "Id",
@@ -275,8 +274,8 @@ namespace Ugugushka.Data.Migrations
                 column: "PartitionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ToyImage_ToyId",
-                table: "ToyImage",
+                name: "IX_ToyImages_ToyId",
+                table: "ToyImages",
                 column: "ToyId");
 
             migrationBuilder.CreateIndex(
@@ -303,7 +302,7 @@ namespace Ugugushka.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ToyImage");
+                name: "ToyImages");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

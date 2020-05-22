@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using AutoMapper;
 using Ugugushka.Data.Models;
 using Ugugushka.Domain.DtoModels;
@@ -17,17 +15,21 @@ namespace Ugugushka.Domain.Code.MapperProfiles
             CreateMap<ToyCreateDto, Toy>()
                 .ConstructUsing(x => ConstructToyFromToyCreateDto(x))
                 .ForMember(x => x.Images, opt => opt.Ignore());
+
+            CreateMap<ToyImage, ToyImageDto>()
+                .ReverseMap();
         }
 
-        private Toy ConstructToyFromToyCreateDto(ToyCreateDto source)
+        private static Toy ConstructToyFromToyCreateDto(ToyCreateDto source)
         {
-            var dest = new Toy { Images = new HashSet<ToyImage>() };
-            var mainImage = source.ImageUrls.FirstOrDefault();
+            var dest = new Toy {Images = new HashSet<ToyImage>()};
+            var mainImage = source.Images.FirstOrDefault();
 
             if (mainImage != null)
             {
-                dest.Images.Add(new ToyImage {IsMain = true, Url = source.ImageUrls.FirstOrDefault()});
-                dest.Images.UnionWith(source.ImageUrls.Skip(1).Select(x => new ToyImage {Url = x}));
+                dest.Images.Add(new ToyImage {IsMain = true, PublicId = mainImage.PublicId, Format = mainImage.Format});
+                dest.Images.UnionWith(source.Images.Skip(1)
+                    .Select(x => new ToyImage {Format = x.Format, PublicId = x.PublicId}));
             }
 
             return dest;

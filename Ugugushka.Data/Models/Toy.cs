@@ -10,7 +10,8 @@ namespace Ugugushka.Data.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public bool IsOnStock { get; set; }
+        public int Count { get; set; }
+        public bool IsOnStock => Count > 0;
         public ISet<ToyImage> Images { get; set; }
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
@@ -36,6 +37,8 @@ namespace Ugugushka.Data.Models
                 .WithOne()
                 .HasForeignKey(x => x.ToyId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Ignore(x => x.IsOnStock);
         }
     }
 }

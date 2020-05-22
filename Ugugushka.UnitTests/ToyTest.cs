@@ -32,32 +32,32 @@ namespace Ugugushka.UnitTests
                     new Toy
                     {
                         Name = "Bear", Category = categories[0], CategoryId = categories[0].Id,
-                        Description = "plush bear", IsOnStock = true, Price = 25.8m, Id = 1
+                        Description = "plush bear", Count = 1, Price = 25.8m, Id = 1
                     },
                     new Toy
                     {
                         Name = "Rabbit", Category = categories[0], CategoryId = categories[0].Id,
-                        Description = "plush rabbit", IsOnStock = true, Price = 26.4m, Id = 2
+                        Description = "plush rabbit", Count = 1, Price = 26.4m, Id = 2
                     },
                     new Toy
                     {
                         Name = "Dog", Category = categories[0], CategoryId = categories[0].Id,
-                        Description = "plush dog", IsOnStock = false, Price = 50.6m, Id = 3
+                        Description = "plush dog", Price = 50.6m, Id = 3
                     },
                     new Toy
                     {
                         Name = "Mafia", Category = categories[1], CategoryId = categories[1].Id,
-                        Description = "table mafia", IsOnStock = false, Price = 70.6m, Id = 4
+                        Description = "table mafia", Price = 70.6m, Id = 4
                     },
                     new Toy
                     {
                         Name = "Car 1", Category = categories[2], CategoryId = categories[2].Id,
-                        Description = "plastic car", IsOnStock = true, Price = 10.6m, Id = 5
+                        Description = "plastic car", Count = 1, Price = 10.6m, Id = 5
                     },
                     new Toy
                     {
                         Name = "Pencil", Category = categories[3], CategoryId = categories[3].Id,
-                        Description = "wooden pencil", IsOnStock = false, Price = 5.6m, Id = 6
+                        Description = "wooden pencil", Price = 5.6m, Id = 6
                     }
                 };
                 return toys;
@@ -160,7 +160,7 @@ namespace Ugugushka.UnitTests
             Context = context;
             var toyManager = await CreateToyManagerAsync(TestToys);
             var newPlushToy = new ToyCreateDto
-                {CategoryId = 1, Description = "New plush toy", IsOnStock = true, Name = "New plush toy", Price = 10m};
+                {CategoryId = 1, Description = "New plush toy", Count = 1, Name = "New plush toy", Price = 10m};
             var newPlasticToy = new ToyCreateDto
                 {CategoryId = 3, Description = "New plastic toy", Name = "New plastic toy", Price = 50.54m};
 
@@ -198,7 +198,7 @@ namespace Ugugushka.UnitTests
             var toyManager = await CreateToyManagerAsync(TestToys);
             var newWoodenToy = new ToyUpdateDto
             {
-                Id = 1, CategoryId = 4, Description = "Updated wooden toy", IsOnStock = true,
+                Id = 1, CategoryId = 4, Description = "Updated wooden toy", Count = 1,
                 Name = "updated first toy", Price = 10m
             };
             var newSecondWoodenToy = new ToyUpdateDto

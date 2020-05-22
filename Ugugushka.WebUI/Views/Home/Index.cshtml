@@ -1,16 +1,19 @@
 ﻿@using Ugugushka.WebUI.HtmlHelpers
-@model IPagedResult<ToyItemViewModel>
+@model HomeIndexViewModel
 @{
     ViewBag.Title = "Угугушка - Магазин игрушек";
 }
 
 <div class="mt-5">
     <div class="d-flex justify-content-center align-content-stretch flex-wrap">
-        @foreach (var toy in Model.Items)
+        @foreach (var toy in Model.PagedToys.Items)
         {
             <a class="toy-item" href="@Url.Action("ToyInfo", "Toy", new { id = toy.Id })">
                 <div class="d-flex flex-column align-items-stretch">
-                    <img class="d-flex toy-img" src="@toy.MainImageUrl" height="200" width="200" />
+                    <img 
+                        class="d-flex toy-img" 
+                        src="@Model.Cloudinary.Api.UrlImgUp.Format(toy.MainImage.Format).BuildUrl(toy.MainImage.PublicId)" 
+                        height="200" width="200"/>
                     <div class="toy-text">
                         <span class="toy-header">@toy.Name</span>
                         <span class="toy-price">@toy.Price р.</span>
@@ -21,6 +24,6 @@
     </div>
 
     <div class="d-flex justify-content-center mt-3">
-        @Html.PageLinks(@Model.PageNumber, @Model.TotalPages, x => Url.Action("Index", new {page = x}))
+        @Html.PageLinks(@Model.PagedToys.PageNumber, @Model.PagedToys.TotalPages, x => Url.Action("Index", new {page = x}))
     </div>
 </div>

@@ -31,6 +31,7 @@ a {
 
 table.table {
     border-spacing: 0 0;
+    width: 100%;
 }
 
 table.table th{
@@ -88,6 +89,22 @@ table.table th, td {
     font-weight: 600;
 }
 
+.btn-upload-img {
+    background: #fff;
+    box-shadow: 0 8px 15px rgba(0,0,0,.1);
+    border-radius: 25px;
+    padding: 2rem;
+    cursor: pointer;
+}
+.btn-upload-img i {
+    padding: 0px;
+    margin: 0px;
+}
+
+.upload-icon {
+    width: 60px;
+    height: 60px;
+}
 
 .text-input-bl {
     border: none;
@@ -278,4 +295,8 @@ table.table th, td {
     object-fit: cover;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
+
+.collapse {
+    display: none;
 }

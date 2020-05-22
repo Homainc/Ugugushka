@@ -16,15 +16,17 @@ namespace Ugugushka.WebUI.Controllers
     {
         private const int ToysPageSize = 10;
         private readonly IToyManager _toyManager;
-        public HomeController(IToyManager toyManager, IMapper mapper) : base(mapper)
+        private readonly IPictureManager _pictureManager;
+        public HomeController(IToyManager toyManager, IPictureManager pictureManager, IMapper mapper) : base(mapper)
         {
             _toyManager = toyManager;
+            _pictureManager = pictureManager;
         }
 
         public async Task<IActionResult> Index([FromQuery] ToyFilterInfo filter, int page = 1)
         {
-            return View((await _toyManager.GetPagedFilteredAsync(filter,
-                new PageInfo {PageNumber = page, PageSize = ToysPageSize})).Map<ToyDto, ToyItemViewModel>(Mapper));
+            return View(new HomeIndexViewModel(_pictureManager.Cloudinary) {
+                    PagedToys = await _toyManager.GetPagedFilteredAsync(filter, new PageInfo {PageNumber = page, PageSize = ToysPageSize})});
         }
     }
 }

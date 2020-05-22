@@ -197,12 +197,12 @@ namespace Ugugushka.Data.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
-
-                    b.Property<bool>("IsOnStock")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(40)")
@@ -220,10 +220,13 @@ namespace Ugugushka.Data.Migrations
 
             modelBuilder.Entity("Ugugushka.Data.Models.ToyImage", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Format")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
 
                     b.Property<bool>("IsMain")
                         .HasColumnType("bit");
@@ -231,15 +234,11 @@ namespace Ugugushka.Data.Migrations
                     b.Property<int>("ToyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
+                    b.HasKey("PublicId");
 
                     b.HasIndex("ToyId");
 
-                    b.ToTable("ToyImage");
+                    b.ToTable("ToyImages");
                 });
 
             modelBuilder.Entity("Ugugushka.Data.Models.User", b =>

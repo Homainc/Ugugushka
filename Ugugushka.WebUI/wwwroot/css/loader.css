@@ -1,0 +1,76 @@
+﻿.loader {
+    height: 60px;
+    width: 60px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.dot {
+    background: var(--text-primary);
+    margin: 5px;
+    -webkit-animation-name: loader;
+    animation-name: loader;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+}
+
+.dot:nth-child(1) {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(2) {
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+}
+
+.dot:nth-child(3) {
+    -webkit-animation-delay: 0.6s;
+    animation-delay: 0.6s;
+}
+
+.dot:nth-child(4) {
+    -webkit-animation-delay: 0.8s;
+    animation-delay: 0.8s;
+}
+
+.dot:nth-child(5) {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+
+@-webkit-keyframes loader {
+    from {
+        width: 2px;
+        height: 2px;
+        border-radius: 1px;
+    }
+
+    to {
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+    }
+}
+
+@keyframes loader {
+    from {
+        width: 2px;
+        height: 2px;
+        border-radius: 1px;
+    }
+
+    to {
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+    }
+}

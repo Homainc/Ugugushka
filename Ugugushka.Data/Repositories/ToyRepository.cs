@@ -22,7 +22,7 @@ namespace Ugugushka.Data.Repositories
         {
             var toyFilter = PredicateBuilder.True<Toy>();
             if (filter.IsOnStock)
-                toyFilter = toyFilter.And(x => x.IsOnStock);
+                toyFilter = toyFilter.And(x => x.Count > 0);
             if (filter.CategoryId.HasValue)
                 toyFilter = toyFilter.And(x => x.CategoryId == filter.CategoryId.Value);
             if (filter.MinPrice.HasValue)
@@ -55,7 +55,7 @@ namespace Ugugushka.Data.Repositories
                         Name = c.Name
                     } : null,
                     Description = t.Description,
-                    IsOnStock = t.IsOnStock,
+                    Count = t.Count,
                     Price = t.Price,
                     Images = t.Images
                 })
@@ -83,7 +83,7 @@ namespace Ugugushka.Data.Repositories
                         }
                         : null,
                     Description = t.Description,
-                    IsOnStock = t.IsOnStock,
+                    Count = t.Count,
                     Price = t.Price,
                     Images = t.Images
                 }).SingleOrDefaultAsync(CancellationToken);

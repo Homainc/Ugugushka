@@ -6,13 +6,13 @@
 <div class="row mt-5">
     <div class="d-flex col-6 flex-column">
         <div class="d-flex">
-            <img class="toy-image-main" src="@Model.Toy.Images.SingleOrDefault(x => x.IsMain)?.Url" />
+            <img class="toy-image-main" src="@Model.Cloudinary.Api.UrlImgUp.Format(Model.Toy.MainImage.Format).BuildUrl(Model.Toy.MainImage.PublicId)" />
         </div>
         <div class="d-flex justify-content-center align-items-center">
-            @foreach (var img in Model.Toy.Images.Where(x => !x.IsMain))
+            @foreach (var img in Model.Toy.ExtraImages)
             {
                 <div class="col-2">
-                    <img class="toy-image-thumb" src="@img.Url" />
+                    <img class="toy-image-thumb" src="@Model.Cloudinary.Api.UrlImgUp.Format(img.Format).BuildUrl(img.PublicId)" />
                 </div>
             }
         </div>

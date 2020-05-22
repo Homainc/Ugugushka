@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,18 @@ namespace Ugugushka.WebUI.Controllers
     [Authorize]
     public class ToyController : AbstractController
     {
-        private readonly IToyManager _toyManager;
         private const int ToysPageSize = 10;
 
-        public ToyController(IToyManager toyManager, IMapper mapper) : base(mapper) =>
-            _toyManager = toyManager;
+        private readonly IToyManager _toyManager;
+        private readonly IPictureManager _pictureManager;
 
-        public async Task<IActionResult> Toys([FromQuery] ToyFilterInfo toyFilter, [FromRoute]int page = 1)
+        public ToyController(IToyManager toyManager, IPictureManager pictureManager, IMapper mapper) : base(mapper)
+        {
+            _pictureManager = pictureManager;
+            _toyManager = toyManager;
+        }
+
+        public async Task<IActionResult> Toys([FromQuery] ToyFilterInfo toyFilter, [FromRoute] int page = 1)
         {
             return View(
                 (await _toyManager.GetPagedFilteredAsync(toyFilter,
@@ -30,8 +36,8 @@ namespace Ugugushka.WebUI.Controllers
 
         [HttpGet]
         [Authorize(Roles = RoleDefaults.Admin)]
-        public IActionResult AddToy() => 
-            View(new AddToyViewModel());
+        public IActionResult AddToy() =>
+            View(new AddToyViewModel(_pictureManager.Cloudinary));
 
         [HttpPost]
         [Authorize(Roles = RoleDefaults.Admin)]
@@ -40,17 +46,33 @@ namespace Ugugushka.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _toyManager.CreateAsync(Mapper.Map<AddToyViewModel, ToyCreateDto>(toy));
+                var createdToy = await _toyManager.CreateAsync(Mapper.Map<AddToyViewModel, ToyCreateDto>(toy));
+                
+                await _pictureManager.ChangePictureTagAsync(
+                    createdToy.Images.Select(x => x.PublicId).ToList(),
+                    CloudinaryTagDefaults.Toy);
+                await _pictureManager.DeleteTemporaryPicturesAsync();
+                
                 TempData["message"] = $"{toy.Name} has been saved";
                 return RedirectToAction("Toys");
             }
             else
             {
+                toy.Cloudinary = _pictureManager.Cloudinary;
                 return View(toy);
             }
         }
 
         public async Task<IActionResult> ToyInfo([FromRoute] int id) =>
-            View(new ToyInfoViewModel {Toy = await _toyManager.GetByIdAsync(id)});
+            View(new ToyInfoViewModel(_pictureManager.Cloudinary) {Toy = await _toyManager.GetByIdAsync(id)});
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _toyManager.DeleteAsync(id);
+
+            return RedirectToAction("Toys");
+        }
     }
 }

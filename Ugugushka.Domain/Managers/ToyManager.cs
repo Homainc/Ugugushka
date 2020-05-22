@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Ugugushka.Common.Interfaces;
 using Ugugushka.Data.Code.Interfaces;
@@ -14,9 +15,14 @@ namespace Ugugushka.Domain.Managers
     public class ToyManager : AbstractManager, IToyManager
     {
         private readonly IToyRepository _toyRepository;
+        private readonly IPictureManager _pictureManager;
 
-        public ToyManager(IToyRepository toyRepository, ISaveProvider saveProvider, IMapper mapper) : base(saveProvider, mapper) =>
+        public ToyManager(IToyRepository toyRepository, IPictureManager pictureManager, ISaveProvider saveProvider,
+            IMapper mapper) : base(saveProvider, mapper)
+        {
             _toyRepository = toyRepository;
+            _pictureManager = pictureManager;
+        }
 
         public async Task<IPagedResult<ToyDto>> GetPagedFilteredAsync(IToyFilterInfo filter, IPageInfo pageInfo) =>
             (await _toyRepository.GetFilteredPagedAsync(filter, pageInfo)).Map<Toy, ToyDto>(Mapper);
@@ -40,9 +46,16 @@ namespace Ugugushka.Domain.Managers
             throw new System.NotImplementedException();
         }
 
-        public Task<ToyDto> DeleteAsync(int id)
-        {
-            throw new System.NotImplementedException();
+        public async Task<ToyDto> DeleteAsync(int id)
+        { 
+            var toy = await _toyRepository.SingleOrDefaultByIdEagerAsync(id) ?? 
+                      throw new NotFoundException($"Toy with id {id} not found!");
+
+            _toyRepository.Delete(toy);
+            await _pictureManager.DeletePictureAsync(toy.Images.Select(x => x.PublicId).ToList());
+            
+            await SaveChangesAsync();
+            return Mapper.Map<Toy, ToyDto>(toy);
         }
     }
 }
