@@ -16,7 +16,7 @@
                     <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
                     @if (property.PropertyName == "Description")
                     {
-                        @Html.TextArea(property.PropertyName, null, new {rows = 5, @class = "form-control text-input"})
+                        @Html.TextArea(property.PropertyName, null, new {rows = 5, @class = "form-control text-input", @placeholder = property.DisplayName})
                     }
                     else if (property.PropertyName == "IsOnStock")
                     {
@@ -24,7 +24,7 @@
                     }
                     else
                     {
-                        @Html.TextBox(property.PropertyName, null, htmlAttributes: new {@class = "form-control text-input"})
+                        @Html.TextBox(property.PropertyName, null, htmlAttributes: new {@class = "form-control text-input", @placeholder = property.DisplayName})
                     }
                     @Html.ValidationMessage(property.PropertyName)
                 </div>

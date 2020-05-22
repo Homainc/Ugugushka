@@ -1,15 +1,43 @@
-﻿@model ToyItemViewModel
+﻿@model ToyInfoViewModel
 @{
-    ViewBag.Title = Model.Name;
+    ViewBag.Title = Model.Toy.Name;
 }
 
-<div>
-    <h5>@Model.Name</h5>
-    <p>@Model.Price</p>
-    @using (Html.BeginForm("AddToCart", "Cart"))
-    {
-        @Html.HiddenFor(x => x.Id)
-        @Html.Hidden("returnUrl", Context.Request.Path)
-        <input type="submit" value="В корзину"/>
-    }
+<div class="row mt-5">
+    <div class="d-flex col-6 flex-column">
+        <div class="d-flex">
+            <img class="toy-image-main" src="@Model.Toy.Images.SingleOrDefault(x => x.IsMain)?.Url" />
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            @foreach (var img in Model.Toy.Images.Where(x => !x.IsMain))
+            {
+                <div class="col-2">
+                    <img class="toy-image-thumb" src="@img.Url" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="d-flex lcard card-light col-6 flex-column">
+
+        <div class="d-flex card-header">
+            <h1>@Model.Toy.Name</h1>
+        </div>
+        <div class="d-flex mt-2 card-text">
+            @Model.Toy.Description
+        </div>
+        <div class="d-flex mt-2 card-price">
+            @Model.Toy.Price р.
+        </div>
+        @using (Html.BeginForm("AddToCart", "Cart", new { ReturnUrl = Context.Request.Path }, FormMethod.Post, true, new { @class = "card-actions" }))
+        {
+
+            @Html.Hidden("Id", @Model.Toy.Id)
+            <div class="form-group d-flex flex-column">
+                @Html.LabelFor(x => x.Quantity, htmlAttributes: new { @class = "d-flex mb-2" })
+                @Html.TextBoxFor(x => x.Quantity, null, new { @class = "num-input" })
+                @Html.ValidationMessageFor(x => x.Quantity)
+            </div>
+            <input type="submit" class="btn btn-secondary d-flex mt-2 mb-4" value="В корзину" />
+        }
+    </div>
 </div>

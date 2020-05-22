@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Ugugushka.Data.Code.Extensions;
 using Ugugushka.Domain.Code.Interfaces;
-using Ugugushka.Domain.Code.MapperProfiles;
 using Ugugushka.Domain.Managers;
 
 namespace Ugugushka.Domain.Code.Extensions
@@ -16,6 +14,8 @@ namespace Ugugushka.Domain.Code.Extensions
 
             //Managers
             services.AddScoped<IToyManager, ToyManager>();
+            services.AddTransient<ISeedManager, IdentitySeedManager>();
+            services.AddScoped<IPictureManager, PictureManager>();
 
             return services;
         }

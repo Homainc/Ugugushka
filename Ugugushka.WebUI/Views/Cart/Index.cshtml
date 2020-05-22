@@ -9,8 +9,8 @@
         <tr>
             <th>Кол-во</th>
             <th>Товар</th>
-            <th>Цена</th>
-            <th>Сумма</th>
+            <th>Цена, р.</th>
+            <th>Сумма, р.</th>
         </tr>
         </thead>
         <tbody>
@@ -20,14 +20,14 @@
                 <td>@line.Quantity</td>
                 <td>@line.Toy.Name</td>
                 <td>@line.Toy.Price</td>
-                <td>@((line.Quantity * line.Toy.Price).ToString("C"))</td>
+                <td>@(line.Quantity * line.Toy.Price)</td>
             </tr>
         }
         </tbody>
         <tfoot>
         <tr>
             <td colspan="3">Итого:</td>
-            <td>@Model.Cart.ComputeTotalValue().ToString("C")</td>
+            <td>@Model.Cart.ComputeTotalValue()</td>
         </tr>
         </tfoot>
     </table>

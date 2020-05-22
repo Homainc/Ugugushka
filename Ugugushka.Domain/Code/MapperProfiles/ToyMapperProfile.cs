@@ -21,13 +21,13 @@ namespace Ugugushka.Domain.Code.MapperProfiles
 
         private Toy ConstructToyFromToyCreateDto(ToyCreateDto source)
         {
-            var dest = new Toy { Images = new HashSet<Image>() };
+            var dest = new Toy { Images = new HashSet<ToyImage>() };
             var mainImage = source.ImageUrls.FirstOrDefault();
 
             if (mainImage != null)
             {
-                dest.Images.Add(new Image {IsMain = true, Url = source.ImageUrls.FirstOrDefault()});
-                dest.Images.UnionWith(source.ImageUrls.Skip(1).Select(x => new Image {Url = x}));
+                dest.Images.Add(new ToyImage {IsMain = true, Url = source.ImageUrls.FirstOrDefault()});
+                dest.Images.UnionWith(source.ImageUrls.Skip(1).Select(x => new ToyImage {Url = x}));
             }
 
             return dest;

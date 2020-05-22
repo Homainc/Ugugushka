@@ -1,8 +1,10 @@
 ﻿using System.IO;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ugugushka.Data.Code.Interfaces;
+using Ugugushka.Data.Models;
 using Ugugushka.Data.Repositories;
 
 namespace Ugugushka.Data.Code.Extensions
@@ -10,26 +12,36 @@ namespace Ugugushka.Data.Code.Extensions
     public static class DataExtensions
     {
         private const string ConfigFileName = "appsettings.json";
-        private static string GetConnectionString()
+
+        private static string ConnectionString
         {
-            var cfg = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(ConfigFileName)
-                .Build();
-            return cfg.GetConnectionString("DefaultConnection");
+            get
+            {
+                var cfg = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(ConfigFileName)
+                    .Build();
+                return cfg.GetConnectionString("DefaultConnection");
+            }
         }
+
         public static IServiceCollection AddDataServices(this IServiceCollection services)
         {
-            //EF Core Context
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(GetConnectionString()));
+            // EF Core Context
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(ConnectionString));
 
-            //Repositories
+            // Identity
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
+
+            // Repositories
             services.AddScoped<IToyRepository, ToyRepository>();
             
-            //Save Provider
+            // Save Provider
             services.AddScoped<ISaveProvider, SaveProvider>();
 
-            //Other Dependencies
+            // Other Dependencies
             services.AddHttpContextAccessor();
 
             return services;

@@ -26,7 +26,7 @@ namespace Ugugushka.Domain.DtoModels
     {
         public int Id { get; set; }
         public int? CategoryId { get; set; }
-        public ISet<Image> Images { get; set; }
+        public ISet<ToyImage> Images { get; set; }
         public Category Category { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ugugushka.Common.Concretes;
+using Ugugushka.Domain.Code.Constants;
 using Ugugushka.Domain.Code.Extensions;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.DtoModels;
@@ -12,6 +12,7 @@ using Ugugushka.WebUI.ViewModels;
 
 namespace Ugugushka.WebUI.Controllers
 {
+    [Authorize]
     public class ToyController : AbstractController
     {
         private readonly IToyManager _toyManager;
@@ -28,18 +29,19 @@ namespace Ugugushka.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddToy()
-        {
-            return View(new AddToyViewModel());
-        }
+        [Authorize(Roles = RoleDefaults.Admin)]
+        public IActionResult AddToy() => 
+            View(new AddToyViewModel());
 
         [HttpPost]
+        [Authorize(Roles = RoleDefaults.Admin)]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToy(AddToyViewModel toy)
         {
             if (ModelState.IsValid)
             {
                 await _toyManager.CreateAsync(Mapper.Map<AddToyViewModel, ToyCreateDto>(toy));
-                TempData["message"] = string.Format("{0} has been saved", toy.Name);
+                TempData["message"] = $"{toy.Name} has been saved";
                 return RedirectToAction("Toys");
             }
             else
@@ -48,9 +50,7 @@ namespace Ugugushka.WebUI.Controllers
             }
         }
 
-        public async Task<IActionResult> ToyInfo([FromRoute] int id)
-        {
-            return View(Mapper.Map<ToyDto, ToyItemViewModel>(await _toyManager.GetByIdAsync(id)));
-        }
+        public async Task<IActionResult> ToyInfo([FromRoute] int id) =>
+            View(new ToyInfoViewModel {Toy = await _toyManager.GetByIdAsync(id)});
     }
 }

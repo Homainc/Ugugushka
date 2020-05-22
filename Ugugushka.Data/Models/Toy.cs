@@ -11,7 +11,7 @@ namespace Ugugushka.Data.Models
         public string Description { get; set; }
         public decimal Price { get; set; }
         public bool IsOnStock { get; set; }
-        public ISet<Image> Images { get; set; }
+        public ISet<ToyImage> Images { get; set; }
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
     }

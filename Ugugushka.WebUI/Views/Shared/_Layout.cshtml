@@ -15,45 +15,58 @@
 
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="d-flex py-4 row align-items-center justify-content-between">
-                <div class="d-flex">
-                    <img src="~/img/logo_purple.png" height="90" width="90" alt="Угугушка" />
-                    <div class="ml-3 align-self-center">
-                        <h1 class="logo-text">Угугушка</h1>
-                        <h2 class="logo-subtext">Интернет-магазин игрушек</h2>
-                    </div>
-                </div>
-                <div class="d-flex search-block">
-                    <input class="text-input-bl" type="text" placeholder="Найти игрушки" />
-                    <button class="btn search-btn" type="submit"><i class="fas fa-search"></i></button>
-                </div>
-                <div class="d-flex col-4 ml-2">
-                    <a class="btn btn-primary mr-2" href="#">Войти</a>
-                    <a class="btn btn-primary btn-icon" href="@Url.Action("Index", "Cart")">
-                        <i class="fas fa-shopping-cart mr-1"></i>
-                        Корзина
-                    </a>
+<header>
+    <div class="container">
+        <div class="d-flex py-4 row align-items-center justify-content-between">
+            <div class="d-flex">
+                <img src="~/img/logo_purple.png" height="90" width="90" alt="Угугушка" />
+                <div class="ml-3 align-self-center">
+                    <h1 class="logo-text">Угугушка</h1>
+                    <h2 class="logo-subtext">Интернет-магазин игрушек</h2>
                 </div>
             </div>
+            <div class="d-flex search-block">
+                <input class="text-input-bl" type="text" placeholder="Найти игрушки" />
+                <button class="btn search-btn" type="submit"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="d-flex col-4 ml-2">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @using (Html.BeginForm("Logout","Account", new { ReturnUrl = Context.Request.Path }))
+                    {
+                            
+                        <input type="submit" class="btn btn-primary mr-2" value="Выйти"/>
+                    }
+                }
+                else
+                {
+                    <a class="btn btn-primary mr-2" href="@Url.Action("Login", "Account")">Войти</a>
+                }
+                <a class="btn btn-primary btn-icon" href="@Url.Action("Index", "Cart")">
+                    <i class="fas fa-shopping-cart mr-1"></i>
+                    Корзина
+                </a>
+            </div>
         </div>
-        <div class="menu">
-            <div class="container-lg d-flex">
-                <a href="@Url.Action("Index", "Home")">Каталог</a>
-                <a href="#">Контакты</a>
+    </div>
+    <div class="menu">
+        <div class="container-lg d-flex">
+            <a href="@Url.Action("Index", "Home")">Каталог</a>
+            <a href="#">Контакты</a>
+            @if(User.IsInRole(RoleDefaults.Admin)){
                 <a href="@Url.Action("Toys", "Toy")">Управление</a>
-            </div>
+            }
         </div>
-    </header>
+    </div>
+</header>
 
-    <main class="container">
-        @RenderBody()
-    </main>
+<main class="container h-100">
+    @RenderBody()
+</main>
 
-    <footer>
-    </footer>
+<footer>
+</footer>
 
-    @await RenderSectionAsync("PageScripts", false)
+@await RenderSectionAsync("PageScripts", false)
 </body>
 </html>

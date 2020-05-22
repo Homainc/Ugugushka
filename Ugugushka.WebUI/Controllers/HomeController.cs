@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ugugushka.Common.Concretes;
 using Ugugushka.Domain.Code.Extensions;
@@ -10,6 +11,7 @@ using Ugugushka.WebUI.ViewModels;
 
 namespace Ugugushka.WebUI.Controllers
 {
+    [Authorize]
     public class HomeController : AbstractController
     {
         private const int ToysPageSize = 10;

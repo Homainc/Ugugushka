@@ -63,7 +63,7 @@ namespace Ugugushka.Data.Repositories
         }
 
         public async Task<Toy> SingleOrDefaultByIdEagerAsync(int id) =>
-            await (from t in Db.Toys.Where(x => x.Id == id)
+            await (from t in Db.Toys.Where(x => x.Id == id).Include(x => x.Images)
                 join c in Db.Categories on t.CategoryId equals c.Id into cGroup
                 from c in cGroup.DefaultIfEmpty()
                 join p in Db.Partitions on c.PartitionId equals p.Id into pGroup
@@ -84,7 +84,8 @@ namespace Ugugushka.Data.Repositories
                         : null,
                     Description = t.Description,
                     IsOnStock = t.IsOnStock,
-                    Price = t.Price
+                    Price = t.Price,
+                    Images = t.Images
                 }).SingleOrDefaultAsync(CancellationToken);
     }
 }
