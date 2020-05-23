@@ -10,6 +10,7 @@ using Ugugushka.Domain.Code.Extensions;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.Managers;
 using Ugugushka.WebUI.Code.Binders;
+using Ugugushka.WebUI.Code.Filters;
 
 namespace Ugugushka.WebUI
 {
@@ -41,6 +42,10 @@ namespace Ugugushka.WebUI
 
             services.AddControllersWithViews(options =>
                 {
+                    // Global filters
+                    options.Filters.Add<GlobalExceptionFilter>();
+
+                    // Custom model binder providers
                     options.ModelBinderProviders.Insert(0, new CartModelBinderProvider());
                 })
                 .AddSessionStateTempDataProvider();

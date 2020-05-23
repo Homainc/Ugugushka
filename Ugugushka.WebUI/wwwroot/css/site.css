@@ -21,8 +21,11 @@ body {
 }
 
 a {
+    color: #19a4a8;
+}
+
+a:hover {
     text-decoration: none;
-    color: black;
 }
 
 .selected {
@@ -115,12 +118,21 @@ table.table th, td {
 }
 
 .menu {
+    background: var(--bg-secondary);
+    box-shadow: 0 8px 15px rgba(203, 249, 234, 0.3);
 }
 
 .menu a {
     display: block;
+    text-decoration: none;
     padding: 20px 20px;
     color: var(--text-primary);
+    font-weight: 500;
+    letter-spacing: 0.05rem;
+}
+
+.menu a:hover {
+    text-decoration: underline;
 }
 
 .logo-text {
