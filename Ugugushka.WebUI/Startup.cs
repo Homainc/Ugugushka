@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using Ugugushka.Domain.Code.Config;
 using Ugugushka.Domain.Code.Extensions;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.Managers;
@@ -17,17 +19,19 @@ namespace Ugugushka.WebUI
     public class Startup
     {
         private readonly IConfiguration _config;
+
         public Startup()
         {
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
             _config = builder.Build();
         }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             // Application configuration
-            services.Configure<CloudinaryCredentials>(_config.GetSection("CloudinaryCredentials"));
+            services.Configure<CredentialsConfig>(_config.GetSection("Credentials"));
 
             services.AddDomainServices();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -58,18 +62,28 @@ namespace Ugugushka.WebUI
 
             if (env.IsDevelopment())
             {
+                Log.Information("Application has been started in the development mode");
+
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
+            else
+            {
+                Log.Information("Application has been stared in the release mode");
+
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+            seedManager.SeedData();
+
+            app.UseStaticFiles();
+
+            app.UseSerilogRequestLogging();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            seedManager.SeedData();
-
-            app.UseStaticFiles();
 
             app.UseSession();
 
@@ -78,16 +92,12 @@ namespace Ugugushka.WebUI
                 endpoints.MapControllerRoute(
                     name: null,
                     pattern: "Page{page:int}",
-                    defaults: new { Controller="Home", Action="Index", page = 1 });
-                endpoints.MapControllerRoute(
-                    name: null,
-                    pattern: "Toys/Page{page:int}",
-                    defaults: new { Controller="Toy", Action="Toys", page = 1 });
+                    defaults: new {Controller = "Home", Action = "Index", page = 1});
 
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action}/{id:int?}",
-                    defaults: new { Controller = "Home", Action = "Index" });
+                    defaults: new {Controller = "Home", Action = "Index"});
             });
         }
     }

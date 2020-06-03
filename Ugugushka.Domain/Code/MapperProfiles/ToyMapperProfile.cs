@@ -12,15 +12,16 @@ namespace Ugugushka.Domain.Code.MapperProfiles
         public ToyMapperProfile()
         {
             CreateMap<Toy, ToyDto>();
-            CreateMap<ToyCreateDto, Toy>()
+            CreateMap<ToyUpdateDto, Toy>()
                 .ConstructUsing(x => ConstructToyFromToyCreateDto(x))
+                .ForMember(x => x.Category, opt => opt.Ignore())
                 .ForMember(x => x.Images, opt => opt.Ignore());
 
             CreateMap<ToyImage, ToyImageDto>()
                 .ReverseMap();
         }
 
-        private static Toy ConstructToyFromToyCreateDto(ToyCreateDto source)
+        private static Toy ConstructToyFromToyCreateDto(ToyUpdateDto source)
         {
             var dest = new Toy {Images = new HashSet<ToyImage>()};
             var mainImage = source.Images.FirstOrDefault();

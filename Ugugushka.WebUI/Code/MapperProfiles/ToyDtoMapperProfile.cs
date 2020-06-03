@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Ugugushka.Domain.DtoModels;
 using Ugugushka.WebUI.ViewModels;
 
@@ -10,7 +9,8 @@ namespace Ugugushka.WebUI.Code.MapperProfiles
         public ToyDtoMapperProfile()
         {
             CreateMap<ToyDto, ToyItemViewModel>();
-            CreateMap<AddToyViewModel, ToyCreateDto>();
+            CreateMap<AddToyViewModel, ToyUpdateDto>();
+            CreateMap<ToyDto, AddToyViewModel>();
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Ugugushka.Data.Code.Interfaces;
 
 namespace Ugugushka.Data.Code.Abstractions
@@ -16,10 +19,16 @@ namespace Ugugushka.Data.Code.Abstractions
             CancellationToken = httpContextAccessor.HttpContext.RequestAborted;
         }
 
-        public void Create(TItem item) => Db.Add(item);
+        public void SetAdded(TItem item) => Db.Entry(item).State = EntityState.Added;
 
-        public void Update(TItem item) => Db.Entry(item).State = EntityState.Modified;
+        public void SetModified(TItem item) => Db.Entry(item).State = EntityState.Modified;
 
-        public void Delete(TItem item) => Db.Entry(item).State = EntityState.Deleted;
+        public void SetDeleted(TItem item) => Db.Entry(item).State = EntityState.Deleted;
+
+        public async Task AddAsync(TItem item) => await Db.AddAsync(item, CancellationToken);
+        public void Update(TItem item) => Db.Update(item);
+        public async Task AddRangeAsync(IEnumerable<TItem> items) => await Db.AddRangeAsync(items, CancellationToken);
+        public void RemoveRange(IEnumerable<TItem> items) => Db.RemoveRange(items);
+        public void UpdateRange(IEnumerable<TItem> items) => Db.UpdateRange(items);
     }
 }

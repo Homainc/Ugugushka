@@ -16,7 +16,7 @@ namespace Ugugushka.Data.Models
         public void Configure(EntityTypeBuilder<ToyImage> builder)
         {
             builder.HasKey(x => x.PublicId);
-            builder.Property(x => x.PublicId).HasMaxLength(50);
+            builder.Property(x => x.PublicId).HasMaxLength(450);
             builder.Property(x => x.Format).HasMaxLength(10);
         }
     }

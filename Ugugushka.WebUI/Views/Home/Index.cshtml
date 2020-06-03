@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-center align-content-stretch flex-wrap">
         @foreach (var toy in Model.PagedToys.Items)
         {
-            <a class="toy-item" href="@Url.Action("ToyInfo", "Toy", new { id = toy.Id })">
+            <a class="toy-item" href="@Url.Action("ToyInfo", new { id = toy.Id })">
                 <div class="d-flex flex-column align-items-stretch">
                     <img 
                         class="d-flex toy-img" 

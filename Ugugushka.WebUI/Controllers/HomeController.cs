@@ -26,5 +26,9 @@ namespace Ugugushka.WebUI.Controllers
             return View(new HomeIndexViewModel(_pictureManager.Cloudinary) {
                     PagedToys = await _toyManager.GetPagedFilteredAsync(filter, new PageInfo {PageNumber = page, PageSize = ToysPageSize})});
         }
+        public async Task<IActionResult> ToyInfo([FromRoute] int id) =>
+            View(new ToyInfoViewModel(_pictureManager.Cloudinary) { Toy = await _toyManager.GetByIdAsync(id) });
+
+        public IActionResult Error() => View();
     }
 }

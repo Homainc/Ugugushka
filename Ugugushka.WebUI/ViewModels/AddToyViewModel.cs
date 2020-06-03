@@ -13,10 +13,10 @@ namespace Ugugushka.WebUI.ViewModels
         public AddToyViewModel() : base(null) { }
         public AddToyViewModel(Cloudinary cloudinary) : base(cloudinary) { }
 
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         [DisplayName("Название")]
-        [MaxLength(40, ErrorMessage = "Количество символов названия не должно превышать 40!")]
+        [MaxLength(50, ErrorMessage = "Количество символов названия не должно превышать 50!")]
         [Required(ErrorMessage = "Вы должны ввести название!")]
         public string Name { get; set; }
 

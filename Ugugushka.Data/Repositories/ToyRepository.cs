@@ -86,6 +86,6 @@ namespace Ugugushka.Data.Repositories
                     Count = t.Count,
                     Price = t.Price,
                     Images = t.Images
-                }).SingleOrDefaultAsync(CancellationToken);
+                }).AsNoTracking().SingleOrDefaultAsync(CancellationToken);
     }
 }

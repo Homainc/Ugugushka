@@ -55,7 +55,7 @@
             <a href="@Url.Action("Index", "Home")">Каталог</a>
             <a href="#">Контакты</a>
             @if(User.IsInRole(RoleDefaults.Admin)){
-                <a href="@Url.Action("Toys", "Toy")">Управление</a>
+                <a href="@Url.Action("Toys", "Admin")">Управление</a>
             }
         </div>
     </div>

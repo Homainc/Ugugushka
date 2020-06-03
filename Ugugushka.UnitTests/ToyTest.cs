@@ -2,14 +2,23 @@
 using System.Linq;
 using Ugugushka.Common.Concretes;
 using Ugugushka.Data.Models;
+using Ugugushka.Domain.Code.Exceptions;
 using Ugugushka.Domain.DtoModels;
 using Ugugushka.UnitTests.Abstractions;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Ugugushka.UnitTests
 {
     public class ToyTest : AbstractTestWithDb
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+
+        public ToyTest(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
+
         private static IEnumerable<Toy> TestToys
         {
             get
@@ -32,12 +41,22 @@ namespace Ugugushka.UnitTests
                     new Toy
                     {
                         Name = "Bear", Category = categories[0], CategoryId = categories[0].Id,
-                        Description = "plush bear", Count = 1, Price = 25.8m, Id = 1
+                        Description = "plush bear", Count = 1, Price = 25.8m, Id = 1,
+                        Images = new[]
+                        {
+                            new ToyImage{PublicId = "old_1", IsMain = true},
+                            new ToyImage{PublicId = "old_2"} 
+                        }.ToHashSet()
                     },
                     new Toy
                     {
                         Name = "Rabbit", Category = categories[0], CategoryId = categories[0].Id,
-                        Description = "plush rabbit", Count = 1, Price = 26.4m, Id = 2
+                        Description = "plush rabbit", Count = 1, Price = 26.4m, Id = 2,
+                        Images = new[]
+                        {
+                            new ToyImage{PublicId = "old_3", IsMain = true},
+                            new ToyImage{PublicId = "old_4"}
+                        }.ToHashSet()
                     },
                     new Toy
                     {
@@ -68,11 +87,8 @@ namespace Ugugushka.UnitTests
         public async void Can_Paginate()
         {
             //Assign
-            DbName = "Can_Paginate";
-            await using var context = CreateContext();
-            Context = context;
-            var toyManager = await CreateToyManagerAsync(TestToys);
-
+            await using var context = CreateContext("Can_Paginate");
+            var (toyManager, _) = await CreateToyManagerAsync(TestToys);
             var filter = new ToyFilterInfo();
             var firstPageWithTwoItems = new PageInfo {PageNumber = 1, PageSize = 2};
             var secondPageWithTwoItems = new PageInfo {PageNumber = 2, PageSize = 2};
@@ -105,10 +121,8 @@ namespace Ugugushka.UnitTests
         public async void Can_Filtering()
         {
             //Assign
-            DbName = "Can_Filtering";
-            await using var context = CreateContext();
-            Context = context;
-            var toyManager = await CreateToyManagerAsync(TestToys);
+            await using var context = CreateContext("Can_Filtering");
+            var (toyManager, _) = await CreateToyManagerAsync(TestToys);
 
             var pageInfo = new PageInfo {PageSize = 6, PageNumber = 1};
             var plushCategory = new ToyFilterInfo {CategoryId = 1};
@@ -155,18 +169,38 @@ namespace Ugugushka.UnitTests
         public async void Can_Create()
         {
             //Assign
-            DbName = "Can_Create";
-            await using var context = CreateContext();
-            Context = context;
-            var toyManager = await CreateToyManagerAsync(TestToys);
-            var newPlushToy = new ToyCreateDto
-                {CategoryId = 1, Description = "New plush toy", Count = 1, Name = "New plush toy", Price = 10m};
-            var newPlasticToy = new ToyCreateDto
-                {CategoryId = 3, Description = "New plastic toy", Name = "New plastic toy", Price = 50.54m};
+            await using var context = CreateContext("Can_Create");
+            var (toyManager, pictureManager) = await CreateToyManagerAsync(TestToys);
+            var newPlushToy = new ToyUpdateDto
+            {
+                CategoryId = 1, 
+                Description = "New plush toy", 
+                Count = 1, 
+                Name = "New plush toy", 
+                Price = 10m, 
+                Images = new[]
+                {
+                    new ToyImageDto{ PublicId = "new_1", IsMain = true},
+                    new ToyImageDto{ PublicId = "new_2" }
+                }
+            };
+            var newPlasticToy = new ToyUpdateDto
+            {
+                CategoryId = 3, 
+                Description = "New plastic toy", 
+                Name = "New plastic toy", 
+                Price = 50.54m,
+                Images = new[]
+                {
+                    new ToyImageDto{ PublicId = "new_3", IsMain = true},
+                    new ToyImageDto{ PublicId = "new_4"},
+                }
+            };
+            var newPublicIds = newPlushToy.Images.Concat(newPlasticToy.Images).Select(x => x.PublicId).ToHashSet();
 
             //Action
-            var createdPlushToy = await toyManager.CreateAsync(newPlushToy);
-            var createdPlasticToy = await toyManager.CreateAsync(newPlasticToy);
+            var createdPlushToy = await toyManager.SaveAsync(newPlushToy);
+            var createdPlasticToy = await toyManager.SaveAsync(newPlasticToy);
             var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo(),
                 new PageInfo {PageNumber = 1, PageSize = 1});
 
@@ -185,6 +219,8 @@ namespace Ugugushka.UnitTests
             Assert.Equal(newPlasticToy.Description, createdPlasticToy.Description);
             Assert.Equal(newPlasticToy.Price, createdPlasticToy.Price);
 
+            Assert.Equal(newPublicIds, pictureManager.PublicIdsWithToyTag);
+
             Assert.Equal(8, toys.TotalItems);
         }
 
@@ -192,26 +228,43 @@ namespace Ugugushka.UnitTests
         public async void Can_Update()
         {
             //Assign
-            DbName = "Can_Update";
-            await using var context = CreateContext();
-            Context = context;
-            var toyManager = await CreateToyManagerAsync(TestToys);
+            await using var context = CreateContext("Can_Update");
+            var (toyManager, pictureManager) = await CreateToyManagerAsync(TestToys);
             var newWoodenToy = new ToyUpdateDto
             {
-                Id = 1, CategoryId = 4, Description = "Updated wooden toy", Count = 1,
-                Name = "updated first toy", Price = 10m
+                Id = 1, 
+                CategoryId = 4, 
+                Description = "Updated wooden toy", 
+                Count = 1,
+                Name = "updated first toy", Price = 10m,
+                Images = new[]
+                {
+                    new ToyImageDto{PublicId = "old_1", IsMain = true},
+                    new ToyImageDto{PublicId = "new_1"}
+                }
             };
             var newSecondWoodenToy = new ToyUpdateDto
             {
-                Id = 2, CategoryId = 4, Description = "Updated second wooden toy", Name = "updated second toy",
-                Price = 50.54m
+                Id = 2, 
+                CategoryId = 4, 
+                Description = "Updated second wooden toy", 
+                Name = "updated second toy",
+                Price = 50.54m,
+                Images = new[]
+                {
+                    new ToyImageDto{PublicId = "new_2", IsMain = true},
+                    new ToyImageDto{PublicId = "new_3"}
+                }
             };
 
             //Action
-            var updatedWoodenToy = await toyManager.UpdateAsync(newWoodenToy);
-            var updatedSecondWoodenToy = await toyManager.UpdateAsync(newSecondWoodenToy);
+            await toyManager.SaveAsync(newWoodenToy);
+            await toyManager.SaveAsync(newSecondWoodenToy);
             var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo {CategoryId = 4},
                 new PageInfo {PageNumber = 1, PageSize = 1});
+
+            var updatedWoodenToy = await toyManager.GetByIdAsync(newWoodenToy.Id);
+            var updatedSecondWoodenToy = await toyManager.GetByIdAsync(newSecondWoodenToy.Id);
 
             //Assert
             Assert.Equal(newWoodenToy.Name, updatedWoodenToy.Name);
@@ -228,6 +281,9 @@ namespace Ugugushka.UnitTests
             Assert.Equal(newSecondWoodenToy.Description, updatedSecondWoodenToy.Description);
             Assert.Equal(newSecondWoodenToy.Price, updatedSecondWoodenToy.Price);
 
+            Assert.Equal(new[]{ "new_1", "new_2", "new_3" }, pictureManager.PublicIdsWithToyTag);
+            Assert.Equal(new[] { "old_2", "old_3", "old_4" }, pictureManager.PublicIdsWithTempTag);
+
             Assert.Equal(3, toys.TotalItems);
         }
 
@@ -235,19 +291,19 @@ namespace Ugugushka.UnitTests
         public async void Can_Delete()
         {
             //Assign
-            DbName = "Can_Delete";
-            await using var context = CreateContext();
-            Context = context;
-            var toyManager = await CreateToyManagerAsync(TestToys);
+            await using var context = CreateContext("Can_Delete");
+            var (toyManager, _) = await CreateToyManagerAsync(TestToys);
 
             //Action
             await toyManager.DeleteAsync(1);
             await toyManager.DeleteAsync(2);
-            var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo{CategoryId = 1},
-                new PageInfo {PageNumber = 1, PageSize = 1});
+            var toys = await toyManager.GetPagedFilteredAsync(new ToyFilterInfo(),
+                new PageInfo {PageNumber = 1, PageSize = 10});
 
             //Assert
-            Assert.Equal(1, toys.TotalItems);
+            await Assert.ThrowsAsync<NotFoundException>(async () => await toyManager.GetByIdAsync(1));
+            await Assert.ThrowsAsync<NotFoundException>(async () => await toyManager.GetByIdAsync(2));
+            Assert.Equal(4, toys.TotalItems);
         }
     }
 }

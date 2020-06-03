@@ -22,8 +22,10 @@ namespace Ugugushka.Data.Models
         public void Configure(EntityTypeBuilder<Toy> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .ValueGeneratedOnAdd();
             builder.Property(x => x.Name)
-                .HasMaxLength(40);
+                .HasMaxLength(50);
             builder.Property(x => x.Description)
                 .HasMaxLength(500);
             builder.Property(x => x.Price)

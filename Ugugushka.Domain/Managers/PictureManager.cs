@@ -5,33 +5,29 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Ugugushka.Domain.Code.Config;
 using Ugugushka.Domain.Code.Constants;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.DtoModels;
 
 namespace Ugugushka.Domain.Managers
 {
-    public class CloudinaryCredentials
-    {
-        public string ApiKey { get; set; }
-        public string ApiSecret { get; set; }
-        public string CloudName { get; set; }
-    }
-
     public class PictureManager : IPictureManager
     {
+        private const int FileMaxLength = 10485760;
+
         private readonly CancellationToken _cancellationToken;
 
         public Cloudinary Cloudinary { get; }
 
-        public PictureManager(IOptions<CloudinaryCredentials> options, IHttpContextAccessor httpContextAccessor)
+        public PictureManager(IOptions<CredentialsConfig> options, IHttpContextAccessor httpContextAccessor)
         {
             var credentials = options.Value;
             var account = new Account
             {
-                ApiKey = credentials.ApiKey,
-                ApiSecret = credentials.ApiSecret,
-                Cloud = credentials.CloudName
+                ApiKey = credentials.Cloudinary.ApiKey,
+                ApiSecret = credentials.Cloudinary.ApiSecret,
+                Cloud = credentials.Cloudinary.CloudName
             };
             Cloudinary = new Cloudinary(account);
             _cancellationToken = httpContextAccessor.HttpContext.RequestAborted;
@@ -39,6 +35,9 @@ namespace Ugugushka.Domain.Managers
 
         public async Task<ToyImageDto> UploadPictureAsync(IFormFile fImage)
         {
+            if (fImage.Length > FileMaxLength)
+                return null;
+
             await using (var fStream = fImage.OpenReadStream())
             {
                 var result = await Cloudinary.UploadAsync(new ImageUploadParams

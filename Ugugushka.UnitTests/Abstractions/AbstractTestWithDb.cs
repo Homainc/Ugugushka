@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,6 +13,7 @@ using Ugugushka.Data.Repositories;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.Code.MapperProfiles;
 using Ugugushka.Domain.Managers;
+using Ugugushka.UnitTests.FakeConcretes;
 
 namespace Ugugushka.UnitTests.Abstractions
 {
@@ -29,19 +31,13 @@ namespace Ugugushka.UnitTests.Abstractions
             _mapper = new Mapper(mapperCfg);
         }
 
-        protected string DbName { get; set; }
-
-        protected ApplicationContext Context
-        {
-            set => _context = value;
-        }
-
-        protected ApplicationContext CreateContext()
+        protected ApplicationContext CreateContext(string dbName)
         {
             var options = new DbContextOptionsBuilder<ApplicationContext>()
-                .UseInMemoryDatabase(DbName)
+                .UseInMemoryDatabase(dbName)
                 .Options;
-            return new ApplicationContext(options);
+            _context = new ApplicationContext(options);
+            return _context;
         }
 
         private static IHttpContextAccessor HttpContextAccessor
@@ -58,12 +54,25 @@ namespace Ugugushka.UnitTests.Abstractions
 
         private async Task<IToyRepository> CreateToyRepositoryAsync(IEnumerable<Toy> initialValues)
         {
-            await _context.AddRangeAsync(initialValues);
+            var toys = initialValues.ToArray();
+            await _context.AddRangeAsync(toys);
             await _context.SaveChangesAsync();
+            
+            foreach (var toy in toys)
+                _context.Entry(toy).State = EntityState.Detached;
+
             return new ToyRepository(_context, HttpContextAccessor);
         }
 
-        protected async Task<IToyManager> CreateToyManagerAsync(IEnumerable<Toy> initialValues = null) =>
-            new ToyManager(await CreateToyRepositoryAsync(initialValues), SaveProvider, _mapper);
+        private IToyImageRepository CreateToyImageRepository() => 
+            new ToyImageRepository(_context, HttpContextAccessor);
+
+        protected async Task<(IToyManager, FakePictureManager)> CreateToyManagerAsync(IEnumerable<Toy> initialValues = null)
+        {
+            var pictureManager = new FakePictureManager();
+            var toyManager = new ToyManager(await CreateToyRepositoryAsync(initialValues),pictureManager, CreateToyImageRepository(), SaveProvider,
+                _mapper);
+            return (toyManager, pictureManager);
+        }
     }
 }

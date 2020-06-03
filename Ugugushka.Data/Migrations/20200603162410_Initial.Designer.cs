@@ -10,7 +10,7 @@ using Ugugushka.Data;
 namespace Ugugushka.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200522175109_Initial")]
+    [Migration("20200603162410_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -207,8 +207,8 @@ namespace Ugugushka.Data.Migrations
                         .HasMaxLength(500);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(40)")
-                        .HasMaxLength(40);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -223,8 +223,8 @@ namespace Ugugushka.Data.Migrations
             modelBuilder.Entity("Ugugushka.Data.Models.ToyImage", b =>
                 {
                     b.Property<string>("PublicId")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(450)")
+                        .HasMaxLength(450);
 
                     b.Property<string>("Format")
                         .HasColumnType("nvarchar(10)")
@@ -250,9 +250,6 @@ namespace Ugugushka.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("AvatarUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

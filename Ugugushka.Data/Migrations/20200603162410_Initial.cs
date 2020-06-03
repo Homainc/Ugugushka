@@ -39,8 +39,7 @@ namespace Ugugushka.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    AvatarUrl = table.Column<string>(nullable: true)
+                    AccessFailedCount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -192,7 +191,7 @@ namespace Ugugushka.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 40, nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Count = table.Column<int>(nullable: false),
@@ -213,7 +212,7 @@ namespace Ugugushka.Data.Migrations
                 name: "ToyImages",
                 columns: table => new
                 {
-                    PublicId = table.Column<string>(maxLength: 50, nullable: false),
+                    PublicId = table.Column<string>(maxLength: 450, nullable: false),
                     ToyId = table.Column<int>(nullable: false),
                     IsMain = table.Column<bool>(nullable: false),
                     Format = table.Column<string>(maxLength: 10, nullable: true)

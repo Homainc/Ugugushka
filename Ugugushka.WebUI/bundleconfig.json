@@ -1,0 +1,10 @@
+[
+  {
+    "outputFileName": "wwwroot/css/bundle.css",
+    "inputFiles": [
+      "wwwroot/css/error_styles.css",
+      "wwwroot/css/loader.css",
+      "wwwroot/css/site.css"
+    ]
+  }
+]

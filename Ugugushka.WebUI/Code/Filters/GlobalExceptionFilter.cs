@@ -17,13 +17,6 @@ namespace Ugugushka.WebUI.Code.Filters
                         ViewName = "_NotFound"
                     };
                     break;
-                default:
-                    context.Result = new ViewResult
-                    {
-                        StatusCode = 500,
-                        ViewName = "_Error"
-                    };
-                    break;
             }
         }
     }

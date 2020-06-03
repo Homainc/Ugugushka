@@ -12,7 +12,7 @@
         </div>
     }
     <h2>Игрушки (@Model.TotalItems)</h2>
-    <a class="btn btn-primary" href="@Url.Action("AddToy", "Toy")">Добавить</a>
+    <a class="btn btn-primary" href="@Url.Action("AddToy", "Admin")">Добавить</a>
     <table class="table mt-3">
         <thead>
         <tr>
@@ -38,7 +38,8 @@
                 <td>@toy.Price</td>
                 <td>@Html.IsOnStock(toy.IsOnStock)</td>
                 <td>
-                    @using (Html.BeginForm("Delete", "Toy"))
+                    @Html.ActionLink("Изменить","EditToy" , new {Id = toy.Id})
+                    @using (Html.BeginForm("Delete", "Admin"))
                     {
                         @Html.Hidden("Id", toy.Id)
                         <input type="submit" value="Удалить"/>

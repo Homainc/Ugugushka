@@ -16,6 +16,8 @@ namespace Ugugushka.Data.Models
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .ValueGeneratedOnAdd();
             builder.Property(x => x.Name).HasMaxLength(50);
             builder.HasOne(x => x.Partition)
                 .WithMany()

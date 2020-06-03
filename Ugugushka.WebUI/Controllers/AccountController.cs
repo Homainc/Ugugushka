@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,11 +14,13 @@ namespace Ugugushka.WebUI.Controllers
     public class AccountController : AbstractController
     {
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
-        public AccountController(SignInManager<User> signInManager, IMapper mapper) :
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper) :
             base(mapper)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -32,24 +35,24 @@ namespace Ugugushka.WebUI.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var result = await _signInManager.PasswordSignInAsync(model.Email.ToUserName(),
-                model.Password, true, false);
-            if (result.Succeeded)
+
+            if (await _userManager.FindByEmailAsync(model.Email) is var user && user != null)
             {
-                if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+                if (result.Succeeded)
                 {
-                    return Redirect(model.ReturnUrl);
-                }
-                else
-                {
+                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                        return Redirect(model.ReturnUrl);
+
                     return RedirectToAction("Index", "Home");
                 }
+
+                ModelState.AddModelError(nameof(model.Password), "Неправильный логин и (или) пароль");
             }
             else
             {
                 ModelState.AddModelError(nameof(model.Password), "Неправильный логин и (или) пароль");
             }
-
             return View(model);
         }
 

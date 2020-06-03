@@ -10,14 +10,15 @@
 
 <div class="my-5">
         <h2>Добавить товар</h2>
-        @using (Html.BeginForm("AddToy", "Toy", FormMethod.Post, htmlAttributes: new { @enctype = "multipart/form-data", @id = "form" }))
+        @using (Html.BeginForm("AddToy", "Admin", FormMethod.Post, htmlAttributes: new { @enctype = "multipart/form-data", @id = "form" }))
         {
             @Html.HiddenFor(x => x.Id)
             @foreach (var property in ViewData.ModelMetadata.Properties)
             {
                 if (property.PropertyName != "Id" && 
                     property.PropertyName != "Images" && 
-                    property.PropertyName != "Cloudinary")
+                    property.PropertyName != "Cloudinary" &&
+                    property.PropertyName != "CategoryId")
                 {
                     <div class="form-group">
                         <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
@@ -46,14 +47,11 @@
                         <div id="plus_icon" class="d-flex upload-icon justify-content-center align-items-center">
                             <i class="fas fa-plus"></i>
                         </div>
-                        <div id="loader" class="d-flex loader">
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                        </div>
+                        <div id="loader" class="loader" style="display: none;"></div>
                     </label>
-                    <input hidden type="file" name="image" id="image" />
+                    <input hidden type="file" name="image" id="image" accept="image/png, image/jpeg"/>
                 </div>
+                <div id="upload_error_block" class="field-validation-error" style="display: none;"></div>
                 @Html.ValidationMessageFor(x => x.Images)
             </div>
 
@@ -86,12 +84,11 @@
         const loader = $("#loader");
         const plusIcon = $("#plus_icon");
         const uploadBtn = $("#upload_btn");
+        const uploadErrorBlock = $('#upload_error_block');
 
         $(document).ready(function() {
             updateImageArray();
             updateInputArray();
-            loader.toggle();
-            loader.toggleClass('d-flex');
         });
 
         $("#image").on("change",
@@ -111,7 +108,7 @@
                 uploadBtn.toggleClass('d-flex');
                 uploadBtn.toggleClass('collapse');
                 isUploadBtnHided = !isUploadBtnHided;
-            } else if(imgArray.length < 5 && isUploadBtnHided) {
+            } else if (imgArray.length < 5 && isUploadBtnHided) {
                 uploadBtn.toggleClass('d-flex');
                 uploadBtn.toggleClass('collapse');
                 isUploadBtnHided = !isUploadBtnHided;
@@ -134,11 +131,13 @@
         }
 
         function appendImage(publicId, format, index) {
-            $("<img class='d-flex mr-2' height='150' width='150'/>")
-                .attr('src', `${cloudPath}/${publicId}.${format}`)
+            const div = $("<div class='img-preview'></div>")
                 .attr('data-index', index)
                 .on('click', deleteImage)
-                .appendTo(imgBlock);
+            $("<img class='d-flex mr-2' height='130' width='130'/>")
+                .attr('src', `${cloudPath}/${publicId}.${format}`)
+                .appendTo(div);
+            div.appendTo(imgBlock);
         }
 
         function appendImageInput(publicId, format, index) {
@@ -157,6 +156,12 @@
             updateUploadBtn();
         }
 
+        function onUploadError(e) {
+            toggleUploading();
+            uploadErrorBlock.toggle(true);
+            uploadErrorBlock.text("Некорректное изображение либо размер картинки превышает 10,49 Mb!");
+        }
+
         $('img.load-preview').on('click', deleteImage);
 
         function uploadImage() {
@@ -172,14 +177,19 @@
                             body: form
                         })
                     .then(r => {
-                        r.json().then(r => {
-                            appendImage(r.publicId, r.format, imgArray.length);
-                            appendImageInput(r.publicId, r.format, imgArray.length);
-                            imgArray.push({ publicId: r.publicId, format: r.format });
-                            toggleUploading();
-                            updateUploadBtn();
-                        });
-                    });
+                        if (r.ok) {
+                            r.json().then(r => {
+                                appendImage(r.publicId, r.format, imgArray.length);
+                                appendImageInput(r.publicId, r.format, imgArray.length);
+                                imgArray.push({ publicId: r.publicId, format: r.format });
+                                toggleUploading();
+                                updateUploadBtn();
+                                uploadErrorBlock.toggle(false);
+                            });
+                        } else {
+                            onUploadError(r.error);
+                        }
+                    }).catch(onUploadError);
             }
         }
     </script>

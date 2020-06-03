@@ -13,15 +13,11 @@ namespace Ugugushka.Domain.DtoModels
         public bool IsOnStock => Count > 0;
     }
 
-    public class ToyCreateDto : BaseToyDto
-    {
-        public int? CategoryId { get; set; }
-        public IList<ToyImageDto> Images { get; set; }
-    }
-
-    public class ToyUpdateDto : ToyCreateDto
+    public class ToyUpdateDto : BaseToyDto
     {
         public int Id { get; set; }
+        public int? CategoryId { get; set; }
+        public IList<ToyImageDto> Images { get; set; }
     }
 
     public class ToyDto : ToyUpdateDto
