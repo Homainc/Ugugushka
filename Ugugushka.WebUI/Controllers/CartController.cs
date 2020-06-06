@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ugugushka.Domain.Code.Interfaces;
@@ -14,13 +15,15 @@ namespace Ugugushka.WebUI.Controllers
     public class CartController : AbstractController
     {
         private readonly IToyManager _toyManager;
-        public CartController(IToyManager toyManager, IMapper mapper) : base(mapper)
+        private readonly Cloudinary _cloudinary;
+        public CartController(IPictureManager pictureManager, IToyManager toyManager, IMapper mapper) : base(mapper)
         {
+            _cloudinary = pictureManager.Cloudinary;
             _toyManager = toyManager;
         }
 
         public IActionResult Index(Cart cart, string returnUrl) =>
-            View(new CartIndexViewModel
+            View(new CartIndexViewModel(_cloudinary)
             {
                 Cart = cart,
                 ReturnUrl = returnUrl
@@ -49,5 +52,7 @@ namespace Ugugushka.WebUI.Controllers
 
             return RedirectToAction("Index", new {returnUrl});
         }
+
+        public PartialViewResult CartButton(Cart cart) => PartialView(cart);
     }
 }

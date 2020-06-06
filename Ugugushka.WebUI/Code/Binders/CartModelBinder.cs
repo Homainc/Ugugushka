@@ -7,16 +7,9 @@ namespace Ugugushka.WebUI.Code.Binders
 {
     public class CartModelBinder : IModelBinder
     {
-        private const string SessionKey = "Cart";
-
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            var cart = bindingContext.HttpContext.Session?.GetComplexData<Cart>(SessionKey);
-            if (cart == null)
-            {
-                cart = new Cart();
-                bindingContext.HttpContext.Session?.SetComplexData(SessionKey, cart);
-            }
+            var cart = bindingContext.HttpContext.Session.GetCartFromSession();
 
             bindingContext.Result = ModelBindingResult.Success(cart);
             return Task.CompletedTask;

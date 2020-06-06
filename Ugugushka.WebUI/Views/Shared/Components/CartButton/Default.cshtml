@@ -1,0 +1,9 @@
+﻿@model Ugugushka.Domain.DtoModels.Cart
+
+<a class="btn btn-primary d-flex align-items-center justify-content-center" href="@Url.Action("Index", "Cart")">
+    <i class="d-flex fas fa-shopping-cart mr-1"></i>
+    @if (Model.Lines.Any())
+    {
+        <span class="cart-length">@Model.Lines.Count()</span>  
+    }
+</a>

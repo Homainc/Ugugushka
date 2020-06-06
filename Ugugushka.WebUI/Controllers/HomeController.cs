@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ugugushka.Common.Concretes;
 using Ugugushka.Domain.Code.Interfaces;
+using Ugugushka.Domain.DtoModels;
 using Ugugushka.WebUI.Code.Abstractions;
 using Ugugushka.WebUI.ViewModels;
 
@@ -21,8 +23,9 @@ namespace Ugugushka.WebUI.Controllers
             _pictureManager = pictureManager;
         }
 
-        public async Task<IActionResult> Index([FromQuery] ToyFilterInfo filter, int page = 1)
+        public async Task<IActionResult> Index([FromQuery] ToyFilterInfo filter, Cart cart, int page = 1)
         {
+            ViewBag.CartLength = cart.Lines.Count();
             return View(new HomeIndexViewModel(_pictureManager.Cloudinary) {
                     PagedToys = await _toyManager.GetPagedFilteredAsync(filter, new PageInfo {PageNumber = page, PageSize = ToysPageSize})});
         }

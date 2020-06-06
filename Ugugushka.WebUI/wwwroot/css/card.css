@@ -1,0 +1,42 @@
+﻿.card-light {
+    background: #fff;
+    -webkit-box-shadow: 0 8px 15px rgba(0,0,0,.1);
+    box-shadow: 0 8px 15px rgba(0,0,0,.1);
+    border-radius: 10px;
+}
+
+.card-text {
+    text-align: left;
+    color: #b1b1b1;
+}
+
+.card-price {
+    text-align: left;
+    color: #19a4a8;
+    font-size: 2rem;
+}
+
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+}
+
+.card {
+    display: flex;
+    padding: 2rem;
+    background: #fdfdfd;
+    border-radius: 10px;
+    flex-direction: column;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #fafafa;
+}
+
+.card-header h1,h2,h3,h4,h5 {
+    margin: 0;
+    padding: 0;
+}
+
+.card-header {
+    margin-bottom: 2rem;
+}

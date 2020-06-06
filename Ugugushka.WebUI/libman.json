@@ -4,11 +4,7 @@
   "libraries": [
     {
       "library": "bootstrap@4.4.1",
-      "destination": "wwwroot/libs/bootstrap/",
-      "files": [
-        "dist/css/bootstrap-grid.min.css.map",
-        "dist/css/bootstrap-grid.min.css"
-      ]
+      "destination": "wwwroot/libs/bootstrap/"
     },
     {
       "provider": "cdnjs",

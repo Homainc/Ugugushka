@@ -1,0 +1,91 @@
+﻿.btn {
+    text-decoration: none;
+    border: none;
+    display: inline-block;
+    padding: 0 20px;
+    line-height: 45px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 1px;
+    font-weight: 500;
+    transition: .3s;
+    cursor: pointer;
+    float: none;
+}
+
+.btn-primary {
+    -webkit-box-shadow: 0 8px 15px rgba(0,0,0,.1);
+    box-shadow: 0 8px 15px rgba(0,0,0,.1);
+    border-radius: 45px;
+    border: none;
+    background: #fff;
+    color: var(--text-primary);
+}
+
+.btn-turkquoise {
+    border-radius: 15px;
+    border: 1px solid var(--color-torquoise);
+    background: var(--color-torquoise);
+    color: #fdfdfd;
+}
+
+a, 
+.btn-link {
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    float: left;
+    font-size: 1rem;
+    display: block;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    color: var(--color-torquoise);
+}
+
+a:hover, 
+.btn-link:hover {
+    text-decoration: none;
+}
+
+.btn-turkquoise:hover {
+    box-shadow: 0 0 6px var(--color-torquoise);
+}
+
+.btn-secondary {
+    border-radius: 15px;
+    color: var(--text-primary);
+    border: 1px solid #d1d1d1;
+}
+
+.search-btn {
+    border-radius: 0 45px 45px 0;
+    background: #fff;
+}
+
+.btn-upload-img {
+    background: #fff;
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid #d1d1d1;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+.btn-secondary-hover,
+.btn-upload-img:hover,
+.btn-secondary:hover {
+    color: var(--color-torquoise);
+    border: 1px solid var(--color-torquoise);
+}
+
+.btn-upload-img i {
+    padding: 0;
+    margin: 0;
+}
+
+.upload-icon {
+    width: 60px;
+    height: 60px;
+}

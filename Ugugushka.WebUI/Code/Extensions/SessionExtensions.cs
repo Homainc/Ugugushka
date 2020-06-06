@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Ugugushka.Domain.DtoModels;
+using Ugugushka.WebUI.Code.Constants;
 
 namespace Ugugushka.WebUI.Code.Extensions
 {
@@ -9,13 +11,23 @@ namespace Ugugushka.WebUI.Code.Extensions
         {
             var data = session.GetString(key);
 
-            if (data == null)
-                return default(T);
-            
-            return JsonConvert.DeserializeObject<T>(data);
+            return data != null ? JsonConvert.DeserializeObject<T>(data) : default;
         }
 
         public static void SetComplexData(this ISession session, string key, object value) =>
             session.SetString(key, JsonConvert.SerializeObject(value));
+
+        public static Cart GetCartFromSession(this ISession session)
+        {
+            var cart = session?.GetComplexData<Cart>(SessionKeyDefaults.Cart);
+
+            if (cart != null)
+                return cart;
+
+            cart = new Cart();
+            session?.SetComplexData(SessionKeyDefaults.Cart, cart);
+
+            return cart;
+        }
     }
 }

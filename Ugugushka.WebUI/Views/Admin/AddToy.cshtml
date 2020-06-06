@@ -3,14 +3,11 @@
     ViewBag.Title = "Управление - Добавить товар";
 }
 
-@section Css
-{
-    <link rel="stylesheet" href="~/css/loader.css"/>
-}
-
-<div class="my-5">
+<div class="card my-5">
+    <div class="card-header">
         <h2>Добавить товар</h2>
-        @using (Html.BeginForm("AddToy", "Admin", FormMethod.Post, htmlAttributes: new { @enctype = "multipart/form-data", @id = "form" }))
+    </div>
+    @using (Html.BeginForm("AddToy", "Admin", FormMethod.Post, htmlAttributes: new { @enctype = "multipart/form-data", @id = "form" }))
         {
             @Html.HiddenFor(x => x.Id)
             @foreach (var property in ViewData.ModelMetadata.Properties)
@@ -55,8 +52,8 @@
                 @Html.ValidationMessageFor(x => x.Images)
             </div>
 
-            <input type="submit" class="btn btn-primary" value="Сохранить" />
-            @Html.ActionLink("Назад", "Toys", null, htmlAttributes: new { @class = "btn btn-primary" })
+            <input type="submit" class="btn btn-turkquoise mr-2" value="Сохранить" />
+            @Html.ActionLink("Назад", "Toys", null, htmlAttributes: new { @class = "btn btn-secondary" })
 
             <div id="img_data"></div>
         }
@@ -133,7 +130,7 @@
         function appendImage(publicId, format, index) {
             const div = $("<div class='img-preview'></div>")
                 .attr('data-index', index)
-                .on('click', deleteImage)
+                .on('click', deleteImage);
             $("<img class='d-flex mr-2' height='130' width='130'/>")
                 .attr('src', `${cloudPath}/${publicId}.${format}`)
                 .appendTo(div);
@@ -153,6 +150,7 @@
             e.target.remove();
             imgArray.splice(e.target.dataset.index, 1);
             updateInputArray();
+            updateImageArray();
             updateUploadBtn();
         }
 

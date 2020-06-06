@@ -17,8 +17,7 @@
             }
         </div>
     </div>
-    <div class="d-flex lcard card-light col-6 flex-column">
-
+    <div class="col-6 d-flex flex-column card">
         <div class="d-flex card-header">
             <h1>@Model.Toy.Name</h1>
         </div>
@@ -30,14 +29,13 @@
         </div>
         @using (Html.BeginForm("AddToCart", "Cart", new { ReturnUrl = Context.Request.Path }, FormMethod.Post, true, new { @class = "card-actions" }))
         {
-
             @Html.Hidden("Id", @Model.Toy.Id)
-            <div class="form-group d-flex flex-column">
+            <div class="d-flex flex-column form-group">
                 @Html.LabelFor(x => x.Quantity, htmlAttributes: new { @class = "d-flex mb-2" })
-                @Html.TextBoxFor(x => x.Quantity, null, new { @class = "num-input" })
+                @Html.TextBoxFor(x => x.Quantity, null, new { @class = "form-control text-input" })
                 @Html.ValidationMessageFor(x => x.Quantity)
             </div>
-            <input type="submit" class="btn btn-secondary d-flex mt-2 mb-4" value="В корзину" />
+            <input type="submit" class="d-flex btn btn-turkquoise mt-2" value="В корзину" />
         }
     </div>
 </div>

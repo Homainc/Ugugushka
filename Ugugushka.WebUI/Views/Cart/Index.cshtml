@@ -3,36 +3,40 @@
     ViewBag.Title = "Корзина";
 }
 
-<div>
-    <table>
-        <thead>
-        <tr>
-            <th>Кол-во</th>
-            <th>Товар</th>
-            <th>Цена, р.</th>
-            <th>Сумма, р.</th>
-        </tr>
-        </thead>
-        <tbody>
+<div class="card my-5">
+    <div class="card-header">
+        <h2>Корзина (@Model.Cart.Lines.Count())</h2>
+    </div>
+
+    <div class="d-flex flex-column">
         @foreach (var line in Model.Cart.Lines)
         {
-            <tr>
-                <td>@line.Quantity</td>
-                <td>@line.Toy.Name</td>
-                <td>@line.Toy.Price</td>
-                <td>@(line.Quantity * line.Toy.Price)</td>
-            </tr>
+            <div class="d-flex align-items-center cart-item">
+                <div class="col-2 d-flex py-2">
+                    <img height="90" width="90" src="@Model.Cloudinary.Api.UrlImgUp.Format(line.Toy.MainImage.Format).BuildUrl(line.Toy.MainImage.PublicId)" alt="@line.Toy.Name"/>
+                </div>
+                <a class="col-6 d-flex" href="@Url.Action("ToyInfo", "Home", new {line.Toy.Id})">
+                    @line.Toy.Name
+                </a>
+                <div class="col-2 d-flex">
+                    Кол-во: @line.Quantity
+                </div>
+                <div class="ml-auto d-flex">
+                    <strong>@(line.Quantity * line.Toy.Price) руб.</strong>
+                </div>
+            </div>
         }
-        </tbody>
-        <tfoot>
-        <tr>
-            <td colspan="3">Итого:</td>
-            <td>@Model.Cart.ComputeTotalValue()</td>
-        </tr>
-        </tfoot>
-    </table>
+        @if (Model.Cart.Lines.Count() > 0)
+        {
+            <div class="d-flex align-items-center cart-item py-3">
+                <div class="ml-auto d-flex">
+                    <strong>Итого: @Model.Cart.ComputeTotalValue() руб.</strong>
+                </div>
+            </div>   
+        }
+    </div>
     
-    <div>
+    <div class="card-actions">
         <a href="@Model.ReturnUrl">Продолжить покупки</a>
     </div>
 </div>

@@ -4,7 +4,12 @@
     "inputFiles": [
       "wwwroot/css/error_styles.css",
       "wwwroot/css/loader.css",
-      "wwwroot/css/site.css"
+      "wwwroot/css/site.css",
+      "wwwroot/css/buttons.css",
+      "wwwroot/css/card.css",
+      "wwwroot/css/form-controls.css",
+      "wwwroot/libs/bootstrap/dist/css/bootstrap-grid.css",
+      "wwwroot/libs/font-awesome/css/all.css"
     ]
   }
 ]

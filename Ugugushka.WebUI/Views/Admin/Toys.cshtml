@@ -4,25 +4,27 @@
     ViewBag.Title = "Управление - Игрушки";
 }
 
-<div class="mt-5">
+<div class="card mt-5">
+    <div class="card-header">
+        <div class="row align-items-center">
+            <h2 class="d-flex col-5">Игрушки (@Model.TotalItems)</h2>
+            <a class="ml-auto mr-2 btn btn-secondary" href="@Url.Action("AddToy", "Admin")">Добавить</a>
+        </div>
+    </div>
+
     @if (TempData["message"] != null)
     {
-        <div>
-            @TempData["message"]
-        </div>
+    <div>
+        @TempData["message"]
+    </div>
     }
-    <h2>Игрушки (@Model.TotalItems)</h2>
-    <a class="btn btn-primary" href="@Url.Action("AddToy", "Admin")">Добавить</a>
     <table class="table mt-3">
         <thead>
         <tr>
-            <th>Ид</th>
             <th>Название</th>
-            <th>Описание</th>
             <th>Категория</th>
             <th>Раздел</th>
-            <th>Цена</th>
-            <th>На складе</th>
+            <th>Цена, руб.</th>
             <th>Действия</th>
         </tr>
         </thead>
@@ -30,19 +32,16 @@
         @foreach (var toy in Model.Items)
         {
             <tr>
-                <td>@toy.Id</td>
                 <td>@toy.Name</td>
-                <td>@toy.Description</td>
                 <td>@Html.DefaultString(toy.CategoryName, "Нет")</td>
                 <td>@Html.DefaultString(toy.PartitionName, "Нет")</td>
                 <td>@toy.Price</td>
-                <td>@Html.IsOnStock(toy.IsOnStock)</td>
                 <td>
-                    @Html.ActionLink("Изменить","EditToy" , new {Id = toy.Id})
+                    @Html.ActionLink("Изменить","EditToy" , new {Id = toy.Id}, new {@class = "btn-link"})
                     @using (Html.BeginForm("Delete", "Admin"))
                     {
                         @Html.Hidden("Id", toy.Id)
-                        <input type="submit" value="Удалить"/>
+                        <input class="btn-link ml-2" type="submit" value="Удалить"/>
                     }
                 </td>
             </tr>

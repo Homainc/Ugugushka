@@ -4,9 +4,9 @@
 }
 
 <div class="row justify-content-center mt-5">
-    <div class="card col-6">
-        <div class="d-flex mb-4 card-header">
-            Авторизация
+    <div class="card1 col-6 px-4">
+        <div class="card1-header">
+            <h2>Авторизация</h2>
         </div>
         @using (Html.BeginForm("Login", "Account", new {ReturlUrl = @Model.ReturnUrl}, FormMethod.Post, true, new { }))
         {
@@ -25,7 +25,7 @@
                 @Html.CheckBoxFor(x => x.RememberMe, new {@class = ""})
             </div>
 
-            <input class="btn btn-secondary d-flex" type="submit" value="Войти"/>
+            <input class="btn btn-turkquoise w-100" type="submit" value="Войти" />
         }
     </div>
 </div>
