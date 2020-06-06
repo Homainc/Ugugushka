@@ -8,14 +8,13 @@
     text-transform: uppercase;
     text-align: center;
     letter-spacing: 1px;
-    font-weight: 500;
-    transition: .3s;
+    transition-duration: .3s;
+    transition-property: color, background, border, box-shadow;
     cursor: pointer;
     float: none;
 }
 
 .btn-primary {
-    -webkit-box-shadow: 0 8px 15px rgba(0,0,0,.1);
     box-shadow: 0 8px 15px rgba(0,0,0,.1);
     border-radius: 45px;
     border: none;
@@ -23,7 +22,13 @@
     color: var(--text-primary);
 }
 
-.btn-turkquoise {
+.btn-primary-hover,
+.btn-primary:hover,
+.search-btn:hover {
+    color: var(--color-torquoise);
+}
+
+.btn-turquoise {
     border-radius: 15px;
     border: 1px solid var(--color-torquoise);
     background: var(--color-torquoise);
@@ -49,7 +54,8 @@ a:hover,
     text-decoration: none;
 }
 
-.btn-turkquoise:hover {
+.btn-turquoise-hover,
+.btn-turquoise:hover {
     box-shadow: 0 0 6px var(--color-torquoise);
 }
 

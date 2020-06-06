@@ -153,11 +153,12 @@ table.table th, td {
     box-shadow: 0 0 5px rgba(0,0,0,.2);
     border: 1px solid #F4FEFF;
     transition-duration: 0.3s;
+    transition-property: border;
 }
 
 .toy-item:hover {
-        border: 1px solid var(--color-secondary);
-    }
+    border: 1px solid var(--color-torquoise);
+}
 
 .toy-header {
     display: -webkit-box;
@@ -176,12 +177,9 @@ table.table th, td {
     }
 
 .toy-price {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    color: #19a4a8;
+    color: var(--color-torquoise);
     font-weight: bold;
-    -ms-flex-item-align: end;
     align-self: end;
     margin-top: 1rem;
 }
@@ -216,6 +214,7 @@ table.table th, td {
     border-radius: 10px;
     box-shadow: 0 0 5px #000000;
     box-shadow: 0 0 5px rgba(0,0,0,.2);
+    background: #fdfdfd;
 }
 
 .toy-image-thumbs img:first-child {
@@ -229,6 +228,7 @@ table.table th, td {
     border-radius: 10px;
     box-shadow: 0 0 5px #000000;
     box-shadow: 0 0 5px rgba(0,0,0,.2);
+    background: #fdfdfd;
 }
 
 .collapse {
@@ -288,6 +288,16 @@ table.table th, td {
     color: white;
 }
 
+.alert {
+    border-radius: 5px;
+    padding: 1rem 2rem;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
 .btn {
     text-decoration: none;
     border: none;
@@ -298,14 +308,13 @@ table.table th, td {
     text-transform: uppercase;
     text-align: center;
     letter-spacing: 1px;
-    font-weight: 500;
-    transition: .3s;
+    transition-duration: .3s;
+    transition-property: color, background, border, box-shadow;
     cursor: pointer;
     float: none;
 }
 
 .btn-primary {
-    -webkit-box-shadow: 0 8px 15px rgba(0,0,0,.1);
     box-shadow: 0 8px 15px rgba(0,0,0,.1);
     border-radius: 45px;
     border: none;
@@ -313,7 +322,13 @@ table.table th, td {
     color: var(--text-primary);
 }
 
-.btn-turkquoise {
+.btn-primary-hover,
+.btn-primary:hover,
+.search-btn:hover {
+    color: var(--color-torquoise);
+}
+
+.btn-turquoise {
     border-radius: 15px;
     border: 1px solid var(--color-torquoise);
     background: var(--color-torquoise);
@@ -339,7 +354,8 @@ a:hover,
     text-decoration: none;
 }
 
-.btn-turkquoise:hover {
+.btn-turquoise-hover,
+.btn-turquoise:hover {
     box-shadow: 0 0 6px var(--color-torquoise);
 }
 
@@ -393,8 +409,9 @@ a:hover,
 
 .card-price {
     text-align: left;
-    color: #19a4a8;
+    color: var(--color-torquoise);
     font-size: 2rem;
+    margin-bottom: 2rem;
 }
 
 .card-actions {

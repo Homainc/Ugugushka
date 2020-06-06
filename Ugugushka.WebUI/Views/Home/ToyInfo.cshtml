@@ -1,10 +1,10 @@
 ﻿@model ToyInfoViewModel
 @{
-    ViewBag.Title = Model.Toy.Name;
+    ViewBag.Title = Model.Toy.Name.WithDomain();
 }
 
-<div class="row mt-5">
-    <div class="d-flex col-6 flex-column">
+<div class="d-flex flex-column flex-md-row mt-5">
+    <div class="d-flex col-12 col-md-6 flex-column mb-3">
         <div class="d-flex">
             <img class="toy-image-main" src="@Model.Cloudinary.Api.UrlImgUp.Format(Model.Toy.MainImage.Format).BuildUrl(Model.Toy.MainImage.PublicId)" />
         </div>
@@ -17,7 +17,7 @@
             }
         </div>
     </div>
-    <div class="col-6 d-flex flex-column card">
+    <div class="col-12 col-md-6 mb-3 d-flex flex-column card">
         <div class="d-flex card-header">
             <h1>@Model.Toy.Name</h1>
         </div>
@@ -35,7 +35,7 @@
                 @Html.TextBoxFor(x => x.Quantity, null, new { @class = "form-control text-input" })
                 @Html.ValidationMessageFor(x => x.Quantity)
             </div>
-            <input type="submit" class="d-flex btn btn-turkquoise mt-2" value="В корзину" />
+            <input type="submit" class="d-flex btn btn-turquoise mt-2" value="В корзину" />
         }
     </div>
 </div>

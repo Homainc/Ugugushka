@@ -8,6 +8,7 @@ using Ugugushka.Domain.Code.Extensions;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.DtoModels;
 using Ugugushka.WebUI.Code.Abstractions;
+using Ugugushka.WebUI.Code.Constants;
 using Ugugushka.WebUI.ViewModels;
 
 namespace Ugugushka.WebUI.Controllers
@@ -34,14 +35,23 @@ namespace Ugugushka.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddToy() =>
-            View(new AddToyViewModel(_pictureManager.Cloudinary));
+        public IActionResult AddToy()
+        {
+            ViewBag.Title = PageNameDefaults.AddToy.WithDomain();
+            ViewBag.ActionTitle = PageNameDefaults.AddToy;
+
+            return View(new AddToyViewModel(_pictureManager.Cloudinary));
+        }
 
         public async Task<IActionResult> EditToy(int id)
-        {
+        { 
+
             var model = Mapper.Map<AddToyViewModel>(await _toyManager.GetByIdAsync(id));
-            
+
+            ViewBag.Title = PageNameDefaults.EditToy.WithDomain();
+            ViewBag.ActionTitle = PageNameDefaults.EditToy;
             model.Cloudinary = _pictureManager.Cloudinary;
+
             return View("AddToy", model);
         }
 
@@ -53,10 +63,13 @@ namespace Ugugushka.WebUI.Controllers
             {
                 var createdToy = await _toyManager.SaveAsync(Mapper.Map<AddToyViewModel, ToyUpdateDto>(toy));
 
-                TempData["message"] = $"{toy.Name} has been saved";
+                TempData["message"] = $"{createdToy.Name} был(а) успешно сохранён(а)!";
                 return RedirectToAction("Toys");
             }
 
+            var actionName = toy.Id == 0 ? PageNameDefaults.AddToy : PageNameDefaults.EditToy;
+            ViewBag.Title = actionName.WithDomain();
+            ViewBag.ActionTitle = actionName;
             toy.Cloudinary = _pictureManager.Cloudinary;
             return View(toy);
         }

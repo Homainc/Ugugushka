@@ -14,20 +14,20 @@
 </head>
 <body>
 <header>
-    <div class="container-lg container-xl">
+    <div class="container-lg">
         <div class="row py-4 align-items-center justify-content-between">
-            <div class="col-3 col-sm-3 col-md-4 col-lg-4 col-xl-4 d-flex">
+            <div class="col-3 col-md-6 col-lg-5 d-flex">
                 <img src="~/img/green_logo.png" height="90" width="90" alt="Угугушка" />
-                <div class="ml-3 align-self-center d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                <div class="ml-3 align-self-center d-none d-md-block">
                     <h1 class="logo-text">Ugugushka.by</h1>
                     <h2 class="logo-subtext">Интернет-магазин игрушек</h2>
                 </div>
             </div>
-            <div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-3 d-flex search-block">
-                <input class="col-9 text-input-bl" type="text" placeholder="Найти игрушки" />
-                <button class="col-3 btn search-btn" type="submit"><i class="fas fa-search"></i></button>
+            <div class="col-6 col-md-3 col-lg-5 d-flex search-block">
+                <input class="col-9 col-lg-10 text-input-bl" type="text" placeholder="Найти игрушки" />
+                <button class="col-3 col-lg-2 btn search-btn" type="submit"><i class="fas fa-search"></i></button>
             </div>
-            <div class="col-4 d-flex ml-auto">
+            <div class="col-3 col-lg-2 d-flex ml-auto">
                 @if (User.Identity.IsAuthenticated)
                 {
                     @using (Html.BeginForm("Logout","Account", new { ReturnUrl = Context.Request.Path }))

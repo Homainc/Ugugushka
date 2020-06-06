@@ -1,20 +1,20 @@
 ﻿@using Ugugushka.WebUI.HtmlHelpers
 @model IPagedResult<ToyItemViewModel>
 @{
-    ViewBag.Title = "Управление - Игрушки";
+    ViewBag.Title = PageNameDefaults.AdminToys.WithDomain();
 }
 
 <div class="card mt-5">
     <div class="card-header">
         <div class="row align-items-center">
             <h2 class="d-flex col-5">Игрушки (@Model.TotalItems)</h2>
-            <a class="ml-auto mr-2 btn btn-secondary" href="@Url.Action("AddToy", "Admin")">Добавить</a>
+            <a class="ml-auto mr-4 btn btn-secondary" href="@Url.Action("AddToy", "Admin")">Добавить</a>
         </div>
     </div>
 
     @if (TempData["message"] != null)
     {
-    <div>
+    <div class="alert alert-success">
         @TempData["message"]
     </div>
     }
@@ -50,7 +50,7 @@
     </table>
 
     <div class="d-flex align-self-center mt-3">
-        @Html.PageLinks(@Model.PageNumber, @Model.TotalPages, x => Url.Action("Toys", new {page = x}))
+        @Html.PageLinks(@Model.PageNumber, @Model.TotalPages, "btn-secondary", x => Url.Action("Toys", new {page = x}))
     </div>
 </div>
 

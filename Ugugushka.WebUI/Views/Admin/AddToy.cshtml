@@ -1,11 +1,8 @@
 ﻿@model AddToyViewModel
-@{
-    ViewBag.Title = "Управление - Добавить товар";
-}
 
 <div class="card my-5">
     <div class="card-header">
-        <h2>Добавить товар</h2>
+        <h2>@ViewBag.ActionTitle</h2>
     </div>
     @using (Html.BeginForm("AddToy", "Admin", FormMethod.Post, htmlAttributes: new { @enctype = "multipart/form-data", @id = "form" }))
         {
@@ -52,7 +49,7 @@
                 @Html.ValidationMessageFor(x => x.Images)
             </div>
 
-            <input type="submit" class="btn btn-turkquoise mr-2" value="Сохранить" />
+            <input type="submit" class="btn btn-turquoise mr-2" value="Сохранить" />
             @Html.ActionLink("Назад", "Toys", null, htmlAttributes: new { @class = "btn btn-secondary" })
 
             <div id="img_data"></div>

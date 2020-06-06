@@ -12,8 +12,9 @@
 
 .card-price {
     text-align: left;
-    color: #19a4a8;
+    color: var(--color-torquoise);
     font-size: 2rem;
+    margin-bottom: 2rem;
 }
 
 .card-actions {

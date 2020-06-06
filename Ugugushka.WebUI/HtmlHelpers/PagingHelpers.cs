@@ -8,27 +8,27 @@ namespace Ugugushka.WebUI.HtmlHelpers
 {
     public static class PagingHelpers
     {
-        private static TagBuilder CreatePageLinkElement(string text, string link, bool selected = false)
+        private static TagBuilder CreatePageLinkElement(string text, string link, string className, bool selected = false)
         {
             var tag = new TagBuilder("a");
 
             tag.MergeAttribute("href", link);
-            tag.AddCssClass("d-flex btn btn-secondary");
+            tag.AddCssClass($"d-flex btn {className}");
             tag.InnerHtml.Append(text);
 
             if (selected)
-                tag.AddCssClass("btn-secondary-hover");
+                tag.AddCssClass($"{className}-hover");
 
             return tag;
         }
 
-        public static HtmlString PageLinks(this IHtmlHelper html, int pageNumber, int totalPages,
+        public static HtmlString PageLinks(this IHtmlHelper html, int pageNumber, int totalPages, string className,
             Func<int, string> pageUrl)
         {
             var result = new StringWriter();
 
             for (int i = 1; i <= totalPages; i++)
-                CreatePageLinkElement(i.ToString(), pageUrl(i), i == pageNumber)
+                CreatePageLinkElement(i.ToString(), pageUrl(i), className, i == pageNumber)
                     .WriteTo(result, HtmlEncoder.Default);
 
             return new HtmlString(result.ToString());
