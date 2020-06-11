@@ -78,8 +78,9 @@ namespace Ugugushka.WebUI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await _toyManager.DeleteAsync(id);
+            var deletedToy = await _toyManager.DeleteAsync(id);
 
+            TempData["message"] = $"{deletedToy.Name} был(а) успешно удален(а)!";
             return RedirectToAction("Toys");
         }
     }

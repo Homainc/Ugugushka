@@ -25,7 +25,7 @@ namespace Ugugushka.Data.Models
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
             builder.Property(x => x.Name)
-                .HasMaxLength(50);
+                .HasMaxLength(70);
             builder.Property(x => x.Description)
                 .HasMaxLength(500);
             builder.Property(x => x.Price)

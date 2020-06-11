@@ -1,35 +1,36 @@
-﻿@model ToyInfoViewModel
+﻿@using Ugugushka.WebUI.Code.Extensions
+@model ToyInfoViewModel
 @{
-    ViewBag.Title = Model.Toy.Name.WithDomain();
+    ViewBag.Title = Model.Name.WithDomain();
 }
 
 <div class="d-flex flex-column flex-md-row mt-5">
     <div class="d-flex col-12 col-md-6 flex-column mb-3">
         <div class="d-flex">
-            <img class="toy-image-main" src="@Model.Cloudinary.Api.UrlImgUp.Format(Model.Toy.MainImage.Format).BuildUrl(Model.Toy.MainImage.PublicId)" />
+            <img class="toy-image-main" src="@Model.Cloudinary.BuildImgUrl(Model.MainImage.PublicId, Model.MainImage.Format)" />
         </div>
         <div class="d-flex justify-content-center align-items-center">
-            @foreach (var img in Model.Toy.ExtraImages)
+            @foreach (var img in Model.ExtraImages)
             {
                 <div class="col-2">
-                    <img class="toy-image-thumb" src="@Model.Cloudinary.Api.UrlImgUp.Format(img.Format).BuildUrl(img.PublicId)" />
+                    <img class="toy-image-thumb" src="@Model.Cloudinary.BuildImgUrl(img.PublicId, img.Format)" />
                 </div>
             }
         </div>
     </div>
     <div class="col-12 col-md-6 mb-3 d-flex flex-column card">
         <div class="d-flex card-header">
-            <h1>@Model.Toy.Name</h1>
+            <h1>@Model.Name</h1>
         </div>
         <div class="d-flex mt-2 card-text">
-            @Model.Toy.Description
+            @Html.Raw(Model.Description)
         </div>
         <div class="d-flex mt-2 card-price">
-            @Model.Toy.Price р.
+            @Model.Price р.
         </div>
         @using (Html.BeginForm("AddToCart", "Cart", new { ReturnUrl = Context.Request.Path }, FormMethod.Post, true, new { @class = "card-actions" }))
         {
-            @Html.Hidden("Id", @Model.Toy.Id)
+            @Html.Hidden("Id", @Model.Id)
             <div class="d-flex flex-column form-group">
                 @Html.LabelFor(x => x.Quantity, htmlAttributes: new { @class = "d-flex mb-2" })
                 @Html.TextBoxFor(x => x.Quantity, null, new { @class = "form-control text-input" })

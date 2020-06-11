@@ -24,6 +24,6 @@ namespace Ugugushka.Domain.DtoModels
     {
         public Category Category { get; set; }
         public ToyImageDto MainImage => Images?.FirstOrDefault(x => x.IsMain);
-        public IList<ToyImageDto> ExtraImages => Images?.Where(x => !x.IsMain).ToList();
+        public IEnumerable<ToyImageDto> ExtraImages => Images?.Where(x => !x.IsMain).ToList();
     }
 }

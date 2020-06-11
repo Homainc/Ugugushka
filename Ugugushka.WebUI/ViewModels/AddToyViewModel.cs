@@ -16,7 +16,7 @@ namespace Ugugushka.WebUI.ViewModels
         public int Id { get; set; }
 
         [DisplayName("Название")]
-        [MaxLength(50, ErrorMessage = "Количество символов названия не должно превышать 50!")]
+        [MaxLength(70, ErrorMessage = "Количество символов названия не должно превышать 70!")]
         [Required(ErrorMessage = "Вы должны ввести название!")]
         public string Name { get; set; }
 

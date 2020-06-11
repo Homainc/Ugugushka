@@ -29,22 +29,33 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var toy in Model.Items)
+        @if (!Model.Items.Any())
         {
             <tr>
-                <td>@toy.Name</td>
-                <td>@Html.DefaultString(toy.CategoryName, "Нет")</td>
-                <td>@Html.DefaultString(toy.PartitionName, "Нет")</td>
-                <td>@toy.Price</td>
-                <td>
-                    @Html.ActionLink("Изменить","EditToy" , new {Id = toy.Id}, new {@class = "btn-link"})
-                    @using (Html.BeginForm("Delete", "Admin"))
-                    {
-                        @Html.Hidden("Id", toy.Id)
-                        <input class="btn-link ml-2" type="submit" value="Удалить"/>
-                    }
+                <td colspan="5" class="empty-text">
+                    Нет игрушек
                 </td>
             </tr>
+        }
+        else
+        {
+            @foreach (var toy in Model.Items)
+            {
+                <tr>
+                    <td>@toy.Name</td>
+                    <td>@Html.DefaultString(toy.CategoryName, "Нет")</td>
+                    <td>@Html.DefaultString(toy.PartitionName, "Нет")</td>
+                    <td>@toy.Price</td>
+                    <td>
+                        @Html.ActionLink("Изменить", "EditToy", new {Id = toy.Id}, new {@class = "btn-link"})
+                        @using (Html.BeginForm("Delete", "Admin"))
+                        {
+                            @Html.Hidden("Id", toy.Id)
+                            <input class="btn-link ml-2" type="submit" value="Удалить"/>
+                        }
+                    </td>
+                </tr>
+            }
         }
         </tbody>
     </table>

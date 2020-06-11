@@ -1,11 +1,18 @@
-﻿@model CartIndexViewModel
+﻿@using Ugugushka.WebUI.Code.Extensions
+@model CartIndexViewModel
 @{
     ViewBag.Title = PageNameDefaults.Cart.WithDomain();
 }
 
 <div class="card my-5">
     <div class="card-header">
-        <h2>Ваша корзина (@Model.Cart.Lines.Count())</h2>
+        <div class="d-flex align-items-center">
+            <h2 class="d-flex col-5 px-0">Ваша корзина (@Model.Cart.Lines.Count())</h2>
+            @using (Html.BeginForm("Clear", "Cart", new { ReturnUrl = Context.Request.Path }, FormMethod.Post, true, new {@class="d-flex ml-auto"} ))
+            {
+                <button class="btn btn-secondary" type="submit">Очистить корзину</button>
+            }
+        </div>
     </div>
     @if (@Model.Cart.Lines.Any())
     {
@@ -14,9 +21,9 @@
             {
                 <div class="d-flex align-items-center cart-item">
                     <div class="col-2 d-flex py-2">
-                        <img height="90" width="90" src="@Model.Cloudinary.Api.UrlImgUp.Format(line.Toy.MainImage.Format).BuildUrl(line.Toy.MainImage.PublicId)" alt="@line.Toy.Name"/>
+                        <img height="90" width="90" src="@Model.Cloudinary.BuildImgUrl(line.Toy.MainImage.PublicId, line.Toy.MainImage.Format)" alt="@line.Toy.Name"/>
                     </div>
-                    <a class="col-6 d-flex" href="@Url.Action("ToyInfo", "Home", new {line.Toy.Id})">
+                    <a class="col-6 d-flex" href="@Url.Action("ToyInfo", "Home", new { line.Toy.Id })">
                         @line.Toy.Name
                     </a>
                     <div class="col-2 d-flex">
@@ -36,10 +43,10 @@
     }
     else
     {
-        <div class="card-text">
+        <div class="empty-text">
             Ваша корзина пуста!
         </div>
-    }
+        }
 
 
     <div class="card-actions">

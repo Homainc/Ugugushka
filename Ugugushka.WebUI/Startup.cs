@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using System.Globalization;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +25,8 @@ namespace Ugugushka.WebUI
 
         public Startup()
         {
-            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json");
             _config = builder.Build();
         }
 
@@ -34,11 +38,14 @@ namespace Ugugushka.WebUI
             services.Configure<CredentialsConfig>(_config.GetSection("Credentials"));
 
             services.AddDomainServices();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(opt =>
                 {
                     opt.LoginPath = new PathString("Account/Login");
                     opt.LogoutPath = new PathString("Account/Logout");
+                    opt.Cookie.IsEssential = true;
+                    opt.Cookie.HttpOnly = true;
                 });
             services.AddAuthorization();
 
@@ -59,6 +66,23 @@ namespace Ugugushka.WebUI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ISeedManager seedManager)
         {
+            // Setting default app culture
+            var defaultCulture = new CultureInfo("ru-RU")
+            {
+                NumberFormat = { NumberDecimalSeparator = ".", CurrencyDecimalSeparator = "." }
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(defaultCulture),
+                SupportedCultures = new List<CultureInfo>
+                {
+                    defaultCulture
+                },
+                SupportedUICultures = new List<CultureInfo>
+                {
+                    defaultCulture
+                }
+            });
 
             if (env.IsDevelopment())
             {
@@ -71,11 +95,13 @@ namespace Ugugushka.WebUI
             {
                 Log.Information("Application has been stared in the release mode");
 
+                app.UseHsts();
                 app.UseExceptionHandler("/Home/Error");
             }
 
             seedManager.SeedData();
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseSerilogRequestLogging();

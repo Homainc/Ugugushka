@@ -1,4 +1,5 @@
-﻿@using Ugugushka.WebUI.HtmlHelpers
+﻿@using Ugugushka.WebUI.Code.Extensions
+@using Ugugushka.WebUI.HtmlHelpers
 @model HomeIndexViewModel
 @{
     ViewBag.Title = PageNameDefaults.Main.WithDomain();
@@ -12,7 +13,7 @@
                 <div class="d-flex flex-column align-items-stretch">
                     <img 
                         class="d-flex toy-img" 
-                        src="@Model.Cloudinary.Api.UrlImgUp.Format(toy.MainImage.Format).BuildUrl(toy.MainImage.PublicId)" 
+                        src="@Model.Cloudinary.BuildImgUrl(toy.MainImage.PublicId, toy.MainImage.Format)" 
                         height="200" width="200"/>
                     <div class="toy-text">
                         <span class="toy-header">@toy.Name</span>

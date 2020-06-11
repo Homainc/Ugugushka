@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.DtoModels;
 using Ugugushka.WebUI.Code.Abstractions;
+using Ugugushka.WebUI.Code.Constants;
 using Ugugushka.WebUI.Code.Extensions;
 using Ugugushka.WebUI.ViewModels;
 
@@ -47,8 +48,16 @@ namespace Ugugushka.WebUI.Controllers
             if (toy != null)
             {
                 cart.RemoveLine(toy);
-                HttpContext.Session.SetComplexData("Cart", cart);
+                HttpContext.Session.SetComplexData(SessionKeyDefaults.Cart, cart);
             }
+
+            return RedirectToAction("Index", new {returnUrl});
+        }
+
+        public RedirectToActionResult Clear(Cart cart, string returnUrl)
+        {
+            cart.Clear();
+            HttpContext.Session.SetComplexData(SessionKeyDefaults.Cart, cart);
 
             return RedirectToAction("Index", new {returnUrl});
         }

@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +33,12 @@ namespace Ugugushka.Data.Code.Extensions
         {
             // EF Core Context
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(ConnectionString));
+
+            // Data Protection
+            services.AddDataProtection()
+                .SetApplicationName("ugugushka")
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(14))
+                .PersistKeysToDbContext<ApplicationContext>();
 
             // Identity
             services.AddIdentity<User, IdentityRole>()

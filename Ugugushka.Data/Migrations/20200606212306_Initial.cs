@@ -52,7 +52,7 @@ namespace Ugugushka.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 50, nullable: true)
+                    Name = table.Column<string>(maxLength: 70, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -171,7 +171,7 @@ namespace Ugugushka.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    Name = table.Column<string>(maxLength: 70, nullable: true),
                     PartitionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -191,7 +191,7 @@ namespace Ugugushka.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    Name = table.Column<string>(maxLength: 70, nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Count = table.Column<int>(nullable: false),

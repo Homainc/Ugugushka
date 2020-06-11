@@ -16,17 +16,14 @@ namespace Ugugushka.WebUI.Controllers
         {
             _pictureManager = pictureManager;
         }
+
         [HttpPost]
-        public async Task<IActionResult> UploadImages(IFormFile image)
+        public async Task<IActionResult> UploadImages(IFormFileCollection images)
         {
-            if (image == null)
+            if (images == null)
                 return BadRequest();
 
-            var uploadedImage = await _pictureManager.UploadPictureAsync(image);
-            if(uploadedImage != null)
-                return Ok(uploadedImage);
-
-            return BadRequest();
+            return Ok(await _pictureManager.UploadPicturesAsync(images));
         }
     }
 }

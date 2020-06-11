@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -25,12 +25,17 @@ namespace Ugugushka.WebUI.Controllers
 
         public async Task<IActionResult> Index([FromQuery] ToyFilterInfo filter, Cart cart, int page = 1)
         {
-            ViewBag.CartLength = cart.Lines.Count();
             return View(new HomeIndexViewModel(_pictureManager.Cloudinary) {
                     PagedToys = await _toyManager.GetPagedFilteredAsync(filter, new PageInfo {PageNumber = page, PageSize = ToysPageSize})});
         }
-        public async Task<IActionResult> ToyInfo([FromRoute] int id) =>
-            View(new ToyInfoViewModel(_pictureManager.Cloudinary) { Toy = await _toyManager.GetByIdAsync(id) });
+
+        public async Task<IActionResult> ToyInfo([FromRoute] int id)
+        {
+            var model = new ToyInfoViewModel(_pictureManager.Cloudinary);
+            Mapper.Map(await _toyManager.GetByIdAsync(id), model);
+            
+            return View(model);
+        }
 
         public IActionResult Error() => View();
     }

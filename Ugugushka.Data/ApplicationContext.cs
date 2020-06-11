@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Ugugushka.Data.Models;
 
 namespace Ugugushka.Data
 {
-    public class ApplicationContext : IdentityDbContext<User>
+    public class ApplicationContext : IdentityDbContext<User>, IDataProtectionKeyContext
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Partition> Partitions { get; set; }
@@ -30,5 +31,7 @@ namespace Ugugushka.Data
             modelBuilder.ApplyConfiguration(new ToyConfiguration());
             modelBuilder.ApplyConfiguration(new ImageConfiguration());
         }
+
+        public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
     }
 }

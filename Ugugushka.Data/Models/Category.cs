@@ -18,7 +18,7 @@ namespace Ugugushka.Data.Models
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).HasMaxLength(50);
+            builder.Property(x => x.Name).HasMaxLength(70);
             builder.HasOne(x => x.Partition)
                 .WithMany()
                 .HasForeignKey(x => x.PartitionId)

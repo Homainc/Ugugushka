@@ -10,6 +10,7 @@ namespace Ugugushka.Domain.Code.Interfaces
     {
         public Cloudinary Cloudinary { get; }
         Task<ToyImageDto> UploadPictureAsync(IFormFile formFile);
+        Task<IEnumerable<ToyImageDto>> UploadPicturesAsync(IEnumerable<IFormFile> formFiles);
         Task DeleteTemporaryPicturesAsync();
         Task DeletePictureAsync(List<string> publicIds);
         Task ChangePictureTagAsync(List<string> publicIds, string newTag);

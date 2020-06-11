@@ -15,6 +15,8 @@
     font-weight: 400;
     color: var(--text-primary);
     border: 1px solid #d1d1d1;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
     border-radius: 15px;
 }
 
@@ -23,7 +25,11 @@
 }
 
 .search-block {
+    -webkit-box-shadow: 0 8px 15px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 8px 15px rgba(0,0,0,.1);
     box-shadow: 0 8px 15px rgba(0,0,0,.1);
+    -webkit-border-radius: 45px;
+    -moz-border-radius: 45px;
     border-radius: 45px;
     padding: 0 !important;
 }
@@ -31,6 +37,8 @@
 .text-input-bl {
     border: none;
     font-size: 1.1rem;
+    -webkit-border-radius: 45px 0 0 45px;
+    -moz-border-radius: 45px 0 0 45px;
     border-radius: 45px 0 0 45px;
     padding: 10px 20px;
     border: none;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CloudinaryDotNet;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Ugugushka.Domain.Code.Config;
 using Ugugushka.Domain.Code.Constants;
+using Ugugushka.Domain.Code.Exceptions;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.DtoModels;
 
@@ -15,6 +17,8 @@ namespace Ugugushka.Domain.Managers
     public class PictureManager : IPictureManager
     {
         private const int FileMaxLength = 10485760;
+        private const string SizeErrorMessage = "Размер изображения должен быть не более 10.5Mb!";
+        private const string IncorrectImageErrorMessage = "Некорректное изображение!";
 
         private readonly CancellationToken _cancellationToken;
 
@@ -36,27 +40,34 @@ namespace Ugugushka.Domain.Managers
         public async Task<ToyImageDto> UploadPictureAsync(IFormFile fImage)
         {
             if (fImage.Length > FileMaxLength)
-                return null;
+                throw new ImageUploadException(SizeErrorMessage, fImage.FileName);
 
-            await using (var fStream = fImage.OpenReadStream())
+            await using var fStream = fImage.OpenReadStream();
+            var result = await Cloudinary.UploadAsync(new ImageUploadParams
             {
-                var result = await Cloudinary.UploadAsync(new ImageUploadParams
-                {
-                    File = new FileDescription(CloudinaryTagDefaults.Temp, fStream),
-                    Tags = CloudinaryTagDefaults.Temp
-                }, _cancellationToken);
+                File = new FileDescription(CloudinaryTagDefaults.Temp, fStream),
+                Tags = CloudinaryTagDefaults.Temp
+            }, _cancellationToken);
 
-                if (result.Error == null)
+            if (result.Error == null)
+            {
+                return new ToyImageDto
                 {
-                    return new ToyImageDto
-                    {
-                        PublicId = result.PublicId,
-                        Format = result.Format
-                    };
-                }
+                    PublicId = result.PublicId,
+                    Format = result.Format
+                };
             }
 
-            return null;
+            throw new ImageUploadException(IncorrectImageErrorMessage, fImage.FileName);
+        }
+
+        public async Task<IEnumerable<ToyImageDto>> UploadPicturesAsync(IEnumerable<IFormFile> fImages)
+        {
+            var images = new List<ToyImageDto>();
+            foreach (var fImage in fImages)
+                images.Add(await UploadPictureAsync(fImage));
+
+            return images;
         }
 
         public async Task DeleteTemporaryPicturesAsync() =>

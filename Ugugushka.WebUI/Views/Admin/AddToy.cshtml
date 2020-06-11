@@ -43,7 +43,7 @@
                         </div>
                         <div id="loader" class="loader" style="display: none;"></div>
                     </label>
-                    <input hidden type="file" name="image" id="image" accept="image/png, image/jpeg"/>
+                    <input hidden type="file" name="image" id="image" accept="image/png, image/jpeg" multiple/>
                 </div>
                 <div id="upload_error_block" class="field-validation-error" style="display: none;"></div>
                 @Html.ValidationMessageFor(x => x.Images)
@@ -63,7 +63,7 @@
     <script src="~/libs/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
     <script>
         // Razor JS variables initialization
-        const cloudPath = '@Model.Cloudinary.Api.UrlImgUp.BuildUrl()';
+        const cloudPath = '@Model.Cloudinary.Api.UrlImgUp.Secure().BuildUrl()';
         var imgArray = [
             @foreach (var img in Model.Images)
             {
@@ -126,12 +126,50 @@
 
         function appendImage(publicId, format, index) {
             const div = $("<div class='img-preview'></div>")
-                .attr('data-index', index)
-                .on('click', deleteImage);
+                .attr('data-index', index);
             $("<img class='d-flex mr-2' height='130' width='130'/>")
                 .attr('src', `${cloudPath}/${publicId}.${format}`)
                 .appendTo(div);
+            $("<div class='img-menu'></div>")
+                .append($("<i class='btn btn-secondary fas fa-arrow-left'></i>")
+                    .on('click', onMoveImgLeft))
+                .append($("<i class='btn btn-secondary fas fa-arrow-right'></i>")
+                    .on('click', onMoveImgRight))
+                .append($("<i class='btn btn-secondary fas fa-times'></i>")
+                    .on('click', onDeleteImage))
+                .appendTo(div);
             div.appendTo(imgBlock);
+        }
+
+        function onMoveImgLeft(e) {
+            const elA = e.target.parentNode.parentNode;
+            const index = parseInt(elA.dataset.index);
+            const elB = $(`div.img-preview[data-index=${index - 1}]`)[0];
+
+            if (!elB) return;
+
+            elA.dataset.index = index - 1;
+            elB.dataset.index = index;
+
+            swapAImages(index, index - 1);
+            elA.parentNode.insertBefore(elA, elB);
+            updateInputArray();
+        }
+
+        function onMoveImgRight(e) {
+            const elA = e.target.parentNode.parentNode;
+            const index = parseInt(elA.dataset.index);
+            console.log(index);
+            const elB = $(`div.img-preview[data-index=${index + 1}]`)[0];
+
+            if (!elB) return;
+
+            elA.dataset.index = index + 1;
+            elB.dataset.index = index;
+
+            swapAImages(index, index + 1);
+            elA.parentNode.insertBefore(elB, elA);
+            updateInputArray();
         }
 
         function appendImageInput(publicId, format, index) {
@@ -143,49 +181,69 @@
                 .appendTo(imgInputBlock);
         }
 
-        function deleteImage(e) {
-            e.target.remove();
-            imgArray.splice(e.target.dataset.index, 1);
+        function swapAImages(i, j) {
+            const t = imgArray[i];
+            imgArray[i] = imgArray[j];
+            imgArray[j] = t;
+        }
+
+        function onDeleteImage(e) {
+            const div = e.target.parentNode.parentNode;
+            const i = div.dataset.index;
+
+            div.remove();
+            imgArray.splice(i, 1);
             updateInputArray();
             updateImageArray();
             updateUploadBtn();
         }
 
-        function onUploadError(e) {
+        function onUploadError(msg) {
             toggleUploading();
             uploadErrorBlock.toggle(true);
-            uploadErrorBlock.text("Некорректное изображение либо размер картинки превышает 10,49 Mb!");
+            uploadErrorBlock.text(msg);
         }
 
-        $('img.load-preview').on('click', deleteImage);
-
         function uploadImage() {
-            var files = $("#image")[0].files;
-            if (files) {
-                toggleUploading();
-                const form = new FormData();
-                form.append("image", files[0]);
+            const files = $("#image")[0].files;
 
-                fetch('@Url.Action("UploadImages", "Image")',
-                        {
-                            method: 'POST',
-                            body: form
-                        })
-                    .then(r => {
-                        if (r.ok) {
-                            r.json().then(r => {
-                                appendImage(r.publicId, r.format, imgArray.length);
-                                appendImageInput(r.publicId, r.format, imgArray.length);
-                                imgArray.push({ publicId: r.publicId, format: r.format });
-                                toggleUploading();
-                                updateUploadBtn();
-                                uploadErrorBlock.toggle(false);
-                            });
-                        } else {
-                            onUploadError(r.error);
-                        }
-                    }).catch(onUploadError);
+            if (!files) return;
+
+            toggleUploading();
+
+            if (files.length > 5 - imgArray.length) {
+                onUploadError('Максимально возможное количество фотографий - 5!');
+                return;
             }
+
+            const form = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                form.append('images', files[i]);
+                console.log('images', files[i]);
+            }
+
+            fetch('@Url.Action("UploadImages", "Image")',
+                    {
+                        method: 'POST',
+                        body: form
+                    })
+                .then(r => {
+                    if (r.ok) {
+                        r.json().then(imgArr => {
+                            imgArr.forEach(function(img) {
+                                appendImage(img.publicId, img.format, imgArray.length);
+                                appendImageInput(img.publicId, img.format, imgArray.length);
+                                imgArray.push({ publicId: img.publicId, format: img.format });
+                            });
+
+                            toggleUploading();
+                            updateUploadBtn();
+                            uploadErrorBlock.toggle(false);
+                        });
+                    } else {
+                        onUploadError(r.error);
+                    }
+                }).catch(onUploadError);
         }
     </script>
 }

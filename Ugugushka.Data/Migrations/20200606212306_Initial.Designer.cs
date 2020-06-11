@@ -10,7 +10,7 @@ using Ugugushka.Data;
 namespace Ugugushka.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200603162410_Initial")]
+    [Migration("20200606212306_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,8 +160,8 @@ namespace Ugugushka.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
 
                     b.Property<int>("PartitionId")
                         .HasColumnType("int");
@@ -181,8 +181,8 @@ namespace Ugugushka.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
 
                     b.HasKey("Id");
 
@@ -207,8 +207,8 @@ namespace Ugugushka.Data.Migrations
                         .HasMaxLength(500);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
