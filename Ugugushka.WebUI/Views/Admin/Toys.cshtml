@@ -22,8 +22,8 @@
         <thead>
         <tr>
             <th>Название</th>
-            <th>Категория</th>
-            <th>Раздел</th>
+            <th class="d-none d-md-table-cell">Категория</th>
+            <th class="d-none d-md-table-cell">Раздел</th>
             <th>Цена, руб.</th>
             <th>Действия</th>
         </tr>
@@ -43,8 +43,8 @@
             {
                 <tr>
                     <td>@toy.Name</td>
-                    <td>@Html.DefaultString(toy.CategoryName, "Нет")</td>
-                    <td>@Html.DefaultString(toy.PartitionName, "Нет")</td>
+                    <td class="d-none d-md-table-cell">@Html.DefaultString(toy.CategoryName, "Нет")</td>
+                    <td class="d-none d-md-table-cell">@Html.DefaultString(toy.PartitionName, "Нет")</td>
                     <td>@toy.Price</td>
                     <td>
                         @Html.ActionLink("Изменить", "EditToy", new {Id = toy.Id}, new {@class = "btn-link"})

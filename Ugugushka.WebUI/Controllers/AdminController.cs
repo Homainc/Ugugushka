@@ -27,7 +27,7 @@ namespace Ugugushka.WebUI.Controllers
             _pictureManager = pictureManager;
         }
 
-        public async Task<IActionResult> Toys([FromQuery] ToyFilterInfo toyFilter, [FromRoute] int page = 1)
+        public async Task<IActionResult> Toys([FromQuery] ToyFilterInfo toyFilter, [FromQuery] int page = 1)
         {
             return View(
                 (await _toyManager.GetPagedFilteredAsync(toyFilter,
