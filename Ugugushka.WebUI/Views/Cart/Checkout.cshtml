@@ -45,31 +45,32 @@
                     </label>
                 </div>
             </div>
-            <div class="d-flex flex-wrap" id="bycourier-tab">
-                <div class="form-group col-12 pl-0">
-                    @Html.LabelFor(x => x.Street, new { @class = "d-block mb-3" })
-                    @Html.TextBoxFor(x => x.Street, new { @class = "form-control text-input" })
-                </div>
-                <div class="form-group col-12 col-sm-6 pl-0">
-                    @Html.LabelFor(x => x.HouseNumber, new { @class = "d-block mb-3" })
-                    @Html.TextBoxFor(x => x.HouseNumber, new { @class = "form-control text-input" })
-                </div>
-                <div class="form-group col-12 col-sm-6 pl-0 pl-sm-1">
-                    @Html.LabelFor(x => x.ApartmentNumber, new { @class = "d-block mb-3" })
-                    @Html.TextBoxFor(x => x.ApartmentNumber, new { @class = "form-control text-input" })
-                </div>
-                <div class="form-group col-12 col-sm-6 pl-0">
-                    @Html.LabelFor(x => x.FloorNumber, new { @class = "d-block mb-3" })
-                    @Html.TextBoxFor(x => x.FloorNumber, new { @class = "form-control text-input" })
-                </div>
-                <div class="form-group col-12 col-sm-6 pl-0 pl-sm-1">
-                    @Html.LabelFor(x => x.ExitNumber, new { @class = "d-block mb-3" })
-                    @Html.TextBoxFor(x => x.ExitNumber, new { @class = "form-control text-input" })
-                </div>
+            <div class="d-flex flex-wrap tab-content" id="bycourier-tab">
+                @foreach (var property in ViewData.ModelMetadata.Properties)
+                {
+                    @switch (property.PropertyName)
+                    {
+                        case "Street":
+                            <div class="form-group col-12 pl-0">
+                                <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
+                                @Html.TextBox(property.PropertyName, null, htmlAttributes: new { @class = "form-control text-input", @placeholder = property.DisplayName })
+                            </div>
+                            break;
+                        case "HouseNumber":
+                        case "ApartmentNumber":
+                        case "FloorNumber":
+                        case "ExitNumber":
+                            <div class="form-group col-12 col-sm-6 pl-0 pl-sm-1">
+                                <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
+                                @Html.TextBox(property.PropertyName, null, htmlAttributes: new { @class = "form-control text-input", @placeholder = property.DisplayName })
+                            </div>
+                            break;
+                    }
+                }
             </div>
-            <div id="byself-tab" style="display: none">
+            <div class="tab-content" id="byself-tab" style="display: none">
                 <address>
-                    Адрес самовывоза: ул. Леонида Беды 39 С 09-20<br/>
+                    Адрес самовывоза: ул. Леонида Беды 39<br/>
                     Время работы: с <time>11:00</time> до <time>21:00</time>
                 </address>
             </div>

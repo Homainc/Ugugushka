@@ -21,7 +21,7 @@
             {
                 <div class="d-flex align-items-center cart-item">
                     <div class="col-2 d-flex py-2">
-                        <img height="90" width="90" src="@Model.Cloudinary.BuildImgUrl(line.Toy.MainImage.PublicId, line.Toy.MainImage.Format)" alt="@line.Toy.Name"/>
+                        <img class="cart-img" height="90" width="90" src="@Model.Cloudinary.BuildImgUrl(line.Toy.MainImage.PublicId, line.Toy.MainImage.Format)" alt="@line.Toy.Name"/>
                     </div>
                     <a class="col-6 d-flex" href="@Url.Action("ToyInfo", "Home", new { line.Toy.Id })">
                         @line.Toy.Name

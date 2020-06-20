@@ -61,3 +61,17 @@
     color: #fff;
     background: var(--color-torquoise);
 }
+
+.tab-content {
+    animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

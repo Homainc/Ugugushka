@@ -181,6 +181,13 @@ table.table {
     width: 100%;
 }
 
+.toy-images-block {
+    background: #fdfdfd;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding-bottom: 0.6rem;
+}
+
 .toy-image-thumb {
     width: 100%;
     margin-top: 10px;
@@ -188,13 +195,6 @@ table.table {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    -webkit-box-shadow: 0 0 5px #000000;
-    -moz-box-shadow: 0 0 5px #000000;
-    box-shadow: 0 0 5px #000000;
-    -webkit-box-shadow: 0 0 5px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 0 5px rgba(0,0,0,.2);
-    box-shadow: 0 0 5px rgba(0,0,0,.2);
-    background: #fdfdfd;
 }
 
 .toy-image-thumbs img:first-child {
@@ -208,14 +208,7 @@ table.table {
     object-fit: cover;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px;
-    -webkit-box-shadow: 0 0 5px #000000;
-    -moz-box-shadow: 0 0 5px #000000;
-    box-shadow: 0 0 5px #000000;
-    -webkit-box-shadow: 0 0 5px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 0 5px rgba(0,0,0,.2);
-    box-shadow: 0 0 5px rgba(0,0,0,.2);
-    background: #fdfdfd;
+    border-radius: 10px 10px 0 0;
 }
 
 .collapse {
@@ -314,4 +307,8 @@ table.table {
 
 .img-menu:hover, img-menu:active {
     opacity: 1;
+}
+
+.cart-img {
+    object-fit: cover;
 }

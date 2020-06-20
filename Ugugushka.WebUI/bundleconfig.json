@@ -9,7 +9,8 @@
       "wwwroot/css/card.css",
       "wwwroot/css/form-controls.css",
       "wwwroot/libs/bootstrap/dist/css/bootstrap-grid.css",
-      "wwwroot/libs/font-awesome/css/all.css"
+      "wwwroot/libs/font-awesome/css/all.css",
+      "wwwroot/css/img-modal.css"
     ]
   }
 ]

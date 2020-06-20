@@ -5,20 +5,22 @@
 }
 
 <section class="d-flex flex-column flex-md-row mt-5">
-    <div class="d-flex col-12 col-md-6 flex-column mb-3">
-        <div class="d-flex">
-            <img class="toy-image-main" src="@Model.Cloudinary.BuildImgUrl(Model.MainImage.PublicId, Model.MainImage.Format)" />
+    <section class="d-flex col-12 col-md-6 mb-3">
+        <div class="d-flex flex-column toy-images-block">
+            <div class="d-flex">
+                <img class="toy-image-main" src="@Model.Cloudinary.BuildImgUrl(Model.MainImage.PublicId, Model.MainImage.Format)"/>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+                @foreach (var img in Model.ExtraImages)
+                {
+                    <div class="col-2">
+                        <img class="toy-image-thumb" src="@Model.Cloudinary.BuildImgUrl(img.PublicId, img.Format)"/>
+                    </div>
+                }
+            </div>
         </div>
-        <div class="d-flex justify-content-center align-items-center">
-            @foreach (var img in Model.ExtraImages)
-            {
-                <div class="col-2">
-                    <img class="toy-image-thumb" src="@Model.Cloudinary.BuildImgUrl(img.PublicId, img.Format)" />
-                </div>
-            }
-        </div>
-    </div>
-    <div class="col-12 col-md-6 mb-3 d-flex flex-column card">
+    </section>
+    <section class="col-12 col-md-6 mb-3 d-flex flex-column card">
         <div class="d-flex card-header">
             <h1>@Model.Name</h1>
         </div>
@@ -38,5 +40,68 @@
             </div>
             <input type="submit" class="d-flex btn btn-turquoise mt-2" value="В корзину" />
         }
-    </div>
+    </section>
 </section>
+
+<div class="img-modal" id="imgModal">
+    <span class="modal-close">&times;</span>
+    <div class="container d-flex align-items-stretch justify-content-center">
+        <div class="img-nav" id="imgPreviousBtn"><</div>
+        <img class="img-modal-content" alt="toy photo" id="modalImg"/>
+        <div class="img-nav" id="imgNextBtn">></div>
+    </div>
+    <div id="imgCaption"></div>
+</div>
+
+@section PageScripts{
+    <script src="~/libs/jquery/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        const modal = $("#imgModal");
+        const modalImg = $("#modalImg")[0];
+        const imgCaption = $("#imgCaption");
+        const imgArray = $("img[class='toy-image-main'], img[class='toy-image-thumb']");
+        var currentImageIndex;
+
+        $(document).ready(function() {
+            imgArray.on("click", onImgClick);
+
+            $("#imgModal .modal-close").on("click", function(e) {
+                modal.toggle(false);
+            });
+
+            $("#modalImg").on('click', onNextClick);
+            $("#imgNextBtn").on("click", onNextClick);
+            $("#imgPreviousBtn").on("click", onPreviousClick);
+        });
+
+        function onImgClick(e) {
+            currentImageIndex = imgArray.index(this);
+            imgCaption.text(`${currentImageIndex + 1} из ${imgArray.length}`);
+            modalImg.src = e.target.src;
+            modal.toggle(true);
+        }
+
+        function onNextClick() {
+            if (imgArray.length - currentImageIndex > 1) {
+                currentImageIndex++;
+            } else {
+                currentImageIndex = 0;
+            }
+            updateModalImage();
+        }
+
+        function onPreviousClick() {
+            if (currentImageIndex > 0) {
+                currentImageIndex--;
+            } else {
+                currentImageIndex = imgArray.length - 1;
+            }
+            updateModalImage();
+        }
+
+        function updateModalImage() {
+            modalImg.src = imgArray[currentImageIndex].src;
+            imgCaption.text(`${currentImageIndex + 1} из ${imgArray.length}`);
+        }
+    </script>
+}
