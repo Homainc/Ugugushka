@@ -1,0 +1,111 @@
+﻿@model CartCheckoutViewModel
+@{
+    ViewData["Title"] = PageNameDefaults.Checkout.WithDomain();
+}
+
+<section class="card my-5 d-flex">
+    <div class="card-header d-flex">
+        <h1>Оформление заказа</h1>
+    </div>
+    <div class="d-flex flex-column">
+        <div class="d-flex flex-wrap mb-3">
+            <div class="d-flex col-12 mb-3 p-0">
+                <h2><span>1. </span>Введите свои данные</h2>
+            </div>
+            @foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                @switch (property.PropertyName)
+                {
+                    case "FirstName":
+                    case "LastName":
+                    case "PhoneNumber":
+                    case "Email":
+                        <div class="col-12 col-sm-6 pl-0 pl-sm-1 form-group">
+                            <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
+                            @Html.TextBox(property.PropertyName, null, htmlAttributes: new { @class = "form-control text-input", @placeholder = property.DisplayName })
+                        </div>
+                        break;
+                }
+            }
+        </div>
+        <div class="d-flex flex-column mb-3">
+            <div class="d-flex mb-3">
+                <h2><span>2. </span>Выберите способ доставки</h2>
+            </div>
+            <div class="d-flex flex-column form-group">
+                <label class="d-block mb-3">Способ доставки</label>
+                <div class="d-flex align-self-start radio-block">
+                    <label class="radio-label" for="bycourier">
+                        <input class="d-none" type="radio" id="bycourier" name="deliveryType" value="bycourier" checked/>
+                        <span>курьером</span>
+                    </label>
+                    <label class="radio-label" for="byself">
+                        <input class="d-none" type="radio" id="byself" name="deliveryType" value="byself"/>
+                        <span>самовывоз</span>
+                    </label>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap" id="bycourier-tab">
+                <div class="form-group col-12 pl-0">
+                    @Html.LabelFor(x => x.Street, new { @class = "d-block mb-3" })
+                    @Html.TextBoxFor(x => x.Street, new { @class = "form-control text-input" })
+                </div>
+                <div class="form-group col-12 col-sm-6 pl-0">
+                    @Html.LabelFor(x => x.HouseNumber, new { @class = "d-block mb-3" })
+                    @Html.TextBoxFor(x => x.HouseNumber, new { @class = "form-control text-input" })
+                </div>
+                <div class="form-group col-12 col-sm-6 pl-0 pl-sm-1">
+                    @Html.LabelFor(x => x.ApartmentNumber, new { @class = "d-block mb-3" })
+                    @Html.TextBoxFor(x => x.ApartmentNumber, new { @class = "form-control text-input" })
+                </div>
+                <div class="form-group col-12 col-sm-6 pl-0">
+                    @Html.LabelFor(x => x.FloorNumber, new { @class = "d-block mb-3" })
+                    @Html.TextBoxFor(x => x.FloorNumber, new { @class = "form-control text-input" })
+                </div>
+                <div class="form-group col-12 col-sm-6 pl-0 pl-sm-1">
+                    @Html.LabelFor(x => x.ExitNumber, new { @class = "d-block mb-3" })
+                    @Html.TextBoxFor(x => x.ExitNumber, new { @class = "form-control text-input" })
+                </div>
+            </div>
+            <div id="byself-tab" style="display: none">
+                <address>
+                    Адрес самовывоза: ул. Леонида Беды 39 С 09-20<br/>
+                    Время работы: с <time>11:00</time> до <time>21:00</time>
+                </address>
+            </div>
+        </div>
+        <div class="d-flex flex-column mb-3">
+            <div class="d-flex">
+                <h2><span>3. </span>Проверьте детали заказа</h2>
+            </div>
+            <div class="d-flex">
+                @await Component.InvokeAsync("CartOverview")
+            </div>
+        </div>
+        <div class="d-flex">
+            <input class="btn btn-turquoise" type="submit" value="Оформить заказ"/>
+        </div>
+    </div>
+</section>
+@section PageScripts
+{
+    <script src="~/libs/jquery/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("input[name='deliveryType']").on("change", onDeliveryTypeChange);
+        });
+
+        function onDeliveryTypeChange(e) {
+            const  value = e.target.value;
+            if (value === 'byself') {
+                $('#bycourier-tab').toggle(false);
+                $('#bycourier-tab').toggleClass('d-flex', false);
+                $('#byself-tab').toggle(true);
+            } else {
+                $('#bycourier-tab').toggle(true);
+                $('#bycourier-tab').toggleClass('d-flex', true);
+                $('#byself-tab').toggle(false);
+            }
+        }
+    </script>   
+}

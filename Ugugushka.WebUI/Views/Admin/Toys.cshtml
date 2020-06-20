@@ -4,7 +4,7 @@
     ViewBag.Title = PageNameDefaults.AdminToys.WithDomain();
 }
 
-<div class="card mt-5">
+<section class="card mt-5">
     <div class="card-header">
         <div class="row align-items-center">
             <h2 class="d-flex col-5">Игрушки (@Model.TotalItems)</h2>
@@ -63,5 +63,5 @@
     <div class="d-flex align-self-center mt-3">
         @Html.PageLinks(@Model.PageNumber, @Model.TotalPages, "btn-secondary", x => Url.Action("Toys", new {page = x}))
     </div>
-</div>
+</section>
 

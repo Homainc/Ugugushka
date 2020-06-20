@@ -1,5 +1,6 @@
 ﻿.btn {
     text-decoration: none;
+    -webkit-appearance: none;
     border: none;
     display: inline-block;
     padding: 0 20px;

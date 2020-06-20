@@ -4,7 +4,7 @@
     ViewBag.Title = Model.Name.WithDomain();
 }
 
-<div class="d-flex flex-column flex-md-row mt-5">
+<section class="d-flex flex-column flex-md-row mt-5">
     <div class="d-flex col-12 col-md-6 flex-column mb-3">
         <div class="d-flex">
             <img class="toy-image-main" src="@Model.Cloudinary.BuildImgUrl(Model.MainImage.PublicId, Model.MainImage.Format)" />
@@ -39,4 +39,4 @@
             <input type="submit" class="d-flex btn btn-turquoise mt-2" value="В корзину" />
         }
     </div>
-</div>
+</section>

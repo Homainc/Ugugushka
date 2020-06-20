@@ -1,0 +1,28 @@
+﻿@model Ugugushka.Domain.DtoModels.Cart
+<table class="table">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Кол-во</th>
+        <th>Цена</th>
+        <th>Сумма</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var line in Model.Lines)
+    {
+        <tr>
+            <td>@line.Toy.Name</td>
+            <td>@line.Quantity</td>
+            <td>@line.Toy.Price руб.</td>
+            <td>@(line.Quantity * line.Toy.Price) руб.</td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3">Итого</td>
+        <td>@Model.ComputeTotalValue() руб.</td>
+    </tr>
+    </tfoot>
+</table>

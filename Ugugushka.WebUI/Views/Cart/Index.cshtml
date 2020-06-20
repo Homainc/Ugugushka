@@ -4,7 +4,7 @@
     ViewBag.Title = PageNameDefaults.Cart.WithDomain();
 }
 
-<div class="card my-5">
+<section class="card my-5">
     <div class="card-header">
         <div class="d-flex align-items-center">
             <h2 class="d-flex col-5 px-0">Ваша корзина (@Model.Cart.Lines.Count())</h2>
@@ -49,8 +49,12 @@
         }
 
 
-    <div class="card-actions">
-        <a href="@Model.ReturnUrl">Продолжить покупки</a>
+    <div class="card-actions d-flex flex-row align-items-center">
+        <a class="d-flex col-6" href="@Model.ReturnUrl">Продолжить покупки</a>
+        @if (Model.Cart.Lines.Any())
+        {
+            <a class="d-flex ml-auto btn btn-turquoise" href="@Url.Action("Checkout")">Перейти к оформлению</a>
+        }
     </div>
-</div>
+</section>
 

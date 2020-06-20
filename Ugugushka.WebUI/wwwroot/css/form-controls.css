@@ -43,3 +43,21 @@
     padding: 10px 20px;
     border: none;
 }
+
+.radio-block {
+    border: 1px solid #d1d1d1;
+    border-radius: 15px;
+    padding: 0.2rem;
+}
+
+.radio-label input ~ span {
+    display: block;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 15px;
+}
+
+.radio-label input:checked ~ span {
+    color: #fff;
+    background: var(--color-torquoise);
+}

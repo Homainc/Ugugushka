@@ -3,9 +3,9 @@ using Ugugushka.WebUI.Code.Extensions;
 
 namespace Ugugushka.WebUI.Components
 {
-    public class CartButtonViewComponent : ViewComponent
+    public class CartOverviewViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke() 
+        public IViewComponentResult Invoke()
             => View(HttpContext.Session?.GetCartFromSession());
     }
 }

@@ -9,6 +9,7 @@
         public const string AddToy = "Добавление игрушек";
         public const string EditToy = "Изменение игрушек";
         public const string Cart = "Корзина";
+        public const string Checkout = "Оформление заказа";
     }
 
     public static class PageNameStringExtenstion

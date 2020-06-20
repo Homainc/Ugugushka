@@ -1,60 +1,60 @@
 ﻿@model AddToyViewModel
 
-<div class="card my-5">
+<section class="card my-5">
     <div class="card-header">
         <h2>@ViewBag.ActionTitle</h2>
     </div>
     @using (Html.BeginForm("AddToy", "Admin", FormMethod.Post, htmlAttributes: new { @enctype = "multipart/form-data", @id = "form" }))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @foreach (var property in ViewData.ModelMetadata.Properties)
         {
-            @Html.HiddenFor(x => x.Id)
-            @foreach (var property in ViewData.ModelMetadata.Properties)
+            if (property.PropertyName != "Id" && 
+                property.PropertyName != "Images" && 
+                property.PropertyName != "Cloudinary" &&
+                property.PropertyName != "CategoryId")
             {
-                if (property.PropertyName != "Id" && 
-                    property.PropertyName != "Images" && 
-                    property.PropertyName != "Cloudinary" &&
-                    property.PropertyName != "CategoryId")
-                {
-                    <div class="form-group">
-                        <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
-                        @if (property.PropertyName == "Description")
-                        {
-                            @Html.TextArea(property.PropertyName, null, new { rows = 5, @class = "form-control text-input", @placeholder = property.DisplayName })
-                        }
-                        else if (property.PropertyName == "IsOnStock")
-                        {
-                            @Html.CheckBox(property.PropertyName)
-                        }
-                        else
-                        {
-                            @Html.TextBox(property.PropertyName, null, htmlAttributes: new { @class = "form-control text-input", @placeholder = property.DisplayName })
-                        }
-                        @Html.ValidationMessage(property.PropertyName)
-                    </div>
-                }
-            }
-
-            <div class="form-group">
-                <label class="d-block mb-3">Фотографии</label>
-                <div class="d-flex align-items-center">
-                    <div class="d-flex" id="images"></div>
-                    <label id="upload_btn" class="d-flex btn-upload-img" for="image">
-                        <div id="plus_icon" class="d-flex upload-icon justify-content-center align-items-center">
-                            <i class="fas fa-plus"></i>
-                        </div>
-                        <div id="loader" class="loader" style="display: none;"></div>
-                    </label>
-                    <input hidden type="file" name="image" id="image" accept="image/png, image/jpeg" multiple/>
+                <div class="form-group">
+                    <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
+                    @if (property.PropertyName == "Description")
+                    {
+                        @Html.TextArea(property.PropertyName, null, new { rows = 5, @class = "form-control text-input", @placeholder = property.DisplayName })
+                    }
+                    else if (property.PropertyName == "IsOnStock")
+                    {
+                        @Html.CheckBox(property.PropertyName)
+                    }
+                    else
+                    {
+                        @Html.TextBox(property.PropertyName, null, htmlAttributes: new { @class = "form-control text-input", @placeholder = property.DisplayName })
+                    }
+                    @Html.ValidationMessage(property.PropertyName)
                 </div>
-                <div id="upload_error_block" class="field-validation-error" style="display: none;"></div>
-                @Html.ValidationMessageFor(x => x.Images)
-            </div>
-
-            <input type="submit" class="btn btn-turquoise mr-2" value="Сохранить" />
-            @Html.ActionLink("Назад", "Toys", null, htmlAttributes: new { @class = "btn btn-secondary" })
-
-            <div id="img_data"></div>
+            }
         }
-    </div>
+
+        <div class="form-group">
+            <label class="d-block mb-3">Фотографии</label>
+            <div class="d-flex align-items-center">
+                <div class="d-flex" id="images"></div>
+                <label id="upload_btn" class="d-flex btn-upload-img" for="image">
+                    <div id="plus_icon" class="d-flex upload-icon justify-content-center align-items-center">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div id="loader" class="loader" style="display: none;"></div>
+                </label>
+                <input hidden type="file" name="image" id="image" accept="image/png, image/jpeg" multiple/>
+            </div>
+            <div id="upload_error_block" class="field-validation-error" style="display: none;"></div>
+            @Html.ValidationMessageFor(x => x.Images)
+        </div>
+
+        <input type="submit" class="btn btn-turquoise mr-2" value="Сохранить" />
+        @Html.ActionLink("Назад", "Toys", null, htmlAttributes: new { @class = "btn btn-secondary" })
+
+        <div id="img_data"></div>
+    }
+</section>
 
 @section PageScripts
 {
@@ -65,7 +65,7 @@
         // Razor JS variables initialization
         const cloudPath = '@Model.Cloudinary.Api.UrlImgUp.Secure().BuildUrl()';
         var imgArray = [
-            @foreach (var img in Model.Images)
+            @foreach (var img in Model.Images.OrderByDescending(x => x.IsMain))
             {
                 @: { publicId: '@img.PublicId', format: '@img.Format' },
             }

@@ -23,7 +23,7 @@ namespace Ugugushka.WebUI.Controllers
             _pictureManager = pictureManager;
         }
 
-        public async Task<IActionResult> Index([FromQuery] ToyFilterInfo filter, Cart cart, int page = 1)
+        public async Task<IActionResult> Index([FromQuery] ToyFilterInfo filter, int page = 1)
         {
             return View(new HomeIndexViewModel(_pictureManager.Cloudinary) {
                     PagedToys = await _toyManager.GetPagedFilteredAsync(filter, new PageInfo {PageNumber = page, PageSize = ToysPageSize})});
@@ -36,7 +36,6 @@ namespace Ugugushka.WebUI.Controllers
             
             return View(model);
         }
-
         public IActionResult Error() => View();
     }
 }

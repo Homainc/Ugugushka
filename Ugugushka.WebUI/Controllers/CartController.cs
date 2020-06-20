@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authorization;
@@ -62,6 +63,12 @@ namespace Ugugushka.WebUI.Controllers
             return RedirectToAction("Index", new {returnUrl});
         }
 
-        public PartialViewResult CartButton(Cart cart) => PartialView(cart);
+        public IActionResult Checkout(Cart cart)
+        {
+            if (!cart.Lines.Any())
+                return RedirectToAction("Index");
+
+            return View();
+        }
     }
 }
