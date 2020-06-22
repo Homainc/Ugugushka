@@ -1,0 +1,120 @@
+﻿@using Ugugushka.Common.Concretes
+@model Ugugushka.Domain.DtoModels.OrderDto
+
+<section class="d-flex flex-column order-fields">
+    <div class="d-flex">
+        <div class="col-6">Дата и время:</div>
+        <div>@Model.Date.ToLocalTime().ToString("dd/MM/yy HH:mm")</div>
+    </div>
+    @if (ViewBag.IsOrderStatusVisible)
+    {
+        <div class="d-flex">
+            <div class="col-6">Статус:</div>
+            <div>
+                @switch (Model.Status)
+                {
+                    case OrderStatus.Completed:
+                        @: Выполнен
+                        break;
+                    case OrderStatus.InProcess:
+                        @: Принят
+                        break;
+                    case OrderStatus.NotProcessed:
+                        @: Не обработан
+                        break;
+                    default:
+                        break;
+                }
+            </div>
+        </div>
+    }
+    <div class="d-flex">
+        <div class="col-6">Имя:</div>
+        <div>@Model.FirstName</div>
+    </div>
+    <div class="d-flex">
+        <div class="col-6">Фамилия:</div>
+        <div>@Model.LastName</div>
+    </div>
+    <div class="d-flex">
+        <div class="col-6">Email:</div>
+        <div><a href="mailto:@Model.Email">@Model.Email</a></div>
+    </div>
+    <div class="d-flex">
+        <div class="col-6">Телефон:</div>
+        <div><a href="tel:@Model.PhoneNumber">@Model.PhoneNumber</a></div>
+    </div>
+    <div class="d-flex">
+        <hr class="w-100" />
+    </div>
+    <div class="d-flex">
+        <div class="col-6">Способ доставки:</div>
+        <div>@(Model.DeliveryType == DeliveryWay.Courier ? "Курьер" : "Самовывоз")</div>
+    </div>
+    @if (Model.DeliveryType == DeliveryWay.Courier)
+    {
+        <address class="d-flex flex-column">
+            <div class="d-flex">
+                <div class="col-6">Улица:</div>
+                <div>@Model.Street</div>
+            </div>
+            <div class="d-flex">
+                <div class="col-6">Дом:</div>
+                <div>@Model.HouseNumber</div>
+            </div>
+            <div class="d-flex">
+                <div class="col-6">Квартира:</div>
+                <div>@Model.ApartmentNumber</div>
+            </div>
+            <div class="d-flex">
+                <div class="col-6">Подъезд:</div>
+                <div>@Model.ExitNumber</div>
+            </div>
+            <div class="d-flex">
+                <div class="col-6">Этаж:</div>
+                <div>
+                    @if (Model.FloorNumber != null)
+                    {
+                        @Model.FloorNumber.Value
+                    }
+                </div>
+            </div>
+        </address>
+    }
+    <div class="d-flex">
+        <hr class="w-100" />
+    </div>
+    <div class="d-flex flex-column">
+        <div class="col-6">Список товаров:</div>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Кол-во</th>
+                    <th>Цена</th>
+                    <th>Сумма</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var orderToy in Model.OrderToys)
+                {
+                    <tr>
+                        <td>@orderToy.Toy.Name</td>
+                        <td>@orderToy.Quantity</td>
+                        <td>@orderToy.Toy.Price руб.</td>
+                        <td>@(orderToy.Quantity * orderToy.Toy.Price) руб.</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="d-flex">
+        <hr class="w-100" />
+    </div>
+    <div class="d-flex">
+        <div class="col-6">Итого:</div>
+        <div class="card-price ml-auto">@Model.TotalPrice руб.</div>
+    </div>
+</section>

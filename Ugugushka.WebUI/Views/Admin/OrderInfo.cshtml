@@ -1,0 +1,52 @@
+﻿@using Ugugushka.Common.Concretes
+@model AdminOrderInfoViewModel
+
+@{
+    ViewBag.Title = PageNameDefaults.OrderInfo.WithDomain();
+}
+
+<section class="card mt-5">
+    <section class="card-header d-flex align-items-center">
+        <div class="col-6">
+            <h1>@PageNameDefaults.OrderInfo</h1>
+        </div>
+        <div class="ml-auto">
+            <a class="btn btn-secondary" href="@Model.ReturnUrl">Назад</a>
+        </div>
+    </section>
+    @if (TempData["message"] != null)
+    {
+        <div class="d-flex mb-3 alert alert-success">
+            @TempData["message"]
+        </div>
+    }
+
+    @await Component.InvokeAsync("OrderInfo", new{order=Model.Order, withStatus=true})
+
+    <section class="d-flex justify-content-center">
+        @using (Html.BeginForm("DeleteOrder", "Admin", new { }, FormMethod.Post, true, new { @class = "d-flex" }))
+        {
+            @Html.Hidden("Id", Model.Order.Id)
+            <input class="btn btn-secondary mx-2" type="submit" value="Удалить" />
+        }
+        
+        @if ((int)Model.Order.Status == 0)
+        {
+            @using (Html.BeginForm("SetOrderStatus", "Admin", new {Model.ReturnUrl}, FormMethod.Post, true, new {@class = "d-flex"}))
+            {
+                @Html.Hidden("OrderId", Model.Order.Id)
+                @Html.Hidden("Status", OrderStatus.InProcess)
+                <input class="btn btn-secondary mx-2" type="submit" value="Отметить как принятый"/>
+            }
+        }
+        @if ((int)Model.Order.Status == 1)
+        {
+            @using (Html.BeginForm("SetOrderStatus", "Admin", new {Model.ReturnUrl}, FormMethod.Post, true, new {@class = "d-flex"}))
+            {
+                @Html.Hidden("OrderId", Model.Order.Id)
+                @Html.Hidden("Status", OrderStatus.Completed)
+                <input class="btn btn-turquoise mx-2" type="submit" value="Отметить как завершённый"/>
+            }
+        }
+    </section>
+</section>

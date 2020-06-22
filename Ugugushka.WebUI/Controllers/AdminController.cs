@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,11 +21,14 @@ namespace Ugugushka.WebUI.Controllers
 
         private readonly IToyManager _toyManager;
         private readonly IPictureManager _pictureManager;
+        private readonly IOrderManager _orderManager;
 
-        public AdminController(IToyManager toyManager, IPictureManager pictureManager, IMapper mapper) : base(mapper)
+        public AdminController(IToyManager toyManager, IPictureManager pictureManager, IOrderManager orderManager,
+            IMapper mapper) : base(mapper)
         {
             _toyManager = toyManager;
             _pictureManager = pictureManager;
+            _orderManager = orderManager;
         }
 
         public async Task<IActionResult> Toys([FromQuery] ToyFilterInfo toyFilter, [FromQuery] int page = 1)
@@ -44,7 +48,7 @@ namespace Ugugushka.WebUI.Controllers
         }
 
         public async Task<IActionResult> EditToy(int id)
-        { 
+        {
 
             var model = Mapper.Map<AddToyViewModel>(await _toyManager.GetByIdAsync(id));
 
@@ -82,6 +86,44 @@ namespace Ugugushka.WebUI.Controllers
 
             TempData["message"] = $"{deletedToy.Name} был(а) успешно удален(а)!";
             return RedirectToAction("Toys");
+        }
+
+        public async Task<IActionResult> Orders([FromQuery] int page = 1)
+        {
+            return View(new AdminOrdersViewModel
+            {
+                PagedOrders = await _orderManager.GetFilteredPagedAsync(new OrderFilterInfo(),
+                    new PageInfo {PageNumber = page, PageSize = 10})
+            });
+        }
+
+        public async Task<IActionResult> OrderInfo([FromRoute] Guid id, string returnUrl)
+            => View(new AdminOrderInfoViewModel
+            {
+                Order = await _orderManager.GetByIdEagerAsync(id),
+                ReturnUrl = returnUrl
+            });
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetOrderStatus(AdminSetOrderStatusViewModel model, string returnUrl)
+        {
+            await _orderManager.SetOrderStatusAsync(model.OrderId, model.Status);
+            
+            TempData["message"] = "Статус заказа успешно изменён!";
+
+            return RedirectToAction("OrderInfo", new {Id = model.OrderId, ReturnUrl = returnUrl});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteOrder(Guid id)
+        {
+            await _orderManager.DeleteAsync(id);
+
+            TempData["message"] = "Заказ успешно удалён!";
+
+            return RedirectToAction("Orders");
         }
     }
 }

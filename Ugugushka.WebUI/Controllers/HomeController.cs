@@ -36,6 +36,9 @@ namespace Ugugushka.WebUI.Controllers
             
             return View(model);
         }
+
+        public IActionResult Contacts() => View();
+
         public IActionResult Error() => View();
     }
 }

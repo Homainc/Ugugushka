@@ -16,6 +16,7 @@ namespace Ugugushka.Domain.Code.Extensions
             services.AddScoped<IToyManager, ToyManager>();
             services.AddTransient<ISeedManager, IdentitySeedManager>();
             services.AddScoped<IPictureManager, PictureManager>();
+            services.AddScoped<IOrderManager, OrderManager>();
 
             return services;
         }

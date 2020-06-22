@@ -1,0 +1,59 @@
+﻿@using Ugugushka.WebUI.HtmlHelpers
+@model AdminOrdersViewModel
+@{
+    ViewBag.Title = PageNameDefaults.Orders.WithDomain();
+}
+
+<section class="card mt-5">
+    <div class="card-header">
+        <h2>Заказы (@Model.PagedOrders.TotalItems)</h2>
+    </div>
+
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["message"]
+        </div>
+    }
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Телефон</th>
+                <th>Доставка</th>
+                <th>Сумма, руб.</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.PagedOrders.Items.Any())
+            {
+                <tr>
+                    <td colspan="5" class="empty-text">
+                        Нет заказов
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var order in Model.PagedOrders.Items)
+                {
+                    <tr class="order-status-@((int)order.Status)">
+                        <td>@order.Date.ToLocalTime().ToString("dd/MM/yy HH:mm")</td>
+                        <td>@order.PhoneNumber</td>
+                        <td>@(order.DeliveryType == 0 ? "Курьером" : "Самовывоз")</td>
+                        <td>@order.TotalPrice</td>
+                        <td>
+                            <a href="@Url.Action("OrderInfo", new {order.Id, ReturnUrl = Context.Request.Path})">Подробнее</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex align-self-center mt-3">
+        @Html.PageLinks(@Model.PagedOrders.PageNumber, @Model.PagedOrders.TotalPages, "btn-secondary", x => Url.Action("Orders", new { page = x }))
+    </div>
+</section>
+

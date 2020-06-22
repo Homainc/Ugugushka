@@ -20,9 +20,13 @@
     }
     </tbody>
     <tfoot>
-    <tr>
-        <td colspan="3">Итого</td>
-        <td>@Model.ComputeTotalValue() руб.</td>
-    </tr>
+        <tr>
+            <td colspan="3">Доставка курьером</td>
+            <td id="tableCourierPrice"><span></span> руб.</td>
+        </tr>
+        <tr>
+            <td colspan="3">Итого</td>
+            <td><span id="tableTotalValue">@Model.ComputeTotalValue()</span> руб.</td>
+        </tr>
     </tfoot>
 </table>

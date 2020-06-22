@@ -27,6 +27,7 @@ namespace Ugugushka.UnitTests.Abstractions
             var mapperCfg = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<ToyMapperProfile>();
+                cfg.AddProfile<OrderMapperProfile>();
             });
             _mapper = new Mapper(mapperCfg);
         }
@@ -52,27 +53,38 @@ namespace Ugugushka.UnitTests.Abstractions
 
         private ISaveProvider SaveProvider => new SaveProvider(_context, HttpContextAccessor);
 
-        private async Task<IToyRepository> CreateToyRepositoryAsync(IEnumerable<Toy> initialValues)
+        protected async Task PopulateAsync<TITem>(IEnumerable<TITem> initialItems)
         {
-            var toys = initialValues.ToArray();
-            await _context.AddRangeAsync(toys);
-            await _context.SaveChangesAsync();
+            var iItems = initialItems as TITem[] ?? initialItems.ToArray();
             
-            foreach (var toy in toys)
-                _context.Entry(toy).State = EntityState.Detached;
+            foreach (var item in iItems)
+                await _context.AddAsync(item);
+            
+            await _context.SaveChangesAsync();
 
-            return new ToyRepository(_context, HttpContextAccessor);
+            foreach (var item in iItems)
+                _context.Entry(item).State = EntityState.Detached;
         }
 
-        private IToyImageRepository CreateToyImageRepository() => 
-            new ToyImageRepository(_context, HttpContextAccessor);
+        protected void DetachOrderToys()
+        {
+            foreach (var entry in _context.ChangeTracker.Entries<OrderToy>().ToList())
+                _context.Entry(entry.Entity).State = EntityState.Detached;
+        }
 
-        protected async Task<(IToyManager, FakePictureManager)> CreateToyManagerAsync(IEnumerable<Toy> initialValues = null)
+        protected (IToyManager, FakePictureManager) CreateToyManager()
         {
             var pictureManager = new FakePictureManager();
-            var toyManager = new ToyManager(await CreateToyRepositoryAsync(initialValues),pictureManager, CreateToyImageRepository(), SaveProvider,
+            var toyManager = new ToyManager(new ToyRepository(_context, HttpContextAccessor), pictureManager,
+                new ToyImageRepository(_context, HttpContextAccessor), SaveProvider,
                 _mapper);
             return (toyManager, pictureManager);
+        }
+
+        protected IOrderManager CreateOrderManager()
+        {
+            return new OrderManager(new OrderRepository(_context, HttpContextAccessor),
+                new OrderToyRepository(_context, HttpContextAccessor), SaveProvider, _mapper);
         }
     }
 }

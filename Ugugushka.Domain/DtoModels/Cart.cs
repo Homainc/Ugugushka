@@ -29,6 +29,11 @@ namespace Ugugushka.Domain.DtoModels
         public void Clear() => _lineCollection.Clear();
 
         public IEnumerable<CartLine> Lines => _lineCollection.AsEnumerable();
+
+        public Cart(){}
+
+        public Cart(List<CartLine> initialLines) =>
+            _lineCollection = initialLines;
     }
 
     public class CartLine

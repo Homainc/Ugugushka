@@ -1,13 +1,15 @@
-﻿@model CartCheckoutViewModel
+﻿@using Ugugushka.Common.Concretes
+@model CartCheckoutViewModel
 @{
-    ViewData["Title"] = PageNameDefaults.Checkout.WithDomain();
+    ViewBag.Title = PageNameDefaults.Checkout.WithDomain();
 }
 
 <section class="card my-5 d-flex">
     <div class="card-header d-flex">
-        <h1>Оформление заказа</h1>
+        <h1>@PageNameDefaults.Checkout</h1>
     </div>
-    <div class="d-flex flex-column">
+    @using (Html.BeginForm("Checkout", "Cart", new { }, FormMethod.Post, true, new { @class = "d-flex flex-column" }))
+    {
         <div class="d-flex flex-wrap mb-3">
             <div class="d-flex col-12 mb-3 p-0">
                 <h2><span>1. </span>Введите свои данные</h2>
@@ -23,6 +25,7 @@
                         <div class="col-12 col-sm-6 pl-0 pl-sm-1 form-group">
                             <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
                             @Html.TextBox(property.PropertyName, null, htmlAttributes: new { @class = "form-control text-input", @placeholder = property.DisplayName })
+                            @Html.ValidationMessage(property.PropertyName)
                         </div>
                         break;
                 }
@@ -32,20 +35,23 @@
             <div class="d-flex mb-3">
                 <h2><span>2. </span>Выберите способ доставки</h2>
             </div>
-            <div class="d-flex flex-column form-group">
+            <div class="d-flex flex-column">
                 <label class="d-block mb-3">Способ доставки</label>
                 <div class="d-flex align-self-start radio-block">
                     <label class="radio-label" for="bycourier">
-                        <input class="d-none" type="radio" id="bycourier" name="deliveryType" value="bycourier" checked/>
+                        <input class="d-none" type="radio" id="bycourier" name="DeliveryType" value="0" @(Model.DeliveryType == DeliveryWay.Courier? "checked" : "") href="#bycourier-tab" />
                         <span>курьером</span>
                     </label>
                     <label class="radio-label" for="byself">
-                        <input class="d-none" type="radio" id="byself" name="deliveryType" value="byself"/>
+                        <input class="d-none" type="radio" id="byself" name="DeliveryType" value="1" @(Model.DeliveryType == DeliveryWay.Pickup? "checked" : "") href="#byself-tab" />
                         <span>самовывоз</span>
                     </label>
                 </div>
             </div>
             <div class="d-flex flex-wrap tab-content" id="bycourier-tab">
+                <div class="mt-3 mb-4">
+                    <strong>Стоимость доставки:</strong> <span class="text-turquoise"><span id="courierPrice">@ViewBag.CourierPrice</span> руб.</span>
+                </div>
                 @foreach (var property in ViewData.ModelMetadata.Properties)
                 {
                     @switch (property.PropertyName)
@@ -53,7 +59,8 @@
                         case "Street":
                             <div class="form-group col-12 pl-0">
                                 <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
-                                @Html.TextBox(property.PropertyName, null, htmlAttributes: new { @class = "form-control text-input", @placeholder = property.DisplayName })
+                                @Html.TextBox(property.PropertyName, null, htmlAttributes: new {@class = "form-control text-input", @placeholder = property.DisplayName})
+                                @Html.ValidationMessage(property.PropertyName)
                             </div>
                             break;
                         case "HouseNumber":
@@ -62,21 +69,23 @@
                         case "ExitNumber":
                             <div class="form-group col-12 col-sm-6 pl-0 pl-sm-1">
                                 <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
-                                @Html.TextBox(property.PropertyName, null, htmlAttributes: new { @class = "form-control text-input", @placeholder = property.DisplayName })
+                                @Html.TextBox(property.PropertyName, null, htmlAttributes: new {@class = "form-control text-input", @placeholder = property.DisplayName})
+                                @Html.ValidationMessage(property.PropertyName)
                             </div>
                             break;
                     }
                 }
             </div>
-            <div class="tab-content" id="byself-tab" style="display: none">
-                <address>
-                    Адрес самовывоза: ул. Леонида Беды 39<br/>
-                    Время работы: с <time>11:00</time> до <time>21:00</time>
-                </address>
+            <div class="tab-content mt-3" id="byself-tab" style="display: none">
+                <address class="d-flex"><strong>Адрес самовывоза:</strong>ул. Леонида Беды 39</address>
+                <p class="d-flex">
+                    <strong class="d-flex mr-2">Время работы:</strong>
+                    <span>с <time>9:00</time> до <time>20:00</time></span>
+                </p>
             </div>
         </div>
         <div class="d-flex flex-column mb-3">
-            <div class="d-flex">
+            <div class="d-flex mb-3">
                 <h2><span>3. </span>Проверьте детали заказа</h2>
             </div>
             <div class="d-flex">
@@ -84,29 +93,54 @@
             </div>
         </div>
         <div class="d-flex">
-            <input class="btn btn-turquoise" type="submit" value="Оформить заказ"/>
+            <input class="btn btn-turquoise" type="submit" value="Оформить заказ" />
         </div>
-    </div>
+    }
 </section>
 @section PageScripts
 {
     <script src="~/libs/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/libs/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
     <script type="text/javascript">
+        const courierPrice = parseFloat($("#courierPrice")[0].textContent);
+        const tableCourierPriceCol = $("#tableCourierPrice")[0];
+        const tableCourierPriceRow = $(tableCourierPriceCol.parentNode);
+        const tableCourierPrice = $("#tableCourierPrice span")[0];
+        const tableTotalValue = $("#tableTotalValue")[0];
+        const totalValue = parseFloat(tableTotalValue.textContent); 
+
         $(document).ready(function() {
-            $("input[name='deliveryType']").on("change", onDeliveryTypeChange);
+            $("input[name='DeliveryType']").on("change", onDeliveryTypeChange);
+
+            switchTab($("input[checked='']")[0].value);
         });
 
         function onDeliveryTypeChange(e) {
-            const  value = e.target.value;
-            if (value === 'byself') {
-                $('#bycourier-tab').toggle(false);
-                $('#bycourier-tab').toggleClass('d-flex', false);
-                $('#byself-tab').toggle(true);
+            switchTab(e.target.value);
+        }
+
+        function switchTab(value) {
+            const isCourier = value === '0';
+
+            $('#bycourier-tab').toggle(isCourier);
+            $('#bycourier-tab').toggleClass('d-flex', isCourier);
+            $('#byself-tab').toggle(!isCourier);
+
+            updateTotalValue(isCourier);
+        }
+
+        function updateTotalValue(isCourier) {
+            tableCourierPriceRow.toggle(isCourier);
+
+            if (isCourier) {
+                tableCourierPrice.textContent = courierPrice.toFixed(2);
+                tableTotalValue.textContent = (totalValue + courierPrice).toFixed(2);
+
+                console.log(tableTotalValue);
             } else {
-                $('#bycourier-tab').toggle(true);
-                $('#bycourier-tab').toggleClass('d-flex', true);
-                $('#byself-tab').toggle(false);
+                tableTotalValue.textContent = totalValue.toFixed(2);
             }
         }
-    </script>   
+    </script>
 }

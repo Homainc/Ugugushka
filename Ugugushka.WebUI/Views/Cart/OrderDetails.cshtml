@@ -1,0 +1,20 @@
+﻿@model Ugugushka.Domain.DtoModels.OrderDto
+
+<section class="card mt-5">
+    <div class="card-header">
+        <h1>Информация о заказе</h1>
+    </div>
+    
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-success mb-3">
+            @TempData["message"]
+        </div>
+    }
+
+    @await Component.InvokeAsync("OrderInfo", new {order = Model, withStatus = false})
+
+    <section class="d-flex justify-content-center">
+        <a href="@Url.Action("Index","Home")">Вернуться на главную</a>
+    </section>
+</section>

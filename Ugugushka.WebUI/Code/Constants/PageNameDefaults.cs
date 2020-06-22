@@ -10,6 +10,9 @@
         public const string EditToy = "Изменение игрушек";
         public const string Cart = "Корзина";
         public const string Checkout = "Оформление заказа";
+        public const string Orders = "Управление заказами";
+        public const string OrderInfo = "Просмотр заказа";
+        public const string Contacts = "Контакты";
     }
 
     public static class PageNameStringExtenstion

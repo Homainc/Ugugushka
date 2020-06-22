@@ -4,6 +4,8 @@ using AutoMapper;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Ugugushka.Domain.Code.Config;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.DtoModels;
 using Ugugushka.WebUI.Code.Abstractions;
@@ -16,12 +18,17 @@ namespace Ugugushka.WebUI.Controllers
     [Authorize]
     public class CartController : AbstractController
     {
+        private readonly DeliveryConfig _deliveryConfig;
+
         private readonly IToyManager _toyManager;
+        private readonly IOrderManager _orderManager;
         private readonly Cloudinary _cloudinary;
-        public CartController(IPictureManager pictureManager, IToyManager toyManager, IMapper mapper) : base(mapper)
+        public CartController(IPictureManager pictureManager, IToyManager toyManager, IOptions<DeliveryConfig> deliveryOptions, IOrderManager orderManager, IMapper mapper) : base(mapper)
         {
             _cloudinary = pictureManager.Cloudinary;
+            _orderManager = orderManager;
             _toyManager = toyManager;
+            _deliveryConfig = deliveryOptions.Value;
         }
 
         public IActionResult Index(Cart cart, string returnUrl) =>
@@ -68,7 +75,25 @@ namespace Ugugushka.WebUI.Controllers
             if (!cart.Lines.Any())
                 return RedirectToAction("Index");
 
-            return View();
+            ViewBag.CourierPrice = _deliveryConfig.CourierPrice;
+            return View(new CartCheckoutViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Checkout(Cart cart, CartCheckoutViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var order = await _orderManager.CreateAsync(Mapper.Map<OrderDtoCreate>(model), cart);
+
+                TempData["message"] = "Заказ успешно добавлен. Ожидайте звонка оператора.";
+                return View("OrderDetails", order);
+            }
+            else
+            {
+                return View(model);
+            }
         }
     }
 }

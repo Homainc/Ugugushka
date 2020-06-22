@@ -9,6 +9,7 @@ namespace Ugugushka.Data.Code.Interfaces
         void SetModified(TItem item);
         void SetDeleted(TItem item);
         Task AddAsync(TItem item);
+        void Attach(TItem item);
         void Update(TItem item);
         public Task AddRangeAsync(IEnumerable<TItem> items);
         public void RemoveRange(IEnumerable<TItem> items);

@@ -15,6 +15,7 @@
 .img-modal-content {
     display: flex;
     max-width: 700px;
+    cursor: pointer;
 }
 
 .img-nav {

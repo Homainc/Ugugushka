@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Ugugushka.Data.Code.Interfaces;
 
 namespace Ugugushka.Data.Code.Abstractions
@@ -26,6 +25,7 @@ namespace Ugugushka.Data.Code.Abstractions
         public void SetDeleted(TItem item) => Db.Entry(item).State = EntityState.Deleted;
 
         public async Task AddAsync(TItem item) => await Db.AddAsync(item, CancellationToken);
+        public void Attach(TItem item) => Db.Attach(item);
         public void Update(TItem item) => Db.Update(item);
         public async Task AddRangeAsync(IEnumerable<TItem> items) => await Db.AddRangeAsync(items, CancellationToken);
         public void RemoveRange(IEnumerable<TItem> items) => Db.RemoveRange(items);

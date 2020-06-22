@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Ugugushka.Data.Models;
@@ -12,6 +11,8 @@ namespace Ugugushka.Data
         public DbSet<Partition> Partitions { get; set; }
         public DbSet<Toy> Toys { get; set; }
         public DbSet<ToyImage> ToyImages { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderToy> OrderToys { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
@@ -30,6 +31,8 @@ namespace Ugugushka.Data
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ToyConfiguration());
             modelBuilder.ApplyConfiguration(new ImageConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderToyConfiguration());
         }
 
         public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }

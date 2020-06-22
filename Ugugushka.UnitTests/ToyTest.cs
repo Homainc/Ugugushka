@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ugugushka.Common.Concretes;
 using Ugugushka.Data.Models;
@@ -19,7 +20,7 @@ namespace Ugugushka.UnitTests
             _testOutputHelper = testOutputHelper;
         }
 
-        private static IEnumerable<Toy> TestToys
+        public static IEnumerable<Toy> TestToys
         {
             get
             {
@@ -87,8 +88,9 @@ namespace Ugugushka.UnitTests
         public async void Can_Paginate()
         {
             //Assign
-            await using var context = CreateContext("Can_Paginate");
-            var (toyManager, _) = await CreateToyManagerAsync(TestToys);
+            await using var context = CreateContext("Can_Paginate_Toy");
+            await PopulateAsync(TestToys);
+            var (toyManager, _) = CreateToyManager();
             var filter = new ToyFilterInfo();
             var firstPageWithTwoItems = new PageInfo {PageNumber = 1, PageSize = 2};
             var secondPageWithTwoItems = new PageInfo {PageNumber = 2, PageSize = 2};
@@ -121,8 +123,9 @@ namespace Ugugushka.UnitTests
         public async void Can_Filtering()
         {
             //Assign
-            await using var context = CreateContext("Can_Filtering");
-            var (toyManager, _) = await CreateToyManagerAsync(TestToys);
+            await using var context = CreateContext("Can_Filtering_Toy");
+            await PopulateAsync(TestToys);
+            var (toyManager, _) = CreateToyManager();
 
             var pageInfo = new PageInfo {PageSize = 6, PageNumber = 1};
             var plushCategory = new ToyFilterInfo {CategoryId = 1};
@@ -169,8 +172,9 @@ namespace Ugugushka.UnitTests
         public async void Can_Create()
         {
             //Assign
-            await using var context = CreateContext("Can_Create");
-            var (toyManager, pictureManager) = await CreateToyManagerAsync(TestToys);
+            await using var context = CreateContext("Can_Create_Toy");
+            await PopulateAsync(TestToys);
+            var (toyManager, pictureManager) = CreateToyManager();
             var newPlushToy = new ToyUpdateDto
             {
                 CategoryId = 1, 
@@ -206,6 +210,7 @@ namespace Ugugushka.UnitTests
 
             //Assert
             Assert.Equal(newPlushToy.Name, createdPlushToy.Name);
+            _testOutputHelper.WriteLine(createdPlushToy.Category?.ToString() ?? "null");
             Assert.Equal("Plush", createdPlushToy.Category.Name);
             Assert.Equal("For children", createdPlushToy.Category.Partition.Name);
             Assert.Equal(newPlushToy.IsOnStock, createdPlushToy.IsOnStock);
@@ -228,8 +233,9 @@ namespace Ugugushka.UnitTests
         public async void Can_Update()
         {
             //Assign
-            await using var context = CreateContext("Can_Update");
-            var (toyManager, pictureManager) = await CreateToyManagerAsync(TestToys);
+            await using var context = CreateContext("Can_Update_Toy");
+            await PopulateAsync(TestToys);
+            var (toyManager, pictureManager) = CreateToyManager();
             var newWoodenToy = new ToyUpdateDto
             {
                 Id = 1, 
@@ -291,8 +297,9 @@ namespace Ugugushka.UnitTests
         public async void Can_Delete()
         {
             //Assign
-            await using var context = CreateContext("Can_Delete");
-            var (toyManager, _) = await CreateToyManagerAsync(TestToys);
+            await using var context = CreateContext("Can_Delete_Toy");
+            await PopulateAsync(TestToys);
+            var (toyManager, _) = CreateToyManager();
 
             //Action
             await toyManager.DeleteAsync(1);

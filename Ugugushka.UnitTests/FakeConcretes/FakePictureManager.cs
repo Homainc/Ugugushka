@@ -15,6 +15,7 @@ namespace Ugugushka.UnitTests.FakeConcretes
         public Cloudinary Cloudinary { get; }
 
         public Task<ToyImageDto> UploadPictureAsync(IFormFile formFile) => null;
+        public Task<IEnumerable<ToyImageDto>> UploadPicturesAsync(IEnumerable<IFormFile> formFiles) => null;
 
         public Task DeleteTemporaryPicturesAsync() => Task.CompletedTask;
 

@@ -15,6 +15,12 @@ namespace Ugugushka.Data.Models
         public ISet<ToyImage> Images { get; set; }
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
+        public ICollection<OrderToy> OrderToys { get; set; }
+
+        public Toy()
+        {
+            OrderToys = new List<OrderToy>();
+        }
     }
 
     internal class ToyConfiguration : IEntityTypeConfiguration<Toy>

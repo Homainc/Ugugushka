@@ -36,7 +36,9 @@ namespace Ugugushka.WebUI
         {
             // Application configuration
             services.Configure<CredentialsConfig>(_config.GetSection("Credentials"));
+            services.Configure<DeliveryConfig>(_config.GetSection("Delivery"));
 
+            // Adding domain services
             services.AddDomainServices();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -122,7 +124,7 @@ namespace Ugugushka.WebUI
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action}/{id:int?}",
+                    pattern: "{controller}/{action}/{id?}",
                     defaults: new {Controller = "Home", Action = "Index"});
             });
         }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -48,6 +46,8 @@ namespace Ugugushka.Data.Code.Extensions
             // Repositories
             services.AddScoped<IToyRepository, ToyRepository>();
             services.AddScoped<IToyImageRepository, ToyImageRepository>();
+            services.AddScoped<IOrderToyRepository, OrderToyRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             
             // Save Provider
             services.AddScoped<ISaveProvider, SaveProvider>();

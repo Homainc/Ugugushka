@@ -47,12 +47,14 @@
                     <td class="d-none d-md-table-cell">@Html.DefaultString(toy.PartitionName, "Нет")</td>
                     <td>@toy.Price</td>
                     <td>
-                        @Html.ActionLink("Изменить", "EditToy", new {Id = toy.Id}, new {@class = "btn-link"})
-                        @using (Html.BeginForm("Delete", "Admin"))
-                        {
-                            @Html.Hidden("Id", toy.Id)
-                            <input class="btn-link ml-2" type="submit" value="Удалить"/>
-                        }
+                        <div class="d-inline-flex">
+                            @Html.ActionLink("Изменить", "EditToy", new {Id = toy.Id}, new {@class = "btn-link"})
+                            @using (Html.BeginForm("Delete", "Admin"))
+                            {
+                                @Html.Hidden("Id", toy.Id)
+                                <input class="btn-link ml-2" type="submit" value="Удалить"/>
+                            }
+                        </div>
                     </td>
                 </tr>
             }

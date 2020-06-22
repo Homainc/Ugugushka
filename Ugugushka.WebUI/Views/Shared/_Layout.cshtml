@@ -1,65 +1,74 @@
 ﻿<!DOCTYPE html>
 
-<html lang="ru">
+<html itemscope="" itemtype="http://schema.org/WebPage" lang="ru-BY">
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width"/>
     <title>@ViewBag.Title</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="~/css/bundle.min.css" />
+    <link rel="stylesheet" href="~/css/bundle.min.css"/>
     @await RenderSectionAsync("Css", false)
 
 </head>
 <body>
-<header>
-    <div class="container-lg">
-        <div class="row py-4 align-items-center justify-content-between">
-            <div class="col-3 col-md-6 col-lg-5 d-flex">
-                <img src="~/img/green_logo.png" height="90" width="90" alt="Угугушка" />
-                <div class="ml-3 align-self-center d-none d-md-block">
-                    <h1 class="logo-text">Ugugushka.by</h1>
-                    <h2 class="logo-subtext">Интернет-магазин игрушек</h2>
+<div class="wrapper">
+    <header>
+        <div class="container-lg">
+            <div class="row py-4 align-items-center justify-content-between">
+                <div class="col-3 col-md-6 col-lg-5 d-flex">
+                    <img src="~/img/green_logo.png" height="90" width="90" alt="Угугушка" />
+                    <div class="ml-3 align-self-center d-none d-md-block">
+                        <h1 class="logo-text">Ugugushka.by</h1>
+                        <h2 class="logo-subtext">Интернет-магазин игрушек</h2>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-5 d-flex search-block">
+                    <input class="col-9 col-lg-10 text-input-bl" type="text" placeholder="Найти игрушки" />
+                    <button class="col-3 col-lg-2 btn search-btn" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="col-3 col-lg-2 d-flex ml-auto">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @using (Html.BeginForm("Logout", "Account", new { ReturnUrl = Context.Request.Path }))
+                        {
+
+                            <input type="submit" class="btn btn-primary mr-2" value="Выйти" />
+                        }
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary mr-2" href="@Url.Action("Login", "Account")">Войти</a>
+                    }
+
+                    @await Component.InvokeAsync("CartButton")
                 </div>
             </div>
-            <div class="col-6 col-md-3 col-lg-5 d-flex search-block">
-                <input class="col-9 col-lg-10 text-input-bl" type="text" placeholder="Найти игрушки" />
-                <button class="col-3 col-lg-2 btn search-btn" type="submit"><i class="fas fa-search"></i></button>
-            </div>
-            <div class="col-3 col-lg-2 d-flex ml-auto">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    @using (Html.BeginForm("Logout","Account", new { ReturnUrl = Context.Request.Path }))
-                    {
-                            
-                        <input type="submit" class="btn btn-primary mr-2" value="Выйти"/>
-                    }
-                }
-                else
-                {
-                    <a class="btn btn-primary mr-2" href="@Url.Action("Login", "Account")">Войти</a>
-                }
-
-                @await Component.InvokeAsync("CartButton")
-            </div>
         </div>
+        <nav class="menu">
+            <div class="container-lg d-flex">
+                <a href="@Url.Action("Index", "Home")">Каталог</a>
+                <a href="@Url.Action("Contacts", "Home")">Контакты</a>
+                @if (User.IsInRole(RoleDefaults.Admin))
+                {
+                    <a href="@Url.Action("Toys", "Admin")">Управление</a>
+                    <a href="@Url.Action("Orders", "Admin")">Заказы</a>
+                }
+            </div>
+        </nav>
+    </header>
+
+    <main class="container-lg container-xl">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="d-flex justify-content-center align-items-center">
+    <div class="d-flex">
+        2020 &copy; Ugugushka.by &mdash; Интернет-магазин игрушек. Все права защищены.
+        Время работы: <time>11:00</time> &mdash; <time>21:00</time>.
     </div>
-    <nav class="menu">
-        <div class="container-lg d-flex">
-            <a href="@Url.Action("Index", "Home")">Каталог</a>
-            <a href="#">Контакты</a>
-            @if(User.IsInRole(RoleDefaults.Admin)){
-                <a href="@Url.Action("Toys", "Admin")">Управление</a>
-            }
-        </div>
-    </nav>
-</header>
-
-<main class="container-lg container-xl">
-    @RenderBody()
-</main>
-
-<footer>
 </footer>
 @await RenderSectionAsync("PageScripts", false)
 </body>
