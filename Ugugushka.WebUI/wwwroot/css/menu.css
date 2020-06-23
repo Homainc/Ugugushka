@@ -1,0 +1,197 @@
+﻿header {
+    background-color: rgba(195, 255, 235, 1);
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+nav#menu h1,
+nav#menu h2,
+nav#menu h3,
+nav#menu h4,
+nav#menu h5 {
+    margin: 0;
+    padding: 0;
+}
+nav#menu {
+    padding-top: 1rem;
+}
+
+nav#menu a {
+    color: var(--text-primary);
+}
+
+nav#menu .menu-links a {
+    margin: 0;
+    padding: 1.2rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+nav#menu .menu-links {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+nav#menu .menu-links a:hover {
+    text-decoration: underline;
+}
+
+nav#menu .search-block {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+nav#menu input.search-input {
+    width: 100%;
+    border: none;
+    background: #fdfdfd;
+    padding: 0.6rem 1rem;
+    border-radius: 20px 0 0 20px;
+    font-size: 1rem;
+    border: 1px solid #fdfdfd;
+    border-right: none;
+}
+
+nav#menu input.search-input:focus {
+    border: 1px solid var(--color-torquoise);
+}
+
+nav#menu button.search-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 0 20px 20px 0;
+    background-color: var(--color-torquoise);
+    -webkit-transition-duration: 0.2s;
+    -o-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    -webkit-transition-property: background-color;
+    -o-transition-property: background-color;
+    transition-property: background-color;
+}
+
+nav#menu button.search-btn i {
+    color: #fdfdfd;
+}
+
+nav#menu button.search-btn:hover {
+    background-color: var(--color-torquoise);
+}
+
+nav#menu .cart-count {
+    font-size: 0.5rem;
+    color: #fff;
+    background-color: var(--color-torquoise);
+    padding: 5px;
+    line-height: 5px;
+    margin: -0.5rem 0 0 -0.5rem;
+    border-radius: 50%;
+}
+
+nav#menu .bar-logo {
+    height: 70px;
+    width: 70px;
+}
+
+nav#menu .logo-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+nav#menu .responsive {
+    z-index: 100;
+    margin: 0px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: start;
+    padding: 0;
+    background-color: white;
+    width: auto;
+}
+
+nav#menu .responsive a {
+    padding: 0.6rem 3rem;
+    font-weight: 400;
+}
+
+nav#menu .show-bar-btn,
+nav#menu a:first-child {
+    display: none;
+}
+
+nav#menu .responsive a:first-child {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    background-color: rgb(195, 255, 235);
+    padding: 1rem;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: end;
+    width: 100%;
+}
+
+nav#menu .responsive a:first-child:hover {
+    text-decoration: none;
+}
+
+nav#menu div.bar-back {
+    display: none;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    opacity: 0.5;
+    background: black;
+}
+
+@media screen and (max-width: 870px) {
+    nav#menu {
+        padding: 0.5rem;
+    }
+
+    nav#menu .search-block button.search-btn,
+    nav#menu .search-block input.search-input {
+        padding: 0.3rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    nav#menu .bar-hide,
+    nav#menu .menu-links,
+    nav#menu .logo-header {
+        display: none;
+    }
+
+    nav#menu .show-bar-btn,
+    nav#menu .menu-links a:first-child {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    nav#menu .bar-logo {
+        height: 30px;
+        width: 30px;
+    }
+}

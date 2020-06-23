@@ -60,6 +60,10 @@ namespace Ugugushka.WebUI.Controllers
         public async Task<IActionResult> Logout(string returnUrl)
         {
             await _signInManager.SignOutAsync();
+
+            if (returnUrl == null)
+                return RedirectToAction("Index", "Home");
+            
             return Redirect(returnUrl);
         }
     }

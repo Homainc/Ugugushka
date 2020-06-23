@@ -60,7 +60,11 @@
     border: 1px solid #fafafa;
 }
 
-.card-header h1, h2, h3, h4, h5 {
+.card-header h1, 
+.card-header h2, 
+.card-header h3,
+.card-header h4, 
+.card-header h5 {
     margin: 0;
     padding: 0;
 }

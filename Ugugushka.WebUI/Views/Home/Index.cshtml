@@ -8,12 +8,12 @@
 }
 
 <section class="my-5">
-    <div class="d-flex align-content-stretch flex-wrap">
+    <div class="d-flex align-content-stretch justify-content-center flex-wrap">
         @foreach (var toy in Model.PagedToys.Items)
         {
-            <div class="d-flex col-12 col-sm-6 col-md-4 col-lg-3 pr-sm-1">
+            <div class="d-flex justify-content-center col-12 col-sm-6 col-md-4 col-lg-3 pr-sm-1">
                 <a class="toy-item d-flex flex-column align-items-stretch" href="@Url.Action("ToyInfo", new { id = toy.Id })">
-                    <img class="d-flex toy-img" src="@Model.Cloudinary.BuildImgUrl(toy.MainImage.PublicId, toy.MainImage.Format)" alt="@toy.Name"/>
+                    <img class="d-flex toy-img" src="@Model.Cloudinary.BuildImgUrl(toy.MainImage.PublicId, toy.MainImage.Format, 300, 300)" alt="@toy.Name"/>
                     <div class="toy-text">
                         <h3 class="toy-header">@toy.Name</h3>
                         <span class="toy-price">@toy.Price р.</span>

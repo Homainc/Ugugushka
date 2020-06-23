@@ -1,9 +1,10 @@
 ﻿@model Ugugushka.Domain.DtoModels.Cart
 
-<a class="btn btn-primary d-flex align-items-center justify-content-center" href="@Url.Action("Index", "Cart", new {ReturnUrl = Context.Request.Path})">
-    <i class="d-flex fas fa-shopping-cart mr-1"></i>
+<a class="btn btn-borderless d-flex" href="@Url.Action("Index", "Cart", new {ReturnUrl= Context.Request.Path})">
+    <i class="d-flex fas fa-shopping-cart"></i>
     @if (Model.Lines.Any())
     {
-        <span class="cart-length">@Model.Lines.Count()</span>  
+        <span class="d-flex align-self-start cart-count">@Model.Lines.Count()</span>
     }
+    <span class="bar-hide">Корзина</span>
 </a>

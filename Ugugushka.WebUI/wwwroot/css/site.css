@@ -1,9 +1,14 @@
 ﻿:root {
     --text-primary: #535353;
-    --color-secondary: #A3D5FF;
     --bg-primary: rgba(255, 255, 255, 1);
     --bg-secondary: rgba(195, 255, 235, 1);
     --color-torquoise: #00d1a5;
+}
+
+*, body {
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-primary);
 }
 
 html {
@@ -16,10 +21,6 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    width: 100%;
-    font-weight: 400;
-    font-family: 'Roboto', sans-serif;
-    color: var(--text-primary);
 }
 
 .text-turquoise {
@@ -69,43 +70,6 @@ table.table {
         background: white;
     }
 
-
-
-.menu {
-    background: var(--bg-secondary);
-    -webkit-box-shadow: 0 8px 15px #cbf9ea;
-    box-shadow: 0 8px 15px #cbf9ea;
-    -webkit-box-shadow: 0 8px 15px rgba(203, 249, 234, 0.3);
-    box-shadow: 0 8px 15px rgba(203, 249, 234, 0.3);
-}
-
-    .menu a {
-        display: block;
-        text-decoration: none;
-        padding: 20px 20px;
-        color: var(--text-primary);
-        font-weight: 500;
-        letter-spacing: 0.05rem;
-    }
-
-        .menu a:hover {
-            text-decoration: underline;
-        }
-
-.logo-text {
-    padding: 0px;
-    margin: 0px;
-    font-family: 'Alegreya Sans', sans-serif;
-    font-size: 2rem;
-}
-
-.logo-subtext {
-    padding: 0px;
-    margin: 0px;
-    font-family: 'Alegreya Sans', sans-serif;
-    font-size: 1rem;
-}
-
 .toy-img {
     -o-object-fit: cover;
     object-fit: cover;
@@ -131,6 +95,7 @@ table.table {
     -webkit-transition-property: border;
     -o-transition-property: border;
     transition-property: border;
+    max-width: 300px;
 }
 
     .toy-item:hover {
