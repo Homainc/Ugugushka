@@ -144,6 +144,9 @@ table.table {
     -webkit-transition-duration: 0.2s;
     -o-transition-duration: 0.2s;
     transition-duration: 0.2s;
+    -webkit-transition-property: text-decoration;
+    -o-transition-property: text-decoration;
+    transition-property: text-decoration;
     font-size: 1.2rem;
     font-weight: 400;
     overflow-wrap: break-word;

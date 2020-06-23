@@ -54,6 +54,9 @@ namespace Ugugushka.Domain.Managers
             // Cart controller
             nodes.Add(_urlHelper.Link("default", new {controller = "Cart", action = "Index"}));
 
+            // Account controller
+            nodes.Add(_urlHelper.Link("default", new {controller = "Account", action = "Login"}));
+
             return nodes;
         }
     }

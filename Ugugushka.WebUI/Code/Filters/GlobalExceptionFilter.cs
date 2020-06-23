@@ -11,11 +11,7 @@ namespace Ugugushka.WebUI.Code.Filters
             switch (context.Exception)
             {
                 case NotFoundException notFoundEx:
-                    context.Result = new ViewResult
-                    {
-                        StatusCode = 404,
-                        ViewName = "_NotFound"
-                    };
+                    context.Result = new NotFoundResult();
                     break;
             }
         }
