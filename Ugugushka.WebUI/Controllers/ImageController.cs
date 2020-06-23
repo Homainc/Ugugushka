@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Ugugushka.Domain.Code.Constants;
 using Ugugushka.Domain.Code.Interfaces;
 
 namespace Ugugushka.WebUI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = RoleDefaults.Admin)]
     [ApiController]
     [Route("api/[controller]")]
     public class ImageController : Controller

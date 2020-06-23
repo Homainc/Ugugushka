@@ -1,12 +1,14 @@
 ﻿@model LoginViewModel
 @{
     ViewBag.Title = PageNameDefaults.Login.WithDomain();
+    ViewBag.Description = "Вход в аккаунт интернет-магазина ugugushka.by";
+    ViewBag.KeyWords = $"вход аккаунт {PageNameDefaults.KeyWords}";
 }
 
 <section class="d-flex justify-content-center mt-5">
     <div class="card col-12 col-md-7 col-lg-6 px-4">
         <div class="card-header">
-            <h2>Авторизация</h2>
+            <h1>Авторизация</h1>
         </div>
         @using (Html.BeginForm("Login", "Account", new {ReturlUrl = @Model.ReturnUrl}, FormMethod.Post, true, new { }))
         {

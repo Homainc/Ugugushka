@@ -15,7 +15,6 @@ using Ugugushka.WebUI.ViewModels;
 
 namespace Ugugushka.WebUI.Controllers
 {
-    [Authorize]
     public class CartController : AbstractController
     {
         private readonly DeliveryConfig _deliveryConfig;

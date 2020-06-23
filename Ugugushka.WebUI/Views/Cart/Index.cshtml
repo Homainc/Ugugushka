@@ -2,12 +2,14 @@
 @model CartIndexViewModel
 @{
     ViewBag.Title = PageNameDefaults.Cart.WithDomain();
+    ViewBag.Description = "Корзина товаров интернет-магазина ugugushka.by";
+    ViewBag.KeyWords = $"корзина товар оформление {PageNameDefaults.KeyWords}";
 }
 
 <section class="card my-5">
     <div class="card-header">
         <div class="d-flex align-items-center">
-            <h2 class="d-flex col-5 px-0">Ваша корзина (@Model.Cart.Lines.Count())</h2>
+            <h1 class="d-flex col-5 px-0">Ваша корзина (@Model.Cart.Lines.Count())</h1>
             @using (Html.BeginForm("Clear", "Cart", new { ReturnUrl = Context.Request.Path }, FormMethod.Post, true, new {@class="d-flex ml-auto"} ))
             {
                 <button class="btn btn-secondary" type="submit">Очистить корзину</button>

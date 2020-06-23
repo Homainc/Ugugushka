@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Ugugushka.Data.Models;
-using Ugugushka.Domain.Code.Extensions;
 using Ugugushka.WebUI.Code.Abstractions;
 using Ugugushka.WebUI.ViewModels;
 

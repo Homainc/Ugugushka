@@ -145,6 +145,7 @@ table.table {
     -o-transition-duration: 0.2s;
     transition-duration: 0.2s;
     font-size: 1.2rem;
+    font-weight: 400;
     overflow-wrap: break-word;
     word-break: break-word;
 }

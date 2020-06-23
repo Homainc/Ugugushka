@@ -1,7 +1,9 @@
 ﻿@using Ugugushka.WebUI.Code.Extensions
 @model ToyInfoViewModel
 @{
-    ViewBag.Title = Model.Name.WithDomain();
+    ViewBag.Title = $"Купить {Model.Name} в Минске".WithDomain();
+    ViewBag.Description = $"Интернет-магазин детских игрушек ugugughka.by - это удобный способ купить {Model.Name} c доставкой курьером по Минску либо самовывозом";
+    ViewBag.KeyWords = $"{Model.Name.ReplaceSpecSymbols()} каталог {PageNameDefaults.KeyWords}";
 }
 
 <section class="d-flex flex-column flex-md-row mt-5">

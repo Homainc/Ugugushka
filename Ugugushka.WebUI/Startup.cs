@@ -82,7 +82,7 @@ namespace Ugugushka.WebUI
             // Setting default app culture
             var defaultCulture = new CultureInfo("ru-RU")
             {
-                NumberFormat = { NumberDecimalSeparator = ".", CurrencyDecimalSeparator = "." }
+                NumberFormat = {NumberDecimalSeparator = ".", CurrencyDecimalSeparator = "."}
             };
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
@@ -109,8 +109,10 @@ namespace Ugugushka.WebUI
                 Log.Information("Application has been stared in the release mode");
 
                 app.UseHsts();
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/error500");
             }
+
+            app.UseStatusCodePagesWithReExecute("/error{0}");
 
             seedManager.SeedData();
 
@@ -129,6 +131,11 @@ namespace Ugugushka.WebUI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "error",
+                    pattern: "error{code:int}",
+                    defaults: new {controller = "Home", action = "Error", code = 500});
+
+                endpoints.MapControllerRoute(
                     name: "sitemap",
                     pattern: "sitemap.xml",
                     defaults: new {controller = "Home", action = "SiteMap"});
@@ -136,12 +143,12 @@ namespace Ugugushka.WebUI
                 endpoints.MapControllerRoute(
                     name: "toyPage",
                     pattern: "Page{page:int}",
-                    defaults: new {Controller = "Home", Action = "Index", page = 1});
+                    defaults: new {controller = "Home", action = "Index", page = 1});
 
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action}/{id?}",
-                    defaults: new {Controller = "Home", Action = "Index"});
+                    defaults: new {controller = "Home", action = "Index"});
             });
         }
     }

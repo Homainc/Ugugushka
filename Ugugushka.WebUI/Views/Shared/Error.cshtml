@@ -1,10 +1,27 @@
-﻿@{
-    ViewBag.Title = "Критическая ошибка";
+﻿@model int
+@{
+    ViewBag.Title = Model switch
+    {
+        500 => "Критическая ошибка".WithDomain(),
+        404 => "Страница не найдена".WithDomain(),
+        _ => $"Ошибка {Model}".WithDomain()
+        };
 }
 
 <section id="not_found" class="d-flex flex-column justify-content-center align-items-center mt-5">
-    <img src="~/img/sad_logo.png" height="500" width="500" style="object-fit: cover;"/>
-    <h1>Произошла критическая ошибка!</h1>
-    <p>Если вы видите эту страницу, пожалуйста обратитесь к администратору.</p>
+    <img src="~/img/sad_logo.png" height="500" width="500" style="object-fit: cover;" alt="Грустная угугушка"/>
+    @switch(Model)
+    {
+        case 500:
+            <h1>Произошла критическая ошибка!</h1>
+            <p>Если вы видите эту страницу, пожалуйста обратитесь к администратору.</p>
+            break;
+        case 404:
+            <h1>Страница не найдена!</h1>
+            break;
+        default:
+            <h1>Ошибка @Model!</h1>
+            break;
+    }
     @Html.ActionLink("Вернуться на главную", "Index", "Home")
 </section>
