@@ -17,7 +17,8 @@ namespace Ugugushka.WebUI.Controllers
     [Authorize(Roles = RoleDefaults.Admin)]
     public class AdminController : AbstractController
     {
-        private const int ToysPageSize = 10;
+        private const int ToysPageSize = 20;
+        private const int OrdersPageSize = 20;
 
         private readonly IToyManager _toyManager;
         private readonly IPictureManager _pictureManager;
@@ -93,7 +94,7 @@ namespace Ugugushka.WebUI.Controllers
             return View(new AdminOrdersViewModel
             {
                 PagedOrders = await _orderManager.GetFilteredPagedAsync(new OrderFilterInfo(),
-                    new PageInfo {PageNumber = page, PageSize = 10})
+                    new PageInfo {PageNumber = page, PageSize = OrdersPageSize})
             });
         }
 

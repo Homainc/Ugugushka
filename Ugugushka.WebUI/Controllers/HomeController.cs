@@ -1,8 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using Ugugushka.Common.Concretes;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.DtoModels;
@@ -14,9 +16,10 @@ namespace Ugugushka.WebUI.Controllers
     [Authorize]
     public class HomeController : AbstractController
     {
-        private const int ToysPageSize = 10;
+        private const int ToysPageSize = 20;
         private readonly IToyManager _toyManager;
         private readonly IPictureManager _pictureManager;
+
         public HomeController(IToyManager toyManager, IPictureManager pictureManager, IMapper mapper) : base(mapper)
         {
             _toyManager = toyManager;
@@ -40,5 +43,12 @@ namespace Ugugushka.WebUI.Controllers
         public IActionResult Contacts() => View();
 
         public IActionResult Error() => View();
+
+        public async Task<IActionResult> SiteMap([FromServices] ISiteMapManager siteMapManager)
+        {
+            var xml = await siteMapManager.GetSiteMapDocumentAsync();
+
+            return Content(xml, "text/xml", Encoding.UTF8);
+        }
     }
 }

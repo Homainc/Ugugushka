@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +40,14 @@ namespace Ugugushka.WebUI
             // Application configuration
             services.Configure<CredentialsConfig>(_config.GetSection("Credentials"));
             services.Configure<DeliveryConfig>(_config.GetSection("Delivery"));
+
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IUrlHelper>(x =>
+            {
+                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+                var factory = x.GetRequiredService<IUrlHelperFactory>();
+                return factory.GetUrlHelper(actionContext);
+            });
 
             // Adding domain services
             services.AddDomainServices();
@@ -118,7 +129,12 @@ namespace Ugugushka.WebUI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: null,
+                    name: "sitemap",
+                    pattern: "sitemap.xml",
+                    defaults: new {controller = "Home", action = "SiteMap"});
+
+                endpoints.MapControllerRoute(
+                    name: "toyPage",
                     pattern: "Page{page:int}",
                     defaults: new {Controller = "Home", Action = "Index", page = 1});
 

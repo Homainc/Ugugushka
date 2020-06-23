@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Moq;
 using Ugugushka.Data;
 using Ugugushka.Data.Code.Interfaces;
 using Ugugushka.Data.Models;
 using Ugugushka.Data.Repositories;
+using Ugugushka.Domain.Code.Config;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.Code.MapperProfiles;
 using Ugugushka.Domain.Managers;
@@ -83,8 +85,9 @@ namespace Ugugushka.UnitTests.Abstractions
 
         protected IOrderManager CreateOrderManager()
         {
-            return new OrderManager(new OrderRepository(_context, HttpContextAccessor),
-                new OrderToyRepository(_context, HttpContextAccessor), SaveProvider, _mapper);
+            var options = new Mock<IOptions<DeliveryConfig>>();
+            options.SetupGet(x => x.Value).Returns(new DeliveryConfig {CourierPrice = 5});
+            return new OrderManager(new OrderRepository(_context, HttpContextAccessor), options.Object, SaveProvider, _mapper);
         }
     }
 }

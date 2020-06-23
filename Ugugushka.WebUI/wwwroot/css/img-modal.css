@@ -13,6 +13,8 @@
 }
 
 .img-modal-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     max-width: 700px;
     cursor: pointer;
@@ -20,12 +22,18 @@
 
 .img-nav {
     padding: 0 1rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     cursor: pointer;
     color: #f1f1f1;
     font-size: 40px;
     font-weight: bold;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
@@ -37,19 +45,42 @@
     color: #f1f1f1;
     font-size: 40px;
     font-weight: bold;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 
 .img-nav,
 #imgCaption,
 .img-modal-content {
-  animation-name: zoom;
-  animation-duration: 0.6s;
+    -webkit-animation-name: zoom;
+    animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {
+        -webkit-transform: scale(0);
+        transform: scale(0)
+    }
+
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
 }
 
 @keyframes zoom {
-  from {transform:scale(0)}
-  to {transform:scale(1)}
+    from {
+        -webkit-transform: scale(0);
+        transform: scale(0)
+    }
+
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
 }
 
 .img-nav:hover,

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Binbin.Linq;
 using Microsoft.AspNetCore.Http;
@@ -87,5 +88,16 @@ namespace Ugugushka.Data.Repositories
                     Price = t.Price,
                     Images = t.Images
                 }).AsNoTracking().SingleOrDefaultAsync(CancellationToken);
+
+        public async Task<int> GetPagesCountAsync(int pageSize)
+        {
+            var value = (double) (await Db.Toys.CountAsync(CancellationToken)) / pageSize;
+            if ((int) value < value)
+                value++;
+            return (int)value;
+        }
+
+        public async Task<IEnumerable<int>> GetToyIdsAsync() =>
+            await (from t in Db.Toys select t.Id).ToListAsync(CancellationToken);
     }
 }

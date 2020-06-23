@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Ugugushka.Data.Code.Extensions;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.Managers;
@@ -9,14 +10,15 @@ namespace Ugugushka.Domain.Code.Extensions
     {
         public static IServiceCollection AddDomainServices(this IServiceCollection services)
         {
-            //Data services
+            // Data services
             services.AddDataServices();
 
-            //Managers
+            // Managers
             services.AddScoped<IToyManager, ToyManager>();
             services.AddTransient<ISeedManager, IdentitySeedManager>();
             services.AddScoped<IPictureManager, PictureManager>();
             services.AddScoped<IOrderManager, OrderManager>();
+            services.AddScoped<ISiteMapManager, SiteMapManager>();
 
             return services;
         }

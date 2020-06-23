@@ -66,6 +66,7 @@ namespace Ugugushka.UnitTests
             // Assign
             await using var context = CreateContext("Can_Get_By_Id_Order");
             var testValues = TestOrders.ToList();
+            await PopulateAsync(ToyTest.TestToys);
             await PopulateAsync(testValues);
             var orderManager = CreateOrderManager();
             var order = testValues[0];
