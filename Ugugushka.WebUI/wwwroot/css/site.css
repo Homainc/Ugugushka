@@ -3,6 +3,8 @@
     --bg-primary: rgba(255, 255, 255, 1);
     --bg-secondary: rgba(195, 255, 235, 1);
     --color-torquoise: #00d1a5;
+    --color-light: #fdfdfd;
+    --color-lgray: #d1d1d1; 
 }
 
 *, body {
@@ -29,7 +31,7 @@ body {
 
 .wrapper {
     min-height: 100%;
-    padding-bottom: 50px;
+    padding-bottom: 70px;
     background: -o-linear-gradient(bottom, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     background: -webkit-gradient(linear, left bottom, left top, from(var(--bg-secondary)), to(var(--bg-primary)));
     background: linear-gradient(0deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
@@ -37,7 +39,8 @@ body {
 
 footer {
     height: 50px;
-    margin-top: -50px;
+    padding: 10px;
+    margin-top: -70px;
     font-size: 0.9rem;
 }
 
@@ -82,45 +85,29 @@ table.table {
     margin-top: 1.2rem;
     color: var(--text-primary);
     border-radius: 5px;
-    background: #F4FEFF;
+    background: var(--color-light);
     width: 100%;
-    -webkit-box-shadow: 0 0 5px #000000;
-    box-shadow: 0 0 5px #000000;
-    -webkit-box-shadow: 0 0 5px rgba(0,0,0,.2);
-    box-shadow: 0 0 5px rgba(0,0,0,.2);
-    border: 1px solid #F4FEFF;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
     -webkit-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
     transition-duration: 0.3s;
-    -webkit-transition-property: border;
-    -o-transition-property: border;
-    transition-property: border;
+    transition-property: box-shadow;
     max-width: 300px;
 }
 
     .toy-item:hover {
-        border: 1px solid var(--color-torquoise);
+        box-shadow: 0 14px 14px rgba(0, 0, 0, .13), 0 10px 10px rgba(0, 0, 0, .13);
     }
 
 .toy-header {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-transition-duration: 0.2s;
-    -o-transition-duration: 0.2s;
-    transition-duration: 0.2s;
-    -webkit-transition-property: text-decoration;
-    -o-transition-property: text-decoration;
-    transition-property: text-decoration;
-    font-size: 1.2rem;
-    font-weight: 400;
     overflow-wrap: break-word;
     word-break: break-word;
+    font-size: 1.1em;
+    font-weight: 500;
 }
-
-    .toy-header:hover {
-        text-decoration: underline;
-    }
 
 .toy-price {
     display: -webkit-box;
@@ -135,19 +122,13 @@ table.table {
 }
 
 .toy-text {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     padding: 1.2rem;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
     flex-direction: column;
     height: 100%;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
 }
+
+.toy-text h2 { margin: 0 0 0.7rem 0; }
 
 .h-100 {
     min-height: 100%;
@@ -172,6 +153,7 @@ table.table {
     border-radius: 10px;
     cursor: -webkit-zoom-in;
     cursor: zoom-in;
+    border: 1px solid #d1d1d1;
 }
 
 .toy-image-thumbs img:first-child {

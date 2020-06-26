@@ -16,57 +16,67 @@
 
 </head>
 <body>
-    <div class="wrapper">
-        <header>
-            <div class="container-xl">
-                <nav id="menu" class="d-flex flex-wrap align-items-center">
-                    <div class="d-none d-sm-flex col-1 col-md-4">
-                        <img class="bar-logo" src="~/img/green_logo.png" height="70" width="70" alt="Угугушка"/>
-                        <div class="logo-header flex-column justify-content-center pl-3">
-                            <h1 class="d-flex">Ugugushka.by</h1>
-                            <h4 class="d-flex">Интернет-магазин игрушек</h4>
-                        </div>
+<div class="wrapper">
+    <header>
+        <nav id="menu" class="d-flex flex-wrap">
+            <div class="d-flex align-items-center container-xl p-0">
+                <div class="d-none d-sm-flex col-1 col-md-4">
+                    <img class="bar-logo" src="~/img/green_logo70x70.png" height="70" width="70" alt="Угугушка"/>
+                    <div class="logo-header flex-column justify-content-center pl-3">
+                        <span class="d-flex">Ugugushka.by</span>
+                        <span class="d-flex">Интернет-магазин игрушек</span>
                     </div>
-                    <form class="search-block col-6 col-sm-5">
-                        <input class="search-input" type="text" placeholder="Поиск игрушек" />
+                </div>
+                <div class="col-7 col-md-5">
+                    <form class="search-block">
+                        <input class="form-control search-input" type="text" placeholder="Поиск игрушек"/>
                         <button class="btn search-btn" type="submit"><i class="fas fa-search"></i></button>
                     </form>
-                    <div class="d-flex align-items-center ml-auto">
-                        @await Component.InvokeAsync("CartButton")
-                        @if (!User.Identity.IsAuthenticated)
+                </div>
+                <div class="icon-links d-flex align-items-center ml-auto">
+                    @await Component.InvokeAsync("CartButton")
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a class="btn btn-borderless d-flex" href="@Url.Action("Login", "Account")">
+                            <i class="fas fa-user"></i>
+                            <span class="bar-hide">Войти</span>
+                        </a>
+                    }
+                    else
+                    {
+                        @using (Html.BeginForm("Logout", "Account", new {ReturnUrl = Context.Request.Path}, FormMethod.Post, true, new {@class = "d-flex"}))
                         {
-                            <a class="btn btn-borderless d-flex" href="@Url.Action("Login", "Account")">
-                                <i class="fas fa-user"></i>
-                                <span class="bar-hide">Войти</span>
-                            </a>
+                            <button class="btn btn-borderless d-flex" href="@Url.Action("Login", "Account")">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span class="bar-hide">Выйти</span>
+                            </button>
                         }
-                        else
-                        {
-                            @using (Html.BeginForm("Logout", "Account", new {ReturnUrl=Context.Request.Path}, FormMethod.Post, true, new {@class = "d-flex"}))
-                            {
-                                <button class="btn btn-borderless d-flex" href="@Url.Action("Login", "Account")">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span class="bar-hide">Выйти</span>
-                                </button>
-                            }
-                        }
-                        <div onclick="showBar()" class="btn btn-borderless show-bar-btn">
-                            <i class="fa fa-bars"></i>
-                        </div>
+                    }
+                    <div onclick="showBar()" class="btn btn-borderless show-bar-btn">
+                        <i class="fa fa-bars"></i>
                     </div>
-                    <div id="barItems" class="menu-links col-12">
-                        <a class="btn btn-borderless" href="javascript:void(0)" onclick="showBar()"><i class="fas fa-times"></i></a>
-                        <a href="@Url.Action("Index", "Home")">Каталог</a>
-                        <a href="@Url.Action("Contacts", "Home")">Контакты</a>
-                        @if (User.IsInRole(RoleDefaults.Admin))
-                        {
-                            <a href="@Url.Action("Toys", "Admin")">Управление</a>
-                            <a href="@Url.Action("Orders", "Admin")">Заказы</a>   
-                        }
-                    </div>
-                    <div id="barBack" class="bar-back"></div>
-                </nav>
+                </div>
             </div>
+            <div id="barItems" class="menu-links col-12">
+                <div class="d-flex container-xl">
+                    <a class="btn btn-borderless close" href="javascript:void(0)" onclick="showBar()"><i class="fas fa-times"></i></a>
+                    <a href="@Url.Action("Index", "Home")">Каталог</a>
+                    <a href="@Url.Action("Contacts", "Home")">Контакты</a>
+                    @if (User.IsInRole(RoleDefaults.Admin))
+                    {
+                <div class="dropdown">
+                    <button class="btn">Управление</button>
+                    <div class="dropdown-content">
+                        <a href="@Url.Action("Toys", "Admin")">Игрушки</a>
+                        <a href="@Url.Action("Orders", "Admin")">Заказы</a>
+                    </div>
+                </div>
+                        
+                    }
+                </div>
+            </div>
+            <div id="barBack" class="bar-back"></div>
+        </nav>
         </header>
 
         <main class="container-lg container-xl">
@@ -76,7 +86,7 @@
 
 <footer class="d-flex justify-content-center align-items-center">
     <div class="d-flex">
-        2020 &copy; Ugugushka.by &mdash; Интернет-магазин игрушек. Все права защищены. Время работы: <time>11:00</time> &mdash; <time>21:00</time>.
+        2020 &copy; Ugugushka.by &mdash; Интернет-магазин игрушек
     </div>
 </footer>
 <script type="text/javascript">

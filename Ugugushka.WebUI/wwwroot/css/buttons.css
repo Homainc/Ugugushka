@@ -13,7 +13,10 @@
 }
 
 .btn-borderless {
-    padding: 0.6rem;
+    transition-property: color;
+    padding: 0.6rem 1.2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+    border-radius: 20px;
 }
 
 .btn-borderless i {
@@ -21,7 +24,7 @@
 }
 
 .btn-borderless span {
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .btn-borderless span,
@@ -40,16 +43,12 @@
 }
 
 .btn-primary {
-    padding: 0 20px;
-    line-height: 45px;
+    padding: 0.9rem 1.1rem;
     font-size: 0.8rem;
     text-transform: uppercase;
     text-align: center;
-    letter-spacing: 1px;
-
-    -webkit-box-shadow: 0 8px 15px rgba(0,0,0,.1);
-    box-shadow: 0 8px 15px rgba(0,0,0,.1);
-    border-radius: 45px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+    border-radius: 50%;
     border: none;
     background: #fff;
     color: var(--text-primary);
@@ -123,6 +122,11 @@ a,
     -o-transition-duration: 0.2s;
     transition-duration: 0.2s;
 }
+
+    .btn-upload-img:hover i,
+    .btn-secondary:hover i {
+        color: var(--color-torquoise);
+    }
 
     .btn-secondary-hover,
     .btn-upload-img:hover,

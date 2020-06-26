@@ -1,7 +1,6 @@
 ﻿header {
-    background-color: rgba(195, 255, 235, 1);
-    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+    color: var(--color-light);
 }
 
 nav#menu h1,
@@ -20,20 +19,23 @@ nav#menu a {
     color: var(--text-primary);
 }
 
+nav#menu .menu-links button,
 nav#menu .menu-links a {
-    margin: 0;
-    padding: 1.2rem;
-    font-weight: 500;
-    text-decoration: none;
-}
+        margin: 0;
+        padding: 1.2rem;
+        font-weight: 500;
+        text-decoration: none;
+    }
 
-nav#menu .menu-links {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    margin-top: 0.5rem;
-}
+    nav#menu .menu-links {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin-top: 1.4rem;
+        background-color: rgba(195, 255, 235, 1);
+    }
 
+nav#menu .menu-links button:hover,
 nav#menu .menu-links a:hover {
     text-decoration: underline;
 }
@@ -42,22 +44,19 @@ nav#menu .search-block {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+    min-width: 100%;
 }
 
-nav#menu input.search-input {
-    width: 100%;
-    border: none;
-    background: #fdfdfd;
-    padding: 0.6rem 1rem;
-    border-radius: 20px 0 0 20px;
-    font-size: 1rem;
-    border: 1px solid #fdfdfd;
-    border-right: none;
-}
-
-nav#menu input.search-input:focus {
-    border: 1px solid var(--color-torquoise);
-}
+    nav#menu input.search-input {
+        width: 100%;
+        border: none;
+        background: white;
+        padding: 0.6rem 1rem;
+        border-radius: 20px 0 0 20px;
+        font-size: 1rem;
+    }
 
 nav#menu button.search-btn {
     padding: 0.6rem 1rem;
@@ -65,21 +64,21 @@ nav#menu button.search-btn {
     font-weight: 400;
     font-family: 'Roboto', sans-serif;
     border-radius: 0 20px 20px 0;
-    background-color: var(--color-torquoise);
-    -webkit-transition-duration: 0.2s;
-    -o-transition-duration: 0.2s;
-    transition-duration: 0.2s;
-    -webkit-transition-property: background-color;
-    -o-transition-property: background-color;
-    transition-property: background-color;
+    background-color: white;
 }
 
-nav#menu button.search-btn i {
-    color: #fdfdfd;
-}
+    nav#menu button.search-btn i {
+        -webkit-transition-duration: 0.2s;
+        -o-transition-duration: 0.2s;
+        transition-duration: 0.2s;
+        -webkit-transition-property: color;
+        -o-transition-property: color;
+        transition-property: color;
+        color: var(--text-primary);
+    }
 
-nav#menu button.search-btn:hover {
-    background-color: var(--color-torquoise);
+nav#menu button.search-btn:hover i{
+    color: var(--color-torquoise);
 }
 
 nav#menu .cart-count {
@@ -103,9 +102,13 @@ nav#menu .logo-header {
     display: flex;
 }
 
+nav#menu .logo-header span:first-child {
+    font-size: 1.6rem;
+}
+
 nav#menu .responsive {
     z-index: 100;
-    margin: 0px;
+    margin: 0;
     height: 100%;
     position: fixed;
     top: 0;
@@ -126,10 +129,12 @@ nav#menu .responsive {
     padding: 0;
     background-color: white;
     width: auto;
+    min-width: 200px;
 }
 
+nav#menu .responsive button,
 nav#menu .responsive a {
-    padding: 0.6rem 3rem;
+    padding: 0.4rem 3rem 0.4rem 2rem;
     font-weight: 400;
 }
 
@@ -138,7 +143,7 @@ nav#menu a:first-child {
     display: none;
 }
 
-nav#menu .responsive a:first-child {
+nav#menu .menu-links.responsive .close {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -148,9 +153,10 @@ nav#menu .responsive a:first-child {
     -ms-flex-pack: end;
     justify-content: end;
     width: 100%;
+    border-radius: 0;
 }
 
-nav#menu .responsive a:first-child:hover {
+nav#menu .menu-links.responsive .close:hover {
     text-decoration: none;
 }
 
@@ -166,10 +172,17 @@ nav#menu div.bar-back {
     background: black;
 }
 
+nav#menu .icon-links a:first-child {
+    margin-right: 0.6rem;
+}
+
 @media screen and (max-width: 870px) {
     nav#menu {
-        padding: 0.5rem;
+        padding: 0.5rem 0;
+        background-color: var(--bg-secondary);
     }
+
+    nav#menu .search-block {box-shadow: none;}
 
     nav#menu .search-block button.search-btn,
     nav#menu .search-block input.search-input {
@@ -177,14 +190,21 @@ nav#menu div.bar-back {
         font-size: 0.8rem;
     }
 
-    nav#menu .bar-hide,
-    nav#menu .menu-links,
-    nav#menu .logo-header {
+    nav#menu .menu-links {
         display: none;
+        margin-top: 0;
     }
 
+    nav#menu .menu-links div {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    nav#menu .bar-hide,
+    nav#menu .logo-header {display: none;}
+
     nav#menu .show-bar-btn,
-    nav#menu .menu-links a:first-child {
+    nav#menu .menu-links .close {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -194,4 +214,51 @@ nav#menu div.bar-back {
         height: 30px;
         width: 30px;
     }
+
+    nav#menu .btn-borderless {
+        box-shadow: none;
+        padding: 0.6rem;
+    }
+    nav#menu .icon-links a:first-child { margin-right: 0;}
+}
+
+nav#menu .dropdown {
+    position: relative;
+}
+
+nav#menu .responsive .dropdown-content {
+    position: static;
+}
+
+nav#menu .responsive .dropdown-content a{
+    background: var(--color-lgray); 
+}
+
+nav#menu .responsive .dropdown-content a:hover {
+    text-decoration: underline;
+    background: var(--color-lgray);
+}
+
+nav#menu .dropdown-content {
+    display: none;
+    position: absolute;
+    background: var(--color-light);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+    z-index: 1;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+nav#menu .dropdown-content a {
+    display: flex;
+}
+
+nav#menu .dropdown-content a:hover {
+    background-color: #f1f1f1;
+    text-decoration: none;
+}
+
+nav#menu .dropdown:focus .dropdown-content,
+nav#menu .dropdown:hover .dropdown-content {
+    display: flex;
 }
