@@ -52,7 +52,10 @@ namespace Ugugushka.Data.Repositories
                     {
                         Id = c.Id,
                         PartitionId = p.Id,
-                        Partition = p,
+                        Partition = p != null ? new Partition { 
+                            Id = p.Id,
+                            Name = p.Name
+                        } : null,
                         Name = c.Name
                     } : null,
                     Description = t.Description,
@@ -79,7 +82,11 @@ namespace Ugugushka.Data.Repositories
                         {
                             Id = c.Id,
                             PartitionId = p.Id,
-                            Partition = p,
+                            Partition = p != null ? new Partition
+                            {
+                                Id = p.Id,
+                                Name = p.Name
+                            } : null,
                             Name = c.Name
                         }
                         : null,

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using CloudinaryDotNet;
 using Ugugushka.Domain.DtoModels;
 using Ugugushka.WebUI.Code.Abstractions;

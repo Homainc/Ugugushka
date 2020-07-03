@@ -9,12 +9,23 @@
         @Html.HiddenFor(x => x.Id)
         @foreach (var property in ViewData.ModelMetadata.Properties)
         {
-            if (property.PropertyName != "Id" && 
-                property.PropertyName != "Images" && 
-                property.PropertyName != "Cloudinary" &&
-                property.PropertyName != "CategoryId")
+            switch (property.PropertyName)
             {
-                <div class="form-group">
+                case "Id":
+                case "Images":
+                case "Cloudinary":
+                    break;
+                case "CategoryId":
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.CategoryId, null, new { @class = "d-block mb-3" })
+                        <div class="select-wrapper">
+                            @Html.DropDownListFor(x => x.CategoryId, ViewBag.CategoriesList as SelectList, "Нет категории", new { @class = "form-control primary-select" })
+                        </div>
+                        @Html.ValidationMessageFor(x => x.CategoryId)
+                    </div>
+                    break;
+                default:
+                    <div class="form-group">
                     <label class="d-block mb-3" for="@property.PropertyName">@(property.DisplayName ?? property.PropertyName)</label>
                     @if (property.PropertyName == "Description")
                     {
@@ -30,6 +41,7 @@
                     }
                     @Html.ValidationMessage(property.PropertyName)
                 </div>
+                    break;
             }
         }
 

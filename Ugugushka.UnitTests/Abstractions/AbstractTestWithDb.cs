@@ -16,6 +16,7 @@ using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.Code.MapperProfiles;
 using Ugugushka.Domain.Managers;
 using Ugugushka.UnitTests.FakeConcretes;
+using Ugugushka.WebUI.Code.MapperProfiles;
 
 namespace Ugugushka.UnitTests.Abstractions
 {
@@ -30,6 +31,8 @@ namespace Ugugushka.UnitTests.Abstractions
             {
                 cfg.AddProfile<ToyMapperProfile>();
                 cfg.AddProfile<OrderMapperProfile>();
+                cfg.AddProfile<PartitionMapperProfile>();
+                cfg.AddProfile<CategoryMapperProfile>();
             });
             _mapper = new Mapper(mapperCfg);
         }
@@ -58,10 +61,10 @@ namespace Ugugushka.UnitTests.Abstractions
         protected async Task PopulateAsync<TITem>(IEnumerable<TITem> initialItems)
         {
             var iItems = initialItems as TITem[] ?? initialItems.ToArray();
-            
+
             foreach (var item in iItems)
                 await _context.AddAsync(item);
-            
+
             await _context.SaveChangesAsync();
 
             foreach (var item in iItems)
@@ -87,7 +90,14 @@ namespace Ugugushka.UnitTests.Abstractions
         {
             var options = new Mock<IOptions<DeliveryConfig>>();
             options.SetupGet(x => x.Value).Returns(new DeliveryConfig {CourierPrice = 5});
-            return new OrderManager(new OrderRepository(_context, HttpContextAccessor), options.Object, SaveProvider, _mapper);
+            return new OrderManager(new OrderRepository(_context, HttpContextAccessor), options.Object, SaveProvider,
+                _mapper);
         }
+
+        protected IPartitionManager CreatePartitionManager() =>
+            new PartitionManager(new PartitionRepository(_context, HttpContextAccessor), SaveProvider, _mapper);
+
+        protected ICategoryManager CreateCategoryManager() =>
+            new CategoryManager(new CategoryRepository(_context, HttpContextAccessor), SaveProvider, _mapper);
     }
 }

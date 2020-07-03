@@ -11,8 +11,8 @@ namespace Ugugushka.Data.Code.Interfaces
         Task AddAsync(TItem item);
         void Attach(TItem item);
         void Update(TItem item);
-        public Task AddRangeAsync(IEnumerable<TItem> items);
-        public void RemoveRange(IEnumerable<TItem> items);
-        public void UpdateRange(IEnumerable<TItem> items);
+        Task AddRangeAsync(IEnumerable<TItem> items);
+        void RemoveRange(IEnumerable<TItem> items);
+        void UpdateRange(IEnumerable<TItem> items);
     }
 }

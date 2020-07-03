@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Ugugushka.Data.Models;
 
 namespace Ugugushka.Domain.DtoModels
 {
@@ -22,7 +21,7 @@ namespace Ugugushka.Domain.DtoModels
 
     public class ToyDto : ToyUpdateDto
     {
-        public Category Category { get; set; }
+        public CategoryDto Category { get; set; }
         public ToyImageDto MainImage => Images?.FirstOrDefault(x => x.IsMain);
         public IEnumerable<ToyImageDto> ExtraImages => Images?.Where(x => !x.IsMain).ToList();
     }

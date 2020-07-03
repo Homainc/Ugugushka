@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using CloudinaryDotNet;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Ugugushka.Domain.Code.Config;

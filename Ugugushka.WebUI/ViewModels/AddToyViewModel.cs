@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using CloudinaryDotNet;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Ugugushka.Domain.DtoModels;
 using Ugugushka.WebUI.Code.Abstractions;
 
@@ -25,7 +27,8 @@ namespace Ugugushka.WebUI.ViewModels
         [Required(ErrorMessage = "Вы должны ввести описание")]
         public string Description { get; set; }
 
-        [DisplayName("Категория")] public uint? CategoryId { get; set; }
+        [DisplayName("Категория")] 
+        public int? CategoryId { get; set; }
 
         [DisplayName("Цена")]
         [Required(ErrorMessage = "Вы должны ввести цену!")]

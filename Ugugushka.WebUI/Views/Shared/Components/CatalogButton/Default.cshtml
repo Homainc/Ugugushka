@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Ugugushka.Domain.DtoModels.PartitionDto>
+
+@if (false)
+{
+    <div class="dropdown">
+        <a href="@Url.Action("Index", "Home")">Каталог</a>
+        <div class="dropdown-content">
+            @foreach (var part in Model)
+            {
+                <a href="@Url.Action("Index", "Home",
+                        new Dictionary<string, string> { 
+                            { "filter.PartitionId", part.Id.ToString()} 
+                        })">
+                    @part.Name
+                </a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <a href="@Url.Action("Index", "Home")">Каталог</a>
+}

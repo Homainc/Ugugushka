@@ -1,0 +1,18 @@
+﻿@model AdminAddPartitionViewModel
+
+<section class="card my-5">
+    <div class="card-header">
+        <h2>@ViewBag.ActionTitle</h2>
+    </div>
+    @using (Html.BeginForm("AddPartition", "Admin", new { }, FormMethod.Post, true, new { }))
+    {
+        @Html.HiddenFor(x => x.Id)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name, null, new { @class = "d-block mb-3"})
+            @Html.TextBoxFor(x => x.Name, null, new { @class = "form-control text-input"})
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <input type="submit" class="btn btn-turquoise mr-2" value="Сохранить"/>
+        @Html.ActionLink("Назад", "Partitions", null, htmlAttributes: new { @class = "btn btn-secondary" })
+    }
+</section>

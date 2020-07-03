@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Ugugushka.Data.Code.Extensions;
 using Ugugushka.Domain.Code.Interfaces;
 using Ugugushka.Domain.Managers;
@@ -19,6 +18,8 @@ namespace Ugugushka.Domain.Code.Extensions
             services.AddScoped<IPictureManager, PictureManager>();
             services.AddScoped<IOrderManager, OrderManager>();
             services.AddScoped<ISiteMapManager, SiteMapManager>();
+            services.AddScoped<ICategoryManager, CategoryManager>();
+            services.AddScoped<IPartitionManager, PartitionManager>();
 
             return services;
         }

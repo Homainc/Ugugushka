@@ -8,7 +8,7 @@ namespace Ugugushka.Domain.Code.Interfaces
 {
     public interface IPictureManager
     {
-        public Cloudinary Cloudinary { get; }
+        Cloudinary Cloudinary { get; }
         Task<ToyImageDto> UploadPictureAsync(IFormFile formFile);
         Task<IEnumerable<ToyImageDto>> UploadPicturesAsync(IEnumerable<IFormFile> formFiles);
         Task DeleteTemporaryPicturesAsync();

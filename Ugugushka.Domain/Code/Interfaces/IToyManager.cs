@@ -9,7 +9,6 @@ namespace Ugugushka.Domain.Code.Interfaces
         Task<IPagedResult<ToyDto>> GetPagedFilteredAsync(IToyFilterInfo filter, IPageInfo pageInfo);
         Task<ToyDto> SaveAsync(ToyUpdateDto item);
         Task<ToyDto> DeleteAsync(int id);
-
         Task<ToyDto> GetByIdAsync(int id);
     }
 }

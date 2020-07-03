@@ -48,7 +48,8 @@ namespace Ugugushka.Data.Code.Extensions
             services.AddScoped<IToyImageRepository, ToyImageRepository>();
             services.AddScoped<IOrderToyRepository, OrderToyRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-            
+            services.AddScoped<IPartitionRepository, PartitionRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();            
             // Save Provider
             services.AddScoped<ISaveProvider, SaveProvider>();
 

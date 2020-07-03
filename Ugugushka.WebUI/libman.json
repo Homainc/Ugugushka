@@ -23,16 +23,6 @@
     },
     {
       "provider": "cdnjs",
-      "library": "blueimp-load-image@5.12.0",
-      "destination": "wwwroot/libs/blueimp-load-image/"
-    },
-    {
-      "provider": "cdnjs",
-      "library": "blueimp-file-upload@10.28.0",
-      "destination": "wwwroot/libs/blueimp-file-upload/"
-    },
-    {
-      "provider": "cdnjs",
       "library": "cloudinary-jquery-file-upload@2.8.2",
       "destination": "wwwroot/libs/cloudinary-jquery-file-upload/"
     },

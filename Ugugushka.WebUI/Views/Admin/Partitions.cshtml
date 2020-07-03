@@ -1,0 +1,60 @@
+﻿@model AdminPartitionsViewModel
+
+@{ 
+    ViewBag.Title = "";
+}
+
+    <section class="card mt-5">
+        <div class="d-flex card-header align-items-center">
+            <h2 class="d-flex col-5">Разделы (@Model.PagedPartitions.TotalItems)</h2>
+            <a class="d-flex ml-auto mr-4 btn btn-secondary" href="@Url.Action("AddPartition", "Admin")">Добавить</a>
+        </div>
+
+        @if (TempData["message"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["message"]
+            </div>
+        }
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.PagedPartitions.Items.Any())
+                {
+                    <tr>
+                        <td colspan="2" class="empty-text">
+                            Нет разделов
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var partition in Model.PagedPartitions.Items)
+                    {
+                        <tr>
+                            <td>@partition.Name</td>
+                            <td>
+                                <div class="d-inline-flex">
+                                    <a href="@Url.Action("UpdatePartition", new { Id = partition.Id })">Изменить</a>
+                                    @using (Html.BeginForm("DeletePartition", "Admin"))
+                                    {
+                                        @Html.Hidden("Id", partition.Id)
+                                        <input class="btn-link ml-2" type="submit" value="Удалить" />
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <div class="d-flex align-self-center mt-3">
+            @Html.PageLinks(@Model.PagedPartitions.PageNumber, @Model.PagedPartitions.TotalPages, "btn-secondary", x => Url.Action("Partitions", new { page = x }))
+        </div>
+    </section>

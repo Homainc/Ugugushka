@@ -4,7 +4,7 @@
     --bg-secondary: rgba(195, 255, 235, 1);
     --color-torquoise: #00d1a5;
     --color-light: #fdfdfd;
-    --color-lgray: #d1d1d1; 
+    --color-lgray: #d1d1d1;
 }
 
 *, body {
@@ -55,7 +55,7 @@ table.table {
 
     table.table th,
     table.table td {
-        text-align: right;
+        text-align: left;
     }
 
         table.table td a {
@@ -87,15 +87,21 @@ table.table {
     border-radius: 5px;
     background: var(--color-light);
     width: 100%;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
     box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
     -webkit-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
     transition-duration: 0.3s;
+    -webkit-transition-property: -webkit-box-shadow;
+    transition-property: -webkit-box-shadow;
+    -o-transition-property: box-shadow;
     transition-property: box-shadow;
+    transition-property: box-shadow, -webkit-box-shadow;
     max-width: 300px;
 }
 
     .toy-item:hover {
+        -webkit-box-shadow: 0 14px 14px rgba(0, 0, 0, .13), 0 10px 10px rgba(0, 0, 0, .13);
         box-shadow: 0 14px 14px rgba(0, 0, 0, .13), 0 10px 10px rgba(0, 0, 0, .13);
     }
 
@@ -122,13 +128,20 @@ table.table {
 }
 
 .toy-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     padding: 1.2rem;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
     height: 100%;
 }
 
-.toy-text h2 { margin: 0 0 0.7rem 0; }
+    .toy-text h2 {
+        margin: 0 0 0.7rem 0;
+    }
 
 .h-100 {
     min-height: 100%;

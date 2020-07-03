@@ -1,0 +1,62 @@
+﻿@model AdminCategoriesViewModel
+
+@{
+    ViewBag.Title = $"";
+}
+
+<section class="card mt-5">
+    <div class="d-flex card-header align-items-center">
+        <h2 class="d-flex col-5">Категории (@Model.PagedCategories.TotalItems)</h2>
+        <a class="d-flex ml-auto mr-4 btn btn-secondary" href="@Url.Action("AddCategory", "Admin")">Добавить</a>
+    </div>
+
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["message"]
+        </div>
+    }
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Раздел</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.PagedCategories.Items.Any())
+            {
+                <tr>
+                    <td colspan="3" class="empty-text">
+                        Нет категорий
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var category in Model.PagedCategories.Items)
+                {
+                    <tr>
+                        <td>@category.Name</td>
+                        <td>@category.Partition.Name</td>
+                        <td>
+                            <div class="d-inline-flex">
+                                <a href="@Url.Action("UpdateCategory", new { Id = category.Id })">Изменить</a>
+                                @using (Html.BeginForm("DeleteCategory", "Admin"))
+                                {
+                                    @Html.Hidden("Id", category.Id)
+                                    <input class="btn-link ml-2" type="submit" value="Удалить" />
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex align-self-center mt-3">
+        @Html.PageLinks(@Model.PagedCategories.PageNumber, @Model.PagedCategories.TotalPages, "btn-secondary", x => Url.Action("Categories", new { page = x }))
+    </div>
+</section>

@@ -13,6 +13,10 @@
         public const string Orders = "Управление заказами";
         public const string OrderInfo = "Просмотр заказа";
         public const string Contacts = "Контакты";
+        public const string AddPartition = "Добавить раздел";
+        public const string EditPartition = "Изменить раздел";
+        public const string AddCategory = "Добавить категорию";
+        public const string EditCategory = "Изменить категорию";
         public const string KeyWords = "ugugushka магазин игрушка покупка игрушки детские Минск доставка самовывоз";
     }
 
