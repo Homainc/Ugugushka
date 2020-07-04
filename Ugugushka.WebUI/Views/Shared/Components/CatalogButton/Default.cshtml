@@ -1,23 +1,30 @@
-﻿@model IEnumerable<Ugugushka.Domain.DtoModels.PartitionDto>
+﻿@model IEnumerable<IGrouping<Ugugushka.Domain.DtoModels.PartitionDto, Ugugushka.Domain.DtoModels.CategoryDto>>
 
-@if (false)
+@if (Model.Any())
 {
     <div class="dropdown">
-        <a href="@Url.Action("Index", "Home")">Каталог</a>
+        <a href="#"><i class="fa fa-bars mr-3 mr-md-2"></i>Каталог</a>
         <div class="dropdown-content">
-            @foreach (var part in Model)
+            @foreach (var group in Model)
             {
-                <a href="@Url.Action("Index", "Home",
-                        new Dictionary<string, string> { 
-                            { "filter.PartitionId", part.Id.ToString()} 
-                        })">
-                    @part.Name
-                </a>
+                <div class="r-dropdown">
+                    <a href="#" class="a-arrow">
+                        <span class="d-flex">@group.Key.Name</span><i class="fas fa-chevron-right d-flex ml-auto arrow"></i>
+                    </a>
+                    <div class="r-dropdown-content">
+                        @foreach(var category in group)
+                        {
+                            <a href="@Url.Action("Index", "Home", new Dictionary<string, string> {
+                                    { "filter.CategoryId", category.Id.ToString() }
+                                })">@category.Name</a>
+                        }
+                    </div>
+                </div>
             }
         </div>
     </div>
 }
 else
 {
-    <a href="@Url.Action("Index", "Home")">Каталог</a>
+    <a href="@Url.Action("Index", "Home")"><i class="fa fa-bars mr-3 mr-md-2"></i>Каталог</a>
 }

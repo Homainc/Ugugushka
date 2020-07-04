@@ -28,28 +28,28 @@
     border-radius: 20px;
 }
 
-    .btn-borderless i {
-        margin-right: 0.2rem;
-    }
+.btn-borderless i {
+    margin-right: 0.2rem;
+}
 
-    .btn-borderless span {
-        font-weight: 400;
-    }
+.btn-borderless span {
+    font-weight: 400;
+}
 
-    .btn-borderless span,
-    .btn-borderless i {
-        -webkit-transition-duration: 0.2s;
-        -o-transition-duration: 0.2s;
-        transition-duration: 0.2s;
-        -webkit-transition-property: color;
-        -o-transition-property: color;
-        transition-property: color;
-    }
+.btn-borderless span,
+.btn-borderless i {
+    -webkit-transition-duration: 0.2s;
+    -o-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    -webkit-transition-property: color;
+    -o-transition-property: color;
+    transition-property: color;
+}
 
-    .btn-borderless:hover span,
-    .btn-borderless:hover i {
-        color: var(--color-torquoise);
-    }
+.btn-borderless:hover span,
+.btn-borderless:hover i {
+    color: var(--color-torquoise);
+}
 
 .btn-primary {
     padding: 0.9rem 1.1rem;
@@ -64,11 +64,11 @@
     color: var(--text-primary);
 }
 
-    .btn-primary-hover,
-    .btn-primary:hover,
-    .search-btn:hover {
-        color: var(--color-torquoise);
-    }
+.btn-primary-hover,
+.btn-primary:hover,
+.search-btn:hover {
+    color: var(--color-torquoise);
+}
 
 .btn-turquoise {
     padding: 0 20px;
@@ -96,10 +96,10 @@ a,
     color: var(--color-torquoise);
 }
 
-    a:hover,
-    .btn-link:hover {
-        text-decoration: none;
-    }
+a:hover,
+.btn-link:hover {
+    text-decoration: none;
+}
 
 .btn-turquoise-hover,
 .btn-turquoise:hover {
@@ -131,22 +131,22 @@ a,
     transition-duration: 0.2s;
 }
 
-    .btn-upload-img:hover i,
-    .btn-secondary:hover i {
-        color: var(--color-torquoise);
-    }
+.btn-upload-img:hover i,
+.btn-secondary:hover i {
+    color: var(--color-torquoise);
+}
 
-    .btn-secondary-hover,
-    .btn-upload-img:hover,
-    .btn-secondary:hover {
-        color: var(--color-torquoise);
-        border: 1px solid var(--color-torquoise);
-    }
+.btn-secondary-hover,
+.btn-upload-img:hover,
+.btn-secondary:hover {
+    color: var(--color-torquoise);
+    border: 1px solid var(--color-torquoise);
+}
 
-    .btn-upload-img i {
-        padding: 0;
-        margin: 0;
-    }
+.btn-upload-img i {
+    padding: 0;
+    margin: 0;
+}
 
 .upload-icon {
     width: 60px;

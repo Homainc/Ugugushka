@@ -71,11 +71,10 @@ namespace Ugugushka.UnitTests
             var partitionManager = CreatePartitionManager();
 
             // Action
-            var list = await partitionManager.GetAllAsync(new PageInfo { PageSize = 10, PageNumber = 1});
+            var list = await partitionManager.GetAllAsync();
 
             // Assert
-            Assert.Equal(2, list.TotalItems);
-            Assert.Equal(2, list.Items.Count());
+            Assert.Equal(2, list.Count());
         }
     }
 }

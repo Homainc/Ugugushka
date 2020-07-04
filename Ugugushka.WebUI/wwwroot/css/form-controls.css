@@ -19,9 +19,9 @@
     border-radius: 15px;
 }
 
-    .text-input:focus {
-        border: 1px solid #00d1a5;
-    }
+.text-input:focus {
+    border: 1px solid #00d1a5;
+}
 
 .text-input-bl {
     border: none;
@@ -78,16 +78,16 @@
     position: relative;
 }
 
-    .select-wrapper:after {
-        position: absolute;
-        content: "";
-        top: 25px;
-        right: 20px;
-        width: 0;
-        height: 0;
-        border: 8px solid transparent;
-        border-color: var(--text-primary) transparent transparent transparent;
-    }
+.select-wrapper:after {
+    position: absolute;
+    content: "";
+    top: 25px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-color: var(--text-primary) transparent transparent transparent;
+}
 
 .primary-select {
     font-size: 1.1rem;

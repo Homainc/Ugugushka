@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Binbin.Linq;
 using Microsoft.AspNetCore.Http;
@@ -37,37 +39,45 @@ namespace Ugugushka.Data.Repositories
             if (filter.PartitionId.HasValue)
                 partitionFilter = partitionFilter.And(x => x.Id == filter.PartitionId.Value);
 
-            return await (
-                from t in Db.Toys.Where(toyFilter).Include(x => x.Images)
-                join c in Db.Categories on t.CategoryId equals c.Id into cGroup
-                from c in cGroup.DefaultIfEmpty()
-                join p in Db.Partitions.Where(partitionFilter) on c.PartitionId equals p.Id into pGroup
-                from p in pGroup.DefaultIfEmpty()
-                select new Toy
-                {
-                    Id = t.Id,
-                    Name = t.Name,
-                    CategoryId = c.Id,
-                    Category = c != null? new Category
-                    {
-                        Id = c.Id,
-                        PartitionId = p.Id,
-                        Partition = p != null ? new Partition { 
-                            Id = p.Id,
-                            Name = p.Name
-                        } : null,
-                        Name = c.Name
-                    } : null,
-                    Description = t.Description,
-                    Count = t.Count,
-                    Price = t.Price,
-                    Images = t.Images
-                })
-                .ToPagedAsync(pageInfo, CancellationToken);
+            var query = filter.PartitionId.HasValue ? 
+                AllQuery(toyFilter, partitionFilter) : 
+                AllQuery(toyFilter);
+
+            return await query.ToPagedAsync(pageInfo, CancellationToken);
         }
 
-        public async Task<Toy> SingleOrDefaultByIdEagerAsync(int id) =>
-            await (from t in Db.Toys.Where(x => x.Id == id).Include(x => x.Images)
+        private IQueryable<Toy> AllQuery(Expression<Func<Toy, bool>> toyFilter, Expression<Func<Partition, bool>> partitionFilter)
+            => from t in Db.Toys.Where(toyFilter).Include(x => x.Images)
+               join c in Db.Categories on t.CategoryId equals c.Id
+               join p in Db.Partitions.Where(partitionFilter) on c.PartitionId equals p.Id
+               select new Toy
+               {
+                   Id = t.Id,
+                   Name = t.Name,
+                   CategoryId = c.Id,
+                   Category = c != null ? new Category
+                   {
+                       Id = c.Id,
+                       PartitionId = p.Id,
+                       Partition = p != null ? new Partition
+                       {
+                           Id = p.Id,
+                           Name = p.Name
+                       } : null,
+                       Name = c.Name
+                   } : null,
+                   Description = t.Description,
+                   Count = t.Count,
+                   Price = t.Price,
+                   Images = t.Images
+               };
+
+        private IQueryable<Toy> AllQuery(Expression<Func<Toy, bool>> toyFilter = null)
+        {
+            toyFilter ??= PredicateBuilder.True<Toy>();
+
+            return
+                from t in Db.Toys.Where(toyFilter).Include(x => x.Images)
                 join c in Db.Categories on t.CategoryId equals c.Id into cGroup
                 from c in cGroup.DefaultIfEmpty()
                 join p in Db.Partitions on c.PartitionId equals p.Id into pGroup
@@ -77,24 +87,26 @@ namespace Ugugushka.Data.Repositories
                     Id = t.Id,
                     Name = t.Name,
                     CategoryId = c.Id,
-                    Category = c != null
-                        ? new Category
+                    Category = c != null ? new Category
+                    {
+                        Id = c.Id,
+                        PartitionId = p.Id,
+                        Partition = p != null ? new Partition
                         {
-                            Id = c.Id,
-                            PartitionId = p.Id,
-                            Partition = p != null ? new Partition
-                            {
-                                Id = p.Id,
-                                Name = p.Name
-                            } : null,
-                            Name = c.Name
-                        }
-                        : null,
+                            Id = p.Id,
+                            Name = p.Name
+                        } : null,
+                        Name = c.Name
+                    } : null,
                     Description = t.Description,
                     Count = t.Count,
                     Price = t.Price,
                     Images = t.Images
-                }).AsNoTracking().SingleOrDefaultAsync(CancellationToken);
+                };
+        }
+
+        public async Task<Toy> SingleOrDefaultByIdEagerAsync(int id) =>
+            await AllQuery().AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, CancellationToken);
 
         public async Task<int> GetPagesCountAsync(int pageSize)
         {

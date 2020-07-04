@@ -60,12 +60,13 @@
             <div id="barItems" class="menu-links col-12">
                 <div class="d-flex container-xl">
                     <a class="btn btn-borderless close" href="javascript:void(0)" onclick="showBar()"><i class="fas fa-times"></i></a>
+                    <a href="@Url.Action("Index", "Home")"><i class="fas fa-home mr-3 mr-md-2"></i>Главная</a>
                     @await Component.InvokeAsync("CatalogButton")
-                    <a href="@Url.Action("Contacts", "Home")">Контакты</a>
+                    <a href="@Url.Action("Contacts", "Home")"><i class="fas fa-map-marker-alt mr-3 mr-md-2"></i>Контакты</a>
                     @if (User.IsInRole(RoleDefaults.Admin))
                     {
                 <div class="dropdown">
-                    <button class="btn">Управление</button>
+                    <button class="btn"><i class="fas fa-cog mr-3 mr-md-2"></i>Управление</button>
                     <div class="dropdown-content">
                         <a href="@Url.Action("Toys", "Admin")">Игрушки</a>
                         <a href="@Url.Action("Orders", "Admin")">Заказы</a>

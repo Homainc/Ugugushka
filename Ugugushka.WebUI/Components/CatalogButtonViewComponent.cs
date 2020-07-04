@@ -6,11 +6,11 @@ namespace Ugugushka.WebUI.Components
 {
     public class CatalogButtonViewComponent : ViewComponent
     {
-        private readonly IPartitionManager _partitionManager;
-        public CatalogButtonViewComponent(IPartitionManager partitionManager) =>
-            _partitionManager = partitionManager;
+        private readonly ICategoryManager _categoryManager;
+        public CatalogButtonViewComponent(ICategoryManager categoryManager) =>
+            _categoryManager = categoryManager;
         
         public async Task<IViewComponentResult> InvokeAsync() =>
-            View(await _partitionManager.GetAllAsync());
+            View(await _categoryManager.GetAllGroupedByPartitionAsync());
     }
 }
