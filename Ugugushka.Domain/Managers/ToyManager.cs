@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Ugugushka.Common.Interfaces;
@@ -98,5 +99,8 @@ namespace Ugugushka.Domain.Managers
         private async Task<Toy> SingleByIdAsync(int id) =>
             await _toyRepository.SingleOrDefaultByIdEagerAsync(id) ??
             throw new NotFoundException($"Toy with id {id} not found!");
+
+        public async Task<IEnumerable<ToyDto>> GetSimilarToysAsync(int categoryId, int toyId, int count = 4)
+            => Mapper.Map<IEnumerable<ToyDto>>(await _toyRepository.GetSimilarToysAsync(categoryId, toyId, count));
     }
 }

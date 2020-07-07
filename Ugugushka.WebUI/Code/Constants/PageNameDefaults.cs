@@ -13,6 +13,8 @@
         public const string Orders = "Управление заказами";
         public const string OrderInfo = "Просмотр заказа";
         public const string Contacts = "Контакты";
+        public const string Categories = "Управление категориями";
+        public const string Partitions = "Управление разделами";
         public const string AddPartition = "Добавить раздел";
         public const string EditPartition = "Изменить раздел";
         public const string AddCategory = "Добавить категорию";

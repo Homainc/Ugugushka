@@ -3,8 +3,8 @@
     <thead>
     <tr>
         <th></th>
-        <th>Кол-во</th>
-        <th>Цена</th>
+        <th class="d-none d-sm-table-cell">Кол-во</th>
+        <th class="d-none d-sm-table-cell">Цена</th>
         <th>Сумма</th>
     </tr>
     </thead>
@@ -13,19 +13,21 @@
     {
         <tr>
             <td>@line.Toy.Name</td>
-            <td>@line.Quantity</td>
-            <td>@line.Toy.Price руб.</td>
+            <td class="d-none d-sm-table-cell">@line.Quantity</td>
+            <td class="d-none d-sm-table-cell">@line.Toy.Price руб.</td>
             <td>@(line.Quantity * line.Toy.Price) руб.</td>
         </tr>
     }
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="3">Доставка курьером</td>
+            <td class="d-none d-sm-table-cell" colspan="3">Доставка курьером</td>
+            <td class="d-table-cell d-sm-none">Доставка курьером</td>
             <td id="tableCourierPrice"><span></span> руб.</td>
         </tr>
         <tr>
-            <td colspan="3">Итого</td>
+            <td class="d-none d-sm-table-cell" colspan="3">Итого</td>
+            <td class="d-table-cell d-sm-none">Итого</td>
             <td><span id="tableTotalValue">@Model.ComputeTotalValue()</span> руб.</td>
         </tr>
     </tfoot>

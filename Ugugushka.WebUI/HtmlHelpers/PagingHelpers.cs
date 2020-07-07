@@ -1,37 +1,70 @@
 ﻿using System;
-using System.IO;
-using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Ugugushka.WebUI.HtmlHelpers
 {
     public static class PagingHelpers
     {
-        private static TagBuilder CreatePageLinkElement(string text, string link, string className, bool selected = false)
+        private const string HtmlLeftArrow = "<i class='fas fa-chevron-left'></i>";
+        private const string HtmlRightArrow = "<i class='fas fa-chevron-right'></i>";
+
+        private static TagBuilder CreatePageLinkTag(string text, string url, bool selected = false, bool disabled = false)
         {
             var tag = new TagBuilder("a");
-
-            tag.MergeAttribute("href", link);
-            tag.AddCssClass($"d-flex btn {className}");
-            tag.InnerHtml.Append(text);
-
-            if (selected)
-                tag.AddCssClass($"{className}-hover");
-
+            
+            tag.MergeAttribute("href", url ?? "#");
+            tag.AddCssClass("page-link");
+            tag.InnerHtml.AppendHtml(text);
+            if (selected) tag.AddCssClass("selected");
+            if (disabled) tag.AddCssClass("d-none");
+            
             return tag;
         }
 
-        public static HtmlString PageLinks(this IHtmlHelper html, int pageNumber, int totalPages, string className,
-            Func<int, string> pageUrl)
+        public static TagBuilder CreatePageLinks(this IHtmlHelper html, int pageNumber, int totalPages, Func<int, string> pageUrl, bool outlined = false)
         {
-            var result = new StringWriter();
+            if (totalPages <= 1)
+                return null;
 
-            for (int i = 1; i <= totalPages; i++)
-                CreatePageLinkElement(i.ToString(), pageUrl(i), className, i == pageNumber)
-                    .WriteTo(result, HtmlEncoder.Default);
+            var div = new TagBuilder("div");
+            div.AddCssClass($"d-flex page-links{(outlined? "-outlined":"")}");
 
-            return new HtmlString(result.ToString());
+            div.InnerHtml
+                .AppendHtml(CreatePageLinkTag(HtmlLeftArrow, pageUrl(pageNumber - 1), disabled: pageNumber - 1 < 1));
+
+            if(pageNumber != 1)
+                div.InnerHtml
+                    .AppendHtml(CreatePageLinkTag("1", pageUrl(1), selected: pageNumber == 1));
+
+            if (pageNumber > 2)
+            {
+                if(pageNumber - 1 > 2)
+                    div.InnerHtml
+                        .AppendHtml(CreatePageLinkTag("..", null));
+                div.InnerHtml
+                    .AppendHtml(CreatePageLinkTag((pageNumber - 1).ToString(), pageUrl(pageNumber - 1)));
+            }
+
+            div.InnerHtml.AppendHtml(CreatePageLinkTag(pageNumber.ToString(), pageUrl(pageNumber), selected: true));
+
+            if (pageNumber < totalPages - 1)
+            {
+                div.InnerHtml
+                    .AppendHtml(CreatePageLinkTag((pageNumber + 1).ToString(), pageUrl(pageNumber + 1)));
+
+                if (totalPages - pageNumber > 2)
+                    div.InnerHtml
+                        .AppendHtml(CreatePageLinkTag("..", null));
+            }
+
+            if (pageNumber != totalPages)
+                div.InnerHtml
+                    .AppendHtml(CreatePageLinkTag(totalPages.ToString(), pageUrl(totalPages), selected: pageNumber == totalPages));
+
+            div.InnerHtml.AppendHtml(
+                CreatePageLinkTag(HtmlRightArrow, pageUrl(pageNumber + 1), disabled: pageNumber + 1 > totalPages));
+
+            return div;
         }
     }
 }

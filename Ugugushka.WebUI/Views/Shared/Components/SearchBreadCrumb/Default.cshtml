@@ -1,0 +1,8 @@
+﻿@if (ViewBag.CurrentFilter != null)
+{
+    @Html.BreadCrumb(ViewBag.CurrentFilter as string, ViewBag.BreadCrumbsLinks as IEnumerable<Tuple<string, string>>)
+}
+else
+{
+    <section class="breadcrumb"></section>
+}

@@ -21,7 +21,7 @@
         </div>
     }
 
-    @await Component.InvokeAsync("OrderInfo", new{order=Model.Order, withStatus=true})
+    @await Component.InvokeAsync("OrderInfo", new { order = Model.Order, withStatus = true })
 
     <section class="d-flex justify-content-center">
         @using (Html.BeginForm("DeleteOrder", "Admin", new { }, FormMethod.Post, true, new { @class = "d-flex" }))

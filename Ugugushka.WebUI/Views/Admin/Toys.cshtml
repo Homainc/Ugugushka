@@ -59,8 +59,8 @@
         </tbody>
     </table>
 
-    <div class="d-flex align-self-center mt-3">
-        @Html.PageLinks(@Model.PagedToys.PageNumber, @Model.PagedToys.TotalPages, "btn-secondary", x => Url.Action("Toys", new {page = x}))
+    <div class="d-flex justify-content-center">
+        @Html.CreatePageLinks(Model.PagedToys.PageNumber, Model.PagedToys.TotalPages, x => Url.Action("Toys", new { page = x }), outlined: true)
     </div>
 </section>
 

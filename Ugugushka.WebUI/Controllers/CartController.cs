@@ -48,7 +48,7 @@ namespace Ugugushka.WebUI.Controllers
             return RedirectToAction("Index", new {returnUrl});
         }
 
-        public async Task<RedirectToActionResult> RemoveFromCart(Cart cart, int id, string returnUrl)
+        public async Task<RedirectToActionResult> RemoveLine(Cart cart, int id, string returnUrl)
         {
             var toy = await _toyManager.GetByIdAsync(id);
             if (toy != null)
@@ -57,7 +57,7 @@ namespace Ugugushka.WebUI.Controllers
                 HttpContext.Session.SetComplexData(SessionKeyDefaults.Cart, cart);
             }
 
-            return RedirectToAction("Index", new {returnUrl});
+            return RedirectToAction("Index", new { returnUrl });
         }
 
         public RedirectToActionResult Clear(Cart cart, string returnUrl)
@@ -65,7 +65,7 @@ namespace Ugugushka.WebUI.Controllers
             cart.Clear();
             HttpContext.Session.SetComplexData(SessionKeyDefaults.Cart, cart);
 
-            return RedirectToAction("Index", new {returnUrl});
+            return RedirectToAction("Index", new { returnUrl });
         }
 
         public IActionResult Checkout(Cart cart)

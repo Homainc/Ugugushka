@@ -4,7 +4,9 @@
     ViewBag.KeyWords = $"контакты информация график адрес телефон почта email {PageNameDefaults.KeyWords}";
 }
 
-    <section class="d-flex flex-row flex-wrap card mt-5">
+@Html.BreadCrumb(PageNameDefaults.Contacts, (c, q) => Url.Action(c , q))
+
+    <section class="d-flex flex-row flex-wrap card mb-5">
         <div class="card-header col-12 p-0">
             <h1>@PageNameDefaults.Contacts</h1>
         </div>

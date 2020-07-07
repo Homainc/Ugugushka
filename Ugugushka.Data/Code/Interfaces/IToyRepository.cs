@@ -11,5 +11,6 @@ namespace Ugugushka.Data.Code.Interfaces
         Task<Toy> SingleOrDefaultByIdEagerAsync(int id);
         Task<int> GetPagesCountAsync(int pageSize);
         Task<IEnumerable<int>> GetToyIdsAsync();
+        Task<IEnumerable<Toy>> GetSimilarToysAsync(int categoryId, int toyId, int count = 4);
     }
 }

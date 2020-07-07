@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic;
 using Ugugushka.Domain.Code.Config;
 using Ugugushka.Domain.Code.Constants;
 using Ugugushka.Domain.Code.Exceptions;
@@ -69,15 +73,30 @@ namespace Ugugushka.Domain.Managers
             return images;
         }
 
-        public async Task DeleteTemporaryPicturesAsync() =>
-            await Cloudinary.DeleteResourcesByTagAsync(CloudinaryTagDefaults.Temp, _cancellationToken);
+        public async Task DeleteTemporaryPicturesAsync()
+        {
+            var response = await Cloudinary.ListResourcesByTagAsync(
+                CloudinaryTagDefaults.Temp, cancellationToken: _cancellationToken);
+
+            if (response.Error == null)
+            {
+                var checkDate = DateTime.Now.AddDays(-1);
+                var expiredPublicIds = response.Resources.Where(x => DateTime.Parse(x.CreatedAt) < checkDate).Select(x => x.PublicId).ToList();
+
+                if (expiredPublicIds.Count > 0)
+                    await Cloudinary.DeleteResourcesAsync(new DelResParams
+                    {
+                        PublicIds = expiredPublicIds
+                    }, _cancellationToken);
+            }
+        }
 
         public async Task DeletePictureAsync(List<string> publicIds)
         {
             await Cloudinary.DeleteResourcesAsync(new DelResParams
             {
                 PublicIds = publicIds
-            });
+            }, _cancellationToken);
         }
 
         public async Task ChangePictureTagAsync(List<string> publicIds, string newTag)
@@ -88,7 +107,7 @@ namespace Ugugushka.Domain.Managers
                 PublicIds = publicIds,
                 ResourceType = ResourceType.Image,
                 Tag = newTag
-            });
+            }, _cancellationToken);
         }
     }
 }

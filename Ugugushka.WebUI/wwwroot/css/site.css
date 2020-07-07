@@ -1,5 +1,6 @@
 ﻿:root {
     --text-primary: #535353;
+    --text-secondary: #7F7F7F;
     --bg-primary: rgba(255, 255, 255, 1);
     --bg-secondary: rgba(195, 255, 235, 1);
     --color-torquoise: #00d1a5;
@@ -11,6 +12,10 @@
     font-weight: 400;
     font-family: 'Roboto', sans-serif;
     color: var(--text-primary);
+}
+
+strong {
+    font-weight: 600;
 }
 
 html {
@@ -181,6 +186,8 @@ table.table th, td {
     border-radius: 10px;
     cursor: -webkit-zoom-in;
     cursor: zoom-in;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
 }
 

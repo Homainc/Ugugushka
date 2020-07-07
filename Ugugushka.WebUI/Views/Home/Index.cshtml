@@ -7,7 +7,9 @@
     ViewBag.KeyWords = $"каталог {PageNameDefaults.KeyWords}";
 }
 
-<section class="my-3">
+@await Component.InvokeAsync("SearchBreadCrumb")
+
+<section class="mb-5">
     <div class="d-flex align-content-stretch justify-content-center flex-wrap">
         @foreach (var toy in Model.PagedToys.Items)
         {
@@ -22,8 +24,7 @@
             </div>
         }
     </div>
-
-    <div class="d-flex justify-content-center mt-3">
-        @Html.PageLinks(@Model.PagedToys.PageNumber, @Model.PagedToys.TotalPages, "btn-primary", x => Url.Action("Index", new {page = x}))
+    <div class="d-flex justify-content-center">
+        @Html.CreatePageLinks(Model.PagedToys.PageNumber, Model.PagedToys.TotalPages, x => Url.Action("Index", new { page = x }))
     </div>
 </section>

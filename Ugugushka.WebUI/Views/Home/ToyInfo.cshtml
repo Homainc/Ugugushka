@@ -1,35 +1,37 @@
 ﻿@using Ugugushka.WebUI.Code.Extensions
-@model ToyInfoViewModel
+@model HomeToyInfoViewModel
 @{
-    ViewBag.Title = $"Купить {Model.Name} в Минске".WithDomain();
-    ViewBag.Description = $"Интернет-магазин детских игрушек ugugughka.by - это удобный способ купить {Model.Name} c доставкой курьером по Минску либо самовывозом";
-    ViewBag.KeyWords = $"{Model.Name.ReplaceSpecSymbols()} каталог {PageNameDefaults.KeyWords}";
+    ViewBag.Title = $"Купить {Model.Toy.Name} в Минске".WithDomain();
+    ViewBag.Description = $"Интернет-магазин детских игрушек ugugughka.by - это удобный способ купить {Model.Toy.Name} c доставкой курьером по Минску либо самовывозом";
+    ViewBag.KeyWords = $"{Model.Toy.Name.ReplaceSpecSymbols()} каталог {PageNameDefaults.KeyWords}";
 }
 
-<section class="d-flex flex-row flex-wrap card my-5">
-    <section class="d-flex flex-column col-12 col-md-6 pl-0">
+@Html.BreadCrumb(Model.Toy, (c, q) => Url.Action(c, q))
+
+<section class="d-flex flex-row flex-wrap card mb-5">
+    <section class="d-flex flex-column col-12 col-md-6 px-0">
         <div class="d-flex justify-content-center align-items-center">
-            <img class="toy-image-main" src="@Model.Cloudinary.BuildImgUrl(Model.MainImage.PublicId, Model.MainImage.Format)" alt="@Model.Name"/>
+            <img class="toy-image-main" src="@Model.Cloudinary.BuildImgUrl(Model.Toy.MainImage.PublicId, Model.Toy.MainImage.Format)" alt="@Model.Toy.Name" />
         </div>
         <div class="d-flex justify-content-center align-items-center">
-            @foreach (var img in Model.ExtraImages)
+            @foreach (var img in Model.Toy.ExtraImages)
             {
                 <div class="col-3 col-lg-2">
-                    <img class="toy-image-thumb" src="@Model.Cloudinary.BuildImgUrl(img.PublicId, img.Format)" alt="@Model.Name" />
+                    <img class="toy-image-thumb" src="@Model.Cloudinary.BuildImgUrl(img.PublicId, img.Format)" alt="@Model.Toy.Name" />
                 </div>
             }
         </div>
     </section>
-    <section class="d-flex flex-column col-12 col-md-6">
+    <section class="d-flex flex-column col-12 col-md-6 px-0 pl-md-4 mt-4 mt-md-0">
         <div class="card-header">
-            <h1>@Model.Name</h1>
+            <h1>@Model.Toy.Name</h1>
         </div>
         <div class="card-price">
-            @Model.Price руб.
+            @Model.Toy.Price руб.
         </div>
         @using (Html.BeginForm("AddToCart", "Cart", new { ReturnUrl = Context.Request.Path }, FormMethod.Post, true, new { @class = "card-actions" }))
         {
-            @Html.Hidden("Id", @Model.Id)
+            @Html.Hidden("Id", @Model.Toy.Id)
             <div class="d-flex flex-column form-group">
                 @Html.LabelFor(x => x.Quantity, htmlAttributes: new { @class = "d-flex mb-2" })
                 @Html.TextBoxFor(x => x.Quantity, null, new { @class = "form-control text-input" })
@@ -43,16 +45,39 @@
             <h2>Описание</h2>
         </div>
         <div class="d-flex">
-            @Html.Raw(Model.Description)
+            @Html.Raw(System.Text.RegularExpressions.Regex.Replace(Model.Toy.Description, "\r\n", "<br>"))
         </div>
     </article>
 </section>
+
+@if (Model.SimilarToys.Count() > 1)
+{
+    <section class="mb-5">
+        <div class="mt-1">
+            <h2 class="p-0 m-0">Возможно вас также заинтересует</h2>
+        </div>
+        <div class="d-flex align-content-stretch justify-content-center flex-wrap">
+            @foreach (var toy in Model.SimilarToys)
+            {
+                <div class="d-flex justify-content-center col-12 col-sm-6 col-md-4 col-lg-3 py-1">
+                    <a class="toy-item d-flex flex-column" href="@Url.Action("ToyInfo", new { id = toy.Id })">
+                        <img class="d-flex toy-img" src="@Model.Cloudinary.BuildImgUrl(toy.MainImage.PublicId, toy.MainImage.Format, 300, 300)" alt="@toy.Name" />
+                        <div class="toy-text">
+                            <h2 class="d-flex toy-header">@toy.Name</h2>
+                            <span class="d-flex mt-auto toy-price">@toy.Price р.</span>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+}
 
 <div class="img-modal" id="imgModal">
     <span class="modal-close">&times;</span>
     <div class="container d-flex align-items-stretch justify-content-center">
         <div class="img-nav" id="imgPreviousBtn"><</div>
-        <img class="img-modal-content" alt="toy photo" id="modalImg"/>
+        <img class="img-modal-content" alt="toy photo" id="modalImg" />
         <div class="img-nav" id="imgNextBtn">></div>
     </div>
     <div id="imgCaption"></div>
@@ -67,10 +92,10 @@
         const imgArray = $("img[class='toy-image-main'], img[class='toy-image-thumb']");
         var currentImageIndex;
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             imgArray.on("click", onImgClick);
 
-            $("#imgModal .modal-close").on("click", function(e) {
+            $("#imgModal .modal-close").on("click", function (e) {
                 modal.toggle(false);
             });
 

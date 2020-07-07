@@ -1,7 +1,7 @@
 ﻿@model AdminPartitionsViewModel
 
 @{ 
-    ViewBag.Title = "";
+    ViewBag.Title = PageNameDefaults.Partitions.WithDomain();
 }
 
     <section class="card mt-5">
@@ -54,7 +54,7 @@
             </tbody>
         </table>
 
-        <div class="d-flex align-self-center mt-3">
-            @Html.PageLinks(@Model.PagedPartitions.PageNumber, @Model.PagedPartitions.TotalPages, "btn-secondary", x => Url.Action("Partitions", new { page = x }))
+        <div class="d-flex justify-content-center">
+            @Html.CreatePageLinks(Model.PagedPartitions.PageNumber, Model.PagedPartitions.TotalPages, x => Url.Action("Partitions", new { page = x }), outlined: true)
         </div>
     </section>

@@ -39,8 +39,8 @@ namespace Ugugushka.Data.Repositories
             if (filter.PartitionId.HasValue)
                 partitionFilter = partitionFilter.And(x => x.Id == filter.PartitionId.Value);
 
-            var query = filter.PartitionId.HasValue ? 
-                AllQuery(toyFilter, partitionFilter) : 
+            var query = filter.PartitionId.HasValue ?
+                AllQuery(toyFilter, partitionFilter) :
                 AllQuery(toyFilter);
 
             return await query.ToPagedAsync(pageInfo, CancellationToken);
@@ -110,13 +110,40 @@ namespace Ugugushka.Data.Repositories
 
         public async Task<int> GetPagesCountAsync(int pageSize)
         {
-            var value = (double) (await Db.Toys.CountAsync(CancellationToken)) / pageSize;
-            if ((int) value < value)
+            var value = (double)(await Db.Toys.CountAsync(CancellationToken)) / pageSize;
+            if ((int)value < value)
                 value++;
             return (int)value;
         }
 
         public async Task<IEnumerable<int>> GetToyIdsAsync() =>
             await (from t in Db.Toys select t.Id).ToListAsync(CancellationToken);
+
+        public async Task<IEnumerable<Toy>> GetSimilarToysAsync(int categoryId, int toyId, int count = 4) =>
+            await (
+                 from t in Db.Toys.Where(x => x.Id != toyId && x.CategoryId == categoryId).Include(x => x.Images)
+                 join c in Db.Categories on t.CategoryId equals c.Id
+                 join p in Db.Partitions on c.PartitionId equals p.Id
+                 select new Toy
+                 {
+                     Id = t.Id,
+                     Name = t.Name,
+                     CategoryId = c.Id,
+                     Category = c != null ? new Category
+                     {
+                         Id = c.Id,
+                         PartitionId = p.Id,
+                         Partition = p != null ? new Partition
+                         {
+                             Id = p.Id,
+                             Name = p.Name
+                         } : null,
+                         Name = c.Name
+                     } : null,
+                     Description = t.Description,
+                     Count = t.Count,
+                     Price = t.Price,
+                     Images = t.Images
+                 }).Take(count).ToListAsync(CancellationToken);
     }
 }

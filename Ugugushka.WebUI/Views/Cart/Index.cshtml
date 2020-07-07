@@ -6,11 +6,13 @@
     ViewBag.KeyWords = $"корзина товар оформление {PageNameDefaults.KeyWords}";
 }
 
-<section class="card my-5">
+@Html.BreadCrumb(PageNameDefaults.Cart, (c, q) => Url.Action(c, q))
+
+<section class="card mb-5">
     <div class="card-header">
-        <div class="d-flex align-items-center">
-            <h1 class="d-flex col-5 px-0">Ваша корзина (@Model.Cart.Lines.Count())</h1>
-            @using (Html.BeginForm("Clear", "Cart", new { ReturnUrl = Context.Request.Path }, FormMethod.Post, true, new {@class="d-flex ml-auto"} ))
+        <div class="d-flex flex-wrap align-items-center">
+            <h1 class="d-flex col-12 col-sm-6 px-0">Ваша корзина (@Model.Cart.Lines.Count())</h1>
+            @using (Html.BeginForm("Clear", "Cart", new { ReturnUrl = Context.Request.Path }, FormMethod.Post, true, new {@class="d-flex mt-2 mt-sm-0 ml-sm-auto"} ))
             {
                 <button class="btn btn-secondary" type="submit">Очистить корзину</button>
             }
@@ -21,18 +23,24 @@
         <div class="d-flex flex-column">
             @foreach (var line in Model.Cart.Lines)
             {
-                <div class="d-flex align-items-center cart-item">
-                    <div class="col-2 d-flex py-2">
+                <div class="d-flex flex-wrap align-items-center cart-item">
+                    <div class="col-12 col-md-2 d-flex py-2">
                         <img class="cart-img" height="90" width="90" src="@Model.Cloudinary.BuildImgUrl(line.Toy.MainImage.PublicId, line.Toy.MainImage.Format)" alt="@line.Toy.Name"/>
                     </div>
-                    <a class="col-6 d-flex" href="@Url.Action("ToyInfo", "Home", new { line.Toy.Id })">
-                        @line.Toy.Name
-                    </a>
-                    <div class="col-2 d-flex">
-                        Кол-во: @line.Quantity
+                    <div class="col-12 col-md-7 d-flex flex-column">
+                        <a class="d-flex" href="@Url.Action("ToyInfo", "Home", new { line.Toy.Id })">
+                            @line.Toy.Name
+                        </a>
+                        <div class="d-flex">
+                            <p class="p-0 m-0">@line.Quantity x <strong>@line.Toy.Price руб.</strong></p>
+                        </div>
                     </div>
-                    <div class="ml-auto d-flex">
-                        <strong>@(line.Quantity * line.Toy.Price) руб.</strong>
+                    <div class="col-12 col-md-3 d-flex my-2 my-md-0">
+                        @using (Html.BeginForm("RemoveLine", "Cart", new { Model.ReturnUrl }, FormMethod.Post, true, new { @class = "d-flex w-100 justify-content-end" } ))
+                        {
+                            @Html.Hidden("Id", line.Toy.Id)
+                        <button class="d-flex btn btn-sm-secondary" type="submit"><i class="mr-2 fas fa-trash-alt"></i>Удалить</button>
+                        }
                     </div>
                 </div>
             }

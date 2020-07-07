@@ -1,7 +1,7 @@
 ﻿@model AdminCategoriesViewModel
 
 @{
-    ViewBag.Title = $"";
+    ViewBag.Title = PageNameDefaults.Categories.WithDomain();
 }
 
 <section class="card mt-5">
@@ -55,8 +55,8 @@
             }
         </tbody>
     </table>
-
-    <div class="d-flex align-self-center mt-3">
-        @Html.PageLinks(@Model.PagedCategories.PageNumber, @Model.PagedCategories.TotalPages, "btn-secondary", x => Url.Action("Categories", new { page = x }))
+    
+    <div class="d-flex justify-content-center">
+        @Html.CreatePageLinks(Model.PagedCategories.PageNumber, Model.PagedCategories.TotalPages, x => Url.Action("Categories", new { page = x }), outlined: true)
     </div>
 </section>

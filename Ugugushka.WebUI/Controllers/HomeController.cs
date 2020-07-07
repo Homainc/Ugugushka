@@ -29,9 +29,13 @@ namespace Ugugushka.WebUI.Controllers
 
         public async Task<IActionResult> ToyInfo([FromRoute] int id)
         {
-            var model = new ToyInfoViewModel(_pictureManager.Cloudinary);
-            Mapper.Map(await _toyManager.GetByIdAsync(id), model);
-            
+            var model = new HomeToyInfoViewModel(
+                await _toyManager.GetByIdAsync(id),
+                _pictureManager.Cloudinary);
+
+            if (model.Toy.CategoryId.HasValue)
+                model.SimilarToys = await _toyManager.GetSimilarToysAsync(model.Toy.CategoryId.Value, model.Toy.Id);
+
             return View(model);
         }
 
